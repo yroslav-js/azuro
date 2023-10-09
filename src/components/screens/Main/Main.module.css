@@ -336,6 +336,7 @@
     font-weight: 500;
     line-height: 16px;
     letter-spacing: -0.078px;
+    cursor: pointer;
 }
 
 .filterItems div img {

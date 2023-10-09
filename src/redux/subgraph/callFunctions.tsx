@@ -13,7 +13,7 @@ export enum sortTime {
   '3h' = 3600 * 3,
   '6h' = 3600 * 6,
   'today' = 3600 * 24,
-  'tomorrow' = 3600 * 48,
+  'tomorrow' = 'tomorrow',
   'all' = 0
 }
 
@@ -26,7 +26,8 @@ export const fetchSports = createAsyncThunk(
         "hasActiveConditions": true,
       }
 
-      if (sortTime) gameFilter.startsAt_lt = Math.floor(Date.now() / 1000) + sortTime
+      if (sortTime === 'tomorrow') gameFilter.startsAt_gt = Math.floor(Date.now() / 1000 + 3600 * 24)
+      else if (sortTime) gameFilter.startsAt_lt = Math.floor(Date.now() / 1000) + sortTime
 
       const res = await apolloClient.query({
         query: getSports,
