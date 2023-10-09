@@ -1,0 +1,36 @@
+.sidebar {
+    min-width: 64px;
+    border-radius: 8px;
+    background-color: var(--surface-high-priority);
+    padding: 22px 0 18px;
+    text-align: center;
+    height: 100%;
+}
+
+.sidebar div + div {
+    margin-top: 24px;
+}
+
+.sidebar p {
+    color: var(--text-mid-priority);
+    text-align: center;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 12px;
+    letter-spacing: 0.07px;
+    margin-top: 7px;
+}
+
+.sidebar path {
+    fill: var(--text-low-priority);
+}
+
+.active p {
+    color: var(--text-high-priority);
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.active path {
+    fill: var(--text-accent-2);
+}

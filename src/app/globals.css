@@ -1,0 +1,139 @@
+:root {
+    --surface-background: #f2f2f7;
+    --surface-transperent-80: rgba(255, 255, 255, 0.8);
+    --surface-transperent-40: rgba(255, 255, 255, 0.4);
+    --surface-high-priority: #ffffff;
+    --surface-mid-priority: #e6e6ec;
+    --elements-orange: #f57425;
+    --elements-red: #ed2939;
+    --elements-transperent-black-40: rgba(0, 0, 0, .4);
+    --elements-green: #34c759;
+    --transperent-accent-1: rgba(52, 199, 89, .15);
+    --transperent-accent-2: rgba(0, 122, 255, .15);
+    --transperent-accent-3: rgba(237, 41, 57, .15);
+    --transperent-accent-4: rgba(245, 116, 37, .15);
+    --elements-accent-5: #7bbaff;
+    --text-accent-1: #34c759;
+    --text-accent-2: #007aff;
+    --text-accent-3: #ed2939;
+    --text-accent-4: #f57425;
+    --text-ctas-buttons: #ffffff;
+    --text-high-priority: #373737;
+    --text-mid-priority: #616161;
+    --text-low-priority: #878787;
+}
+
+/*Обнуление*/
+
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+:focus,
+:active {
+    outline: none;
+}
+
+a:focus,
+a:active {
+    outline: none;
+}
+
+nav,
+footer,
+header,
+aside {
+    display: block;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    font-size: 100%;
+    line-height: 1;
+    font-size: 20px;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+input,
+button,
+textarea {
+    font-family: inherit;
+}
+
+input::-ms-clear {
+    display: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+a {
+    color: inherit;
+}
+
+a,
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+ul li {
+    list-style: none;
+}
+
+h1,
+h2,
+h3,
+h6 {
+    font-size: inherit;
+    font-weight: 400;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+body {
+    background: var(--surface-background);
+    max-width: 100vw;
+    width: 100%;
+}
+
+.flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}

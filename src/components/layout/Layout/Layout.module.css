@@ -1,0 +1,15 @@
+.container {
+    max-width: 1920px;
+    padding: 16px 16px 24px;
+    margin: 0 auto;
+    overflow: hidden;
+    width: 100%;
+    min-height: 100%;
+    max-height: 100vh;
+}
+
+.mainContent {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+}
