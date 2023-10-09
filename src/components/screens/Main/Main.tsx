@@ -3,6 +3,8 @@ import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {getMarketName, getSelectionName} from "@azuro-org/dictionaries";
 import {fetchSports, sortTime} from "@/redux/subgraph/callFunctions";
 import {useEffect, useState} from "react";
+import {formatDate} from "@/utils/formatDate";
+import clsx from "clsx";
 
 const filters = {
   by: 'BY STATUS',
@@ -67,8 +69,9 @@ const Main = () => {
                 return (
                   <div key={game.id} className={styles.event}>
                     <div className={styles.eventHead}>
-                      {/*<div className={styles.date}>Today 23:00</div>*/}
-                      <div className={styles.date}>00:00</div>
+                      <div
+                        className={clsx(styles.date, formatDate(+game.startsAt).includes('Today') ? styles.dateGreen : styles.dateBlue)}
+                      >{formatDate(+game.startsAt)}</div>
                       <div>
                         <div><img src="/share.svg" alt=""/></div>
                         <div><img src="/bookmark.svg" alt=""/></div>
