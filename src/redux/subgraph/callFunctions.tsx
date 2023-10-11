@@ -8,6 +8,11 @@ interface IGameFilter {
   hasActiveConditions: boolean
 }
 
+interface ISportFilter {
+    name?: "Football",
+    sporthub_in: ["sports"]
+}
+
 const getToday = () => {
   const now = new Date()
   return ((24 - now.getHours()) * 60 - now.getMinutes() - 1) * 60
@@ -27,8 +32,11 @@ export const fetchSports = createAsyncThunk(
   async (sortTime: sortTime) => {
     try {
       const gameFilter: IGameFilter = {
-        "startsAt_gt": Math.floor(Date.now() / 1000),
-        "hasActiveConditions": true,
+        startsAt_gt: Math.floor(Date.now() / 1000),
+        hasActiveConditions: true,
+      }
+      const sportFilter: ISportFilter = {
+        sporthub_in: ["sports"]
       }
 
       if (sortTime === 'tomorrow') {
@@ -39,7 +47,8 @@ export const fetchSports = createAsyncThunk(
       const res = await apolloClient.query({
         query: getSports,
         variables: {
-          gameFilter
+          gameFilter,
+          sportFilter
         }
       })
       return res?.data?.sports || []

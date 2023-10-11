@@ -1,8 +1,8 @@
 import {gql} from "@apollo/client";
 
 export const getSports = gql`
-query Navigation($gameFilter: Game_filter) {
-  sports(subgraphError: allow, where: {sporthub_in: ["sports"]}) {
+query Navigation($gameFilter: Game_filter, $sportFilter: Sport_filter) {
+  sports(subgraphError: allow, where: $sportFilter) {
     id
     sportId
     name

@@ -1,9 +1,16 @@
-import {createSlice} from '@reduxjs/toolkit'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {fetchSports} from "@/redux/subgraph/callFunctions";
-import {IInitialState} from "@/redux/features/azuroInterface";
+import {IInitialState, ISports} from "@/redux/features/azuroInterface";
 
 const initialState: IInitialState = {
-  sports: []
+  sports: [],
+  sportFilter: {
+    filterTitle: 'SPORTS',
+    items: [{
+      item: 'Top events',
+      slug: ''
+    }]
+  }
 }
 
 export const azuroSlice = createSlice({
@@ -15,8 +22,17 @@ export const azuroSlice = createSlice({
     // }
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchSports.fulfilled, (state, action) => {
+    builder.addCase(fetchSports.fulfilled, (state, action: PayloadAction<ISports[] | []>) => {
       state.sports = action.payload
+      state.sportFilter.items = [{
+        item: 'Top events',
+        slug: ''
+      }, ...action.payload.map(sport => {
+        return {
+          item: sport.name,
+          slug: sport.slug
+        }
+      })]
     })
   }
 })

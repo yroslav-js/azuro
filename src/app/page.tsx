@@ -1,20 +1,9 @@
 "use client"
 
-import {useEffect} from "react";
-import Main from "@/components/screens/Main/Main";
-import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
-import {fetchSports, sortTime} from "@/redux/subgraph/callFunctions";
 import {getMarketDescription, getMarketName, getSelectionName} from "@azuro-org/dictionaries";
+import Main from "@/components/screens/Main/Main";
 
 export default function Home() {
-  const dispatch = useAppDispatch()
-  const sports = useAppSelector(state => state.azuroSlice.sports)
-
-  console.log(sports)
-  useEffect(() => {
-    dispatch(fetchSports(sortTime['all']))
-  }, []);
-
   // const client = new ApolloClient({
   //   uri: 'https://thegraph.azuro.org/subgraphs/name/azuro-protocol/azuro-api-polygon-v3',
   //   cache: new InMemoryCache(),

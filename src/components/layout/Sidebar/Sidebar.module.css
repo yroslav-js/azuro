@@ -7,8 +7,13 @@
     height: 100%;
 }
 
+.sidebar div {
+    padding: 2px 0;
+    cursor: pointer;
+}
+
 .sidebar div + div {
-    margin-top: 24px;
+    margin-top: 20px;
 }
 
 .sidebar p {
@@ -25,10 +30,19 @@
     fill: var(--text-low-priority);
 }
 
+.active {
+    border-right: 3px solid var(--text-accent-2);
+}
+
 .active p {
     color: var(--text-high-priority);
     font-weight: 700;
     font-size: 12px;
+    margin-right: -3px;
+}
+
+.active svg {
+    margin-right: -3px;
 }
 
 .active path {

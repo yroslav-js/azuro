@@ -1,7 +1,7 @@
 "use client"
 
 import styles from './Sidebar.module.css'
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 
 const menu = [
   {
@@ -98,12 +98,15 @@ const menu = [
 
 const Sidebar = () => {
   const path = usePathname()
+  const router = useRouter()
+
+  console.log(path)
 
   return (
     <aside className={styles.sidebar}>
       {menu.map((item, id) => (
         // <div key={id} className={item.path === path ? styles.active : ''}>
-        <div key={id} className={item.path === '/sports' ? styles.active : ''}>
+        <div onClick={() => router.push(item.path)} key={id} className={item.path === path ? styles.active : ''}>
           {item.img}
           <p>{item.name}</p>
         </div>

@@ -21,6 +21,15 @@ export interface ISports {
 
 }
 
+export interface IFilter {
+  filterTitle: string
+  items: {
+    item: string,
+    slug: string
+  }[]
+}
+
 export interface IInitialState {
-  sports: ISports[] | []
+  sports: ISports[] | [],
+  sportFilter: IFilter
 }
