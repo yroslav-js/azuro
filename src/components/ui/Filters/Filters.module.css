@@ -1,10 +1,17 @@
 .filters {
     min-width: 374px;
+    max-width: 374px;
     border-radius: 12px;
     background-color: var(--surface-background);
     border: 1px solid var(--text-accent-2);
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.20);
     height: fit-content;
+}
+
+.small {
+    min-width: 300px;
+    max-width: 300px;
+    width: 300px;
 }
 
 .filtersHead {
@@ -49,7 +56,7 @@
 }
 
 .filterItems {
-    width: 284px;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -83,3 +90,15 @@
     color: var(--text-ctas-buttons);
 }
 
+
+@media (max-width: 1450px) {
+    .small {
+        min-width: 280px;
+        max-width: 280px;
+        width: 280px;
+    }
+
+    .filtersContent {
+        padding: 12px 8px 10px;
+    }
+}

@@ -2,6 +2,7 @@ import styles from './Main.module.css'
 import filtersStyles from "@/components/ui/Filters/Filters.module.css"
 import {useState} from "react";
 import Link from "next/link";
+import clsx from "clsx";
 
 const filter = [
   {
@@ -165,7 +166,7 @@ const Main = () => {
                   <div className={styles.properties}>
                     <div className={styles.active}>Active</div>
                     <div className={styles.costs}>$67M</div>
-                    <div className={styles.user}>User01322</div>
+                    <div className={styles.user}><img src="/user.svg" alt=""/> User01322</div>
                   </div>
                   <div className={styles.tags}>#politics #trump #USA</div>
                   <div className={styles.buttons}>
@@ -195,7 +196,7 @@ const Main = () => {
                   <div className={styles.properties}>
                     <div className={styles.active}>Active</div>
                     <div className={styles.costs}>$67M</div>
-                    <div className={styles.user}>User01322</div>
+                    <div className={styles.user}><img src="/user.svg" alt=""/> User01322</div>
                   </div>
                   <div className={styles.tags}>#politics #trump #USA</div>
                   <div className={styles.buttons}>
@@ -208,7 +209,7 @@ const Main = () => {
           </div>
         ))}
       </div>
-      <div className={filtersStyles.filters} style={{maxWidth: '300px', width: '300px', minWidth: '300px'}}>
+      <div className={clsx(filtersStyles.filters, filtersStyles.small)}>
         <div className={filtersStyles.filtersHead}>Filters</div>
         <div className={filtersStyles.filtersContent}>
           {filter.map((filter => (

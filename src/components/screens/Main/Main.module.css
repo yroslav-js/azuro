@@ -3,11 +3,13 @@
     justify-content: space-between;
     gap: 16px;
     width: 100%;
+    max-width: calc(100% - 80px);
 }
 
 .content {
     width: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     height: calc(100vh - 100px);
 }
 
@@ -39,20 +41,21 @@
 }
 
 .events {
-    margin-bottom: 24px;
+    padding-bottom: 24px;
     display: flex;
     max-width: calc(100vw - 428px);
     overflow-x: scroll;
+    gap: 16px;
 }
 
 .event {
-    margin-right: 16px;
     min-width: 260px;
     width: 260px;
     height: 194px;
     background-color: var(--surface-high-priority);
     border-radius: 10px;
     padding-bottom: 8px;
+    box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.10);
 }
 
 .eventHead {
@@ -132,6 +135,10 @@
     letter-spacing: 0.06px;
 }
 
+.user img {
+    margin-right: 6px;
+}
+
 .tags {
     font-weight: 400;
     font-size: 15px;
@@ -164,4 +171,74 @@
     font-weight: 700;
 }
 
+@media (max-width: 1450px) {
+    .title {
+        font-size: 18px;
+        margin-bottom: 0;
+    }
+
+    .title a {
+        font-size: 13px;
+    }
+
+    .eventTitle {
+        font-size: 13px;
+    }
+
+    .events {
+        padding-bottom: 10px;
+        gap: 10px;
+        max-width: calc(100vw - 408px);
+    }
+
+    .event {
+        min-width: 200px;
+        width: 200px;
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .eventHead {
+        height: 65px;
+        padding: 8px;
+    }
+
+    .eventHead > div > div {
+        width: 24px;
+        height: 24px;
+    }
+
+    .eventHead img {
+        width: auto;
+        height: 14px;
+    }
+
+    .properties {
+        height: 20px;
+    }
+
+    .properties > div {
+        font-size: 11px;
+        padding: 0 4px;
+        border-radius: 6px;
+    }
+
+    .user img {
+        margin-left: 2px;
+        margin-right: 4px;
+    }
+
+    .tags {
+        font-size: 11px;
+        line-height: 11px;
+    }
+
+    .buttons {
+        height: 32px;
+    }
+
+    .buttons button {
+        font-size: 13px;
+    }
+}
 
