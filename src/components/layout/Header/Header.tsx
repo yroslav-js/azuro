@@ -11,7 +11,6 @@ const Header = () => {
   const dispatch = useAppDispatch()
   const sports = useAppSelector(state => state.azuroSlice.sports)
 
-  console.log(sports)
   useEffect(() => {
     dispatch(fetchSports(sortTime['all']))
   }, []);

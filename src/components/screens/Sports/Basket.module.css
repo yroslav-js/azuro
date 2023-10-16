@@ -1,0 +1,60 @@
+.basket {
+    min-width: 374px;
+    border-radius: 12px;
+    border: 1px solid var(--text-accent-2);
+    height: 548px;
+    background-color: var(--surface-high-priority);
+}
+
+.basketHeading {
+    display: flex;
+    border-radius: 12px 12px 0 0;
+    height: 44px;
+    overflow: hidden;
+}
+
+.basketHeading > div {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--surface-high-priority);
+    font-size: 17px;
+    color: var(--text-high-priority);
+    font-weight: 700;
+}
+
+.basketHeading > div + div {
+    box-shadow: 5px 0px 4px 0px rgba(0, 0, 0, 0.15) inset;
+    color: var(--text-low-priority);
+    background: var(--surface-background);
+}
+
+.basketContent {
+    padding: 112px 18px 170px;
+    font-size: 20px;
+    line-height: 24px;
+    color: var(--text-low-priority);
+    font-weight: 400;
+    text-align: center;
+}
+
+.basketContent img {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 18px;
+}
+
+.basketContent button {
+    background-color: var(--surface-mid-priority);
+    border-radius: 10px;
+    height: 48px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--elements-transperent-black-40);
+    margin-top: 18px;
+}

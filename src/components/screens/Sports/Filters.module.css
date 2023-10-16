@@ -1,0 +1,95 @@
+.filters {
+    min-width: 374px;
+    border-radius: 12px;
+    background-color: var(--surface-background);
+    border: 1px solid var(--text-accent-2);
+    padding-bottom: 16px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.20);
+    height: fit-content;
+}
+
+.filtersHeading {
+    border-radius: 12px 12px 0 0;
+    background-color: var(--surface-high-priority);
+    padding: 8px;
+}
+
+.filtersHeading > div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    height: 44px;
+    border-radius: 9px;
+    background-color: var(--surface-mid-priority);
+    padding: 4px;
+}
+
+.filterType {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    letter-spacing: -0.24px;
+    color: var(--text-mid-priority);
+    font-weight: 500;
+}
+
+.filterTypeActive {
+    background-color: var(--surface-high-priority);
+    border-radius: 7px;
+    border: 1px solid var(--text-accent-2);
+    font-weight: 700;
+    color: var(--text-high-priority);
+    box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.10);
+}
+
+.tagFilter {
+    display: none;
+}
+
+.classicFilter {
+    display: block;
+    padding: 14px 16px 0;
+    color: var(--text-mid-priority);
+}
+
+.title {
+    font-size: 17px;
+    line-height: 21px;
+    font-weight: 700;
+    margin-bottom: 9px;
+}
+
+.filter {
+    width: 100%;
+    background-color: var(--surface-high-priority);
+    border-radius: 8px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 500;
+    position: relative;
+    height: 36px;
+    padding: 0 10px;
+    overflow: hidden;
+}
+
+.filter + div {
+    margin-top: 8px;
+}
+
+.filter > span {
+    margin-left: auto;
+}
+
+.filterActive {
+    background-color: var(--text-accent-2);
+    color: var(--text-ctas-buttons);
+}
+
+.leagues {
+    position: absolute;
+    display: none;
+}

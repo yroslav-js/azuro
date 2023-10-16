@@ -100,8 +100,6 @@ const Sidebar = () => {
   const path = usePathname()
   const router = useRouter()
 
-  console.log(path)
-
   return (
     <aside className={styles.sidebar}>
       {menu.map((item, id) => (
