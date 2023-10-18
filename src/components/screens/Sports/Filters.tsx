@@ -20,15 +20,16 @@ const Filters = () => {
           </div>
           <div className={styles.tag}>
             <img src="/sports/ball-blue.svg" alt=""/>
-            Top events
+            Football
             <span>34</span>
           </div>
-          <div className={styles.tag}>
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(item => (<div key={item} className={styles.tag}>
             <img src="/sports/ball-blue.svg" alt=""/>
-            Top events
+            Football
             <span>34</span>
-          </div>
+          </div>))}
         </div>
+        <button className={styles.clearFilter}>Clear</button>
       </div>
       <div className={styles.classicFilter}>
         <div className={styles.title}>SPORTS</div>

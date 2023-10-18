@@ -2,7 +2,7 @@
     min-width: 374px;
     border-radius: 12px;
     border: 1px solid var(--text-accent-2);
-    height: 548px;
+    /*height: 548px;*/
     background-color: var(--surface-high-priority);
 }
 
@@ -30,7 +30,7 @@
     background: var(--surface-background);
 }
 
-.basketContent {
+.emptyBasket {
     padding: 112px 18px 170px;
     font-size: 20px;
     line-height: 24px;
@@ -39,13 +39,13 @@
     text-align: center;
 }
 
-.basketContent img {
+.emptyBasket img {
     width: 90px;
     height: 90px;
     margin-bottom: 18px;
 }
 
-.basketContent button {
+.emptyBasket button {
     background-color: var(--surface-mid-priority);
     border-radius: 10px;
     height: 48px;
@@ -57,4 +57,322 @@
     font-weight: 500;
     color: var(--elements-transperent-black-40);
     margin-top: 18px;
+}
+
+.basketContent {
+    padding: 14px 16px 16px;
+    overflow-y: auto;
+    height: fit-content;
+    max-height: calc(100vh - 146px);
+}
+
+.betType {
+    width: 100%;
+    background-color: var(--surface-mid-priority);
+    border-radius: 12px;
+    height: 44px;
+    border: 1px solid var(--surface-high-priority);
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 1px;
+    margin-bottom: 11px;
+}
+
+.betType div {
+    width: 50%;
+    font-size: 16px;
+    color: var(--text-mid-priority);
+    font-weight: 400;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.betType .betTypeActive {
+    height: 100%;
+    border: 2px solid var(--text-accent-2);
+    border-radius: 10px;
+    box-shadow: 0px 4px 7px 0px #0000001A;
+    font-weight: 500;
+    color: var(--text-high-priority);
+    background-color: var(--surface-high-priority);
+}
+
+.selectionText {
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--text-accent-2);
+    margin-bottom: 9px;
+}
+
+.selection {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    width: 374px;
+    margin-left: -16px;
+    margin-right: -16px;
+    padding: 0 16px;
+    margin-bottom: 12px;
+}
+
+.selectionSelect {
+    display: flex;
+    max-width: 184px;
+    background-color: var(--surface-mid-priority);
+    padding: 4px;
+    height: 48px;
+    border-radius: 24px;
+}
+
+.selectionSelect div {
+    display: flex;
+    height: 100%;
+    width: 70px;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-low-priority);
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.selectionSelect div.selectionLong {
+    width: 106px;
+}
+
+.selectionSelect .activeSelection {
+    border: 1px solid var(--elements-accent-5);
+    box-shadow: 0px 4px 7px 0px #0000001A;
+    font-size: 16px;
+    color: var(--text-mid-priority);
+    background-color: var(--surface-high-priority);
+}
+
+.selectionAmount {
+    min-width: 101px;
+    min-height: 100%;
+    border-radius: 24px;
+    border: 1px solid var(--elements-accent-5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--text-mid-priority);
+    font-weight: 400;
+}
+
+.activeSelectionAmount {
+    border: none;
+    background-color: var(--text-accent-2);
+    color: var(--text-ctas-buttons);
+    box-shadow: 0px 4px 7px 0px #0000001A;
+}
+
+.event {
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--transperent-accent-2);
+}
+
+.eventHead {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    background: linear-gradient(91.8deg, #017BFF 0%, #022B58 88.37%);
+    padding: 0 12px 0 8px;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 9px;
+    border-radius: 6px;
+    color: var(--text-ctas-buttons);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.flag {
+    height: 16px;
+    width: auto;
+}
+
+.oddsWrapper {
+    display: flex;
+    gap: 10px;
+    width: 374px;
+    margin: 0 -16px 12px;
+    padding: 0 16px;
+    overflow-x: auto;
+}
+
+.oddsHeading {
+    margin-bottom: 4px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    height: 16px;
+    color: var(--text-mid-priority);
+    font-weight: 400;
+}
+
+.odds {
+    display: flex;
+    height: 57px;
+    gap: 8px;
+}
+
+.odd {
+    height: 100%;
+    width: 80px;
+    border-radius: 6px;
+    border: 1px solid var(--elements-accent-5);
+    box-shadow: 0px 4px 7px 0px #0000001A;
+    background-color: var(--surface-high-priority);
+}
+
+.odd div {
+    border-bottom: 1px solid var(--transperent-accent-2);
+    display: flex;
+    align-items: center;
+    height: 27px;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-mid-priority);
+}
+
+.odd span {
+    display: flex;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-accent-2);
+}
+
+.amount {
+    display: flex;
+    justify-content: space-between;
+    height: 48px;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.amount div {
+    height: 100%;
+    width: 72px;
+    border-radius: 24px;
+    border: 1px solid var(--elements-accent-5);
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--text-mid-priority);
+    font-weight: 400;
+}
+
+.amount input {
+    width: 100px;
+    height: 100%;
+    border-radius: 8px;
+    background-color: var(--surface-mid-priority);
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-high-priority);
+}
+
+.total {
+    padding: 15px 12px 12px;
+    width: 100%;
+    border-radius: 8px;
+    background-color: var(--surface-mid-priority);
+}
+
+.total > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-high-priority);
+}
+
+.total img {
+    cursor: pointer;
+    width: 12px;
+    height: 13.5px;
+    margin-left: 11px;
+}
+
+.blue {
+    font-weight: 700;
+    color: var(--text-accent-2);
+}
+
+.totalOddsText {
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--surface-transperent-40);
+}
+
+.totalReturnText {
+    margin-bottom: 3px;
+    margin-top: 9px;
+}
+
+.totalEvents {
+    margin-top: 6px;
+}
+
+.totalEvent {
+    display: flex;
+    align-items: center;
+    width: 278px;
+    height: 36px;
+    border-radius: 6px;
+    padding: 0 16px 0 8px;
+    background-color: var(--surface-high-priority);
+    font-size: 15px;
+    color: var(--text-mid-priority);
+}
+
+.eventName {
+    font-weight: 700;
+    margin-right: 2px;
+}
+
+.eventOdds {
+    font-weight: 500;
+    color: var(--text-accent-4);
+    margin-right: 4px;
+}
+
+.eventTeam {
+    font-weight: 400;
+}
+
+.eventCost {
+    margin-left: auto;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-high-priority);
+}
+
+.placeBet {
+    box-shadow: 0px 4px 7px 0px #0000001A;
+    width: 100%;
+    height: 48px;
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: var(--elements-accent-5);
+    color: var(--text-ctas-buttons);
+    font-size: 16px;
+    font-weight: 500;
 }

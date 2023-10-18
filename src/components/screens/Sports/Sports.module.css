@@ -141,7 +141,7 @@
     height: 56px;
     align-items: center;
     padding: 0 16px;
-    background-color: var(--surface-mid-priority);
+    background-color: var(--surface-high-priority);
     font-size: 16px;
     font-weight: 700;
     color: var(--text-high-priority);
@@ -157,7 +157,7 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: var(--surface-high-priority);
+    background-color: var(--surface-mid-priority);
     display: inline-block;
     margin-right: 8px;
 }
@@ -191,7 +191,7 @@
     border-bottom: 1px solid var(--transperent-accent-2);
     display: flex;
     align-items: center;
-    height: 28.5px;
+    height: 27px;
     justify-content: center;
     font-size: 16px;
     font-weight: 500;
@@ -200,7 +200,7 @@
 
 .odd span {
     display: flex;
-    height: 28.5px;
+    height: 30px;
     align-items: center;
     justify-content: center;
     font-size: 16px;
@@ -215,7 +215,7 @@
     align-items: center;
     width: 100%;
     gap: 10px;
-    background-color: var(--surface-mid-priority);
+    background-color: var(--surface-high-priority);
     justify-content: end;
     min-width: 38px;
     overflow: hidden;

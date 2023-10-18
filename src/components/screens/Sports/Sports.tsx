@@ -8,6 +8,7 @@ import {formatDate} from "@/utils/formatDate";
 import clsx from "clsx";
 import Filters from "@/components/screens/Sports/Filters";
 import Basket from "@/components/screens/Sports/Basket";
+import Link from "next/link";
 
 const Sports = () => {
   const sports = useAppSelector(state => state.azuroSlice.sports)
@@ -44,7 +45,7 @@ const Sports = () => {
             <div>6h</div>
           </div>
         </div>
-        {[0].map(item => (<div key={item} className={styles.events}>
+        {[0, 1, 2].map(item => (<div key={item} className={styles.events}>
           <div className={styles.eventHeading}>
             <img src="/sports/ball-blue.svg" alt=""/> FOOTBALL
             <img className={styles.headArrow} src="/arrow.svg" alt=""/>
@@ -86,7 +87,7 @@ const Sports = () => {
                   </div>))}
                 </div>
               </div>
-              <div className={styles.more}>
+              <Link href='/sports/1' className={styles.more}>
                 <div>MORE MARKETS</div>
                 <p>
                   <svg style={{transform: 'rotate(90deg)'}} width="12" height="8" viewBox="0 0 12 8" fill="none"
@@ -94,7 +95,7 @@ const Sports = () => {
                     <path d="M1.41 7.41L6 2.83L10.59 7.41L12 6L6 0L0 6L1.41 7.41Z" fill="#007AFF"/>
                   </svg>
                 </p>
-              </div>
+              </Link>
             </div>
           </div>))}
         </div>))}

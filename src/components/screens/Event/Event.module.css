@@ -1,0 +1,180 @@
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+}
+
+.content {
+    width: 100%;
+    max-width: 1028px;
+}
+
+.title {
+    font-size: 22px;
+    color: var(--text-high-priority);
+    font-weight: 700;
+    padding-left: 12px;
+    margin-bottom: 8px;
+    display: flex;
+}
+
+.title span {
+    margin-right: 16px;
+    color: var(--text-accent-2);
+    font-size: 15px;
+}
+
+.title a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.head {
+    width: 100%;
+    height: 133px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    background: linear-gradient(104.96deg, #007AFF -14.64%, #012246 114.64%);
+    border-radius: 10px;
+    margin-bottom: 13px;
+}
+
+.team {
+    color: var(--text-ctas-buttons);
+    font-size: 15px;
+    font-weight: 500;
+    width: 320px;
+    text-align: center;
+}
+
+.teamImg {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background-color: var(--surface-high-priority);
+    border-image-source: linear-gradient(180deg, #023266 0%, #429CFF 100%);
+    border: 1px solid #023266;
+    background: var(--surface-high-priority);
+    box-shadow: 0px -4px 6px 0px rgba(255, 255, 255, 0.15), 0px 4px 6px 0px #02254B, 0px 4px 4px 0px rgba(1, 64, 132, 0.25) inset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+}
+
+.teamImg img {
+    width: 22px;
+    height: 11px;
+}
+
+.time {
+    height: 59px;
+    width: 78px;
+    padding-bottom: 9px;
+    padding-top: 13px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-ctas-buttons);
+    text-align: center;
+}
+
+.time span {
+    width: 100%;
+    margin-top: 10px;
+    height: 24px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--surface-transperent-40);
+    color: var(--text-ctas-buttons);
+    font-size: 11px;
+}
+
+.oddsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 13px 8px;
+    justify-content: space-between;
+}
+
+.oddsWrapper > div {
+    max-width: 510px;
+    min-width: 510px;
+}
+
+.oddsTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding-right: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-high-priority);
+}
+
+.oddsTitle > span {
+    display: flex;
+    align-items: center;
+}
+
+.oddsTitle > span > img {
+    margin-left: 4px;
+    height: 16px;
+    width: 16px;
+}
+
+.odds {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.odd {
+    border-radius: 6px;
+    border: 1px solid var(--elements-accent-5);
+    background-color: var(--surface-high-priority);
+    box-shadow: 0px 4px 7px 0px #0000001A;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    align-items: center;
+    height: 41px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-mid-priority);
+}
+
+.odd span {
+    color: var(--text-accent-2);
+}
+
+.oddsThree > div {
+    width: 33%;
+}
+
+.oddsEven {
+    flex-wrap: wrap;
+}
+
+.oddsEven > div {
+    width: 49%;
+}
+
+.oddsWrapper .oddsLast {
+    width: 100%;
+    max-width: 100%;
+}
+
+.oddsLast .odds > div {
+    width: 49.6%;
+}
+
+.oddsLast .odds {
+    flex-wrap: wrap;
+}
