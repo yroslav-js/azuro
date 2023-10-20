@@ -6,7 +6,7 @@ const Basket = () => {
     <div className={styles.basket}>
       <div className={styles.basketHeading}>
         <div>Bet slip</div>
-        <div>My Bets</div>
+        {/*<div>My Bets</div>*/}
       </div>
       {/*<div className={styles.emptyBasket}>*/}
       {/*  <img src="" alt=""/>*/}
