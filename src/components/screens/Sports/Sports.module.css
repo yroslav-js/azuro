@@ -58,6 +58,14 @@
     margin-bottom: 16px;
 }
 
+.events.closed {
+    max-height: 44px;
+}
+
+.closed .headArrow {
+    transform: rotate(180deg);
+}
+
 .eventHeading {
     background: linear-gradient(104.96deg, #007AFF -14.64%, #012246 114.64%);
     height: 44px;
@@ -68,6 +76,7 @@
     font-weight: 700;
     gap: 8px;
     padding: 0 18px;
+    cursor: pointer;
 }
 
 .headArrow {

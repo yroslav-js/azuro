@@ -1,16 +1,23 @@
 import styles from "@/components/screens/Sports/Filters.module.css";
 import clsx from "clsx";
+import {useState} from "react";
 
 const Filters = () => {
+  const [filterType, setFilterType] = useState<'classic' | 'tag'>('classic')
+
   return (
     <div className={styles.filters}>
       <div className={styles.filtersHeading}>
         <div>
-          <div className={styles.filterType}>Tag filter</div>
-          <div className={clsx(styles.filterType, styles.filterTypeActive)}>Classic filter</div>
+          <div className={clsx(styles.filterType, filterType === 'tag' && styles.filterTypeActive)}
+               onClick={() => setFilterType('tag')}>Tag filter
+          </div>
+          <div className={clsx(styles.filterType, filterType === 'classic' && styles.filterTypeActive)}
+               onClick={() => setFilterType('classic')}>Classic filter
+          </div>
         </div>
       </div>
-      <div className={styles.tagFilter}>
+      <div className={clsx(styles.tagFilter, filterType === 'tag' && styles.chosenFilter)}>
         <div className={styles.tagTitle}>SPORTS</div>
         <div className={styles.tags}>
           <div className={styles.tag}>
@@ -29,9 +36,15 @@ const Filters = () => {
             <span>34</span>
           </div>))}
         </div>
+        <div className={styles.tagTitle}>BY STATUS</div>
+        <div className={clsx(styles.tags, styles.byStatusTags)}>
+          {['All', 'Today', 'Tomorrow', '1h', '3h', '6h'].map(item => (<div key={item} className={styles.tag}>
+            {item}
+          </div>))}
+        </div>
         <button className={styles.clearFilter}>Clear</button>
       </div>
-      <div className={styles.classicFilter}>
+      <div className={clsx(styles.classicFilter, filterType === 'classic' && styles.chosenFilter)}>
         <div className={styles.title}>SPORTS</div>
         <div className={clsx(styles.filter, styles.filterActive)}>Top events <span>39</span></div>
         <div className={styles.filter}>
