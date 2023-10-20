@@ -1,3 +1,5 @@
+"use client"
+
 import styles from "@/components/screens/Sports/Filters.module.css";
 import clsx from "clsx";
 import {useState} from "react";
