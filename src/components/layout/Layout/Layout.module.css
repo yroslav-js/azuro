@@ -13,3 +13,14 @@
     gap: 16px;
     margin-top: 16px;
 }
+
+@media (max-width: 375px) {
+    .container {
+        padding: 0;
+    }
+
+    .mainContent {
+        position: relative;
+        flex-direction: column;
+    }
+}

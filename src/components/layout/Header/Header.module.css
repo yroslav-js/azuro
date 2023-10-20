@@ -177,6 +177,17 @@
     height: auto;
 }
 
-@media (max-width: 1880px) {
+@media (max-width: 375px) {
+    .header {
+        height: 56px;
+    }
 
+    .logo, .events, .input, .add, .notification, .signout {
+        display: none;
+    }
+
+    .headerContent {
+        padding: 0 16px;
+        border-radius: 0;
+    }
 }

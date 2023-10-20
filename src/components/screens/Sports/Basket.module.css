@@ -383,3 +383,9 @@
     margin-left: auto;
     cursor: pointer;
 }
+
+@media (max-width: 375px) {
+    .basket {
+        display: none;
+    }
+}

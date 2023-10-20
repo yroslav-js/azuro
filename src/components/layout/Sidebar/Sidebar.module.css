@@ -48,3 +48,50 @@
 .active path {
     fill: var(--text-accent-2);
 }
+
+@media (max-width: 375px) {
+    .sidebar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: none;
+        height: 74px;
+        box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.1);
+        gap: 28px;
+        justify-content: space-between;
+        padding: 6px 16px 12px;
+        backdrop-filter: blur(5px);
+        z-index: 5;
+        border-radius: 0;
+        background-color: var(--surface-transperent-80);
+    }
+
+    .mobileSidebar {
+        display: flex;
+    }
+
+    .sidebar div {
+        width: 46px;
+        text-align: center;
+    }
+
+    .sidebar div + div {
+        margin-top: 0;
+    }
+
+    .sidebar p {
+        font-size: 13px;
+        line-height: 13px;
+        margin-top: 5px;
+    }
+
+    .sidebar svg {
+        width: 23px;
+        height: 23px;
+    }
+
+    .sidebar .active {
+        border-right: none;
+    }
+}
