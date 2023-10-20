@@ -167,8 +167,10 @@
     height: 30px;
     border-radius: 50%;
     background-color: var(--surface-mid-priority);
-    display: inline-block;
     margin-right: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .oddsHeading {

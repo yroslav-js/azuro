@@ -33,7 +33,7 @@ const Basket = () => {
           <div className={styles.eventHead}>
             <img className={styles.flag} src="/sports/flag.png" alt=""/>
             Celta Vigo - Alaves
-            <img src="" alt=""/>
+            <img className={styles.delete} src="/sports/garbage.svg" alt=""/>
           </div>
           <div className={styles.oddsWrapper}>
             {[0, 1].map(item => (<div key={item}>
@@ -58,7 +58,7 @@ const Basket = () => {
           <div className={styles.totalReturnText}><span>Total potential return</span><span className={styles.blue}>$ 67.7</span>
           </div>
           {[0, 1, 2, 3].map(item => (<div className={styles.totalEvents} key={item}>
-            <img src="" alt=""/>
+            <img src="/sports/garbageGray.svg" alt=""/>
             <div className={styles.totalEvent}>
               <span className={styles.eventName}>1x </span>
               <span className={styles.eventOdds}>1.69</span>

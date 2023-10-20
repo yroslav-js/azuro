@@ -71,11 +71,11 @@ const Sports = () => {
                 </div>
                 <div className={styles.teams}>
                   <div className={styles.team}>
-                    <div><span></span> Celta Vigo</div>
+                    <div><span><img src="/sports/team1.png" alt=""/></span> Celta Vigo</div>
                   </div>
                   vs
                   <div className={styles.team}>
-                    <div><span></span> Alaves</div>
+                    <div><span><img src="/sports/team2.png" alt=""/></span> Alaves</div>
                   </div>
                 </div>
               </div>
