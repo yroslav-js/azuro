@@ -200,7 +200,7 @@
     align-items: center;
 }
 
-@media (max-width: 375px) {
+@media (max-width: 376px) {
     .filters {
         display: block;
         position: fixed;
@@ -209,5 +209,14 @@
         left: 0;
         right: 0;
         /*transform: translateX(100%);*/
+    }
+
+    .classicFilter{
+        opacity: 0;
+    }
+
+    .tagFilter{
+        opacity: 1;
+        pointer-events: initial;
     }
 }

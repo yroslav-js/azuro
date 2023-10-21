@@ -177,7 +177,7 @@
     height: auto;
 }
 
-@media (max-width: 375px) {
+@media (max-width: 376px) {
     .header {
         height: 56px;
     }

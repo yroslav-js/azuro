@@ -259,7 +259,7 @@
     display: none;
 }
 
-@media (max-width: 375px) {
+@media (max-width: 376px) {
     .contentHeading {
         padding: 3px 16px 0;
         margin-bottom: 11px;
