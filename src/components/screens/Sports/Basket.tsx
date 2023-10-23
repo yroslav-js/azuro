@@ -1,10 +1,12 @@
+"use client"
+
 import styles from './Basket.module.css'
 import clsx from "clsx";
 import {Dispatch, SetStateAction} from "react";
 
-const Basket = ({isBasketOpen, setIsBasketOpen}: {
-  isBasketOpen: boolean,
-  setIsBasketOpen: Dispatch<SetStateAction<boolean>>
+const Basket = ({isBasketOpen = false, setIsBasketOpen = () => {}}: {
+  isBasketOpen?: boolean,
+  setIsBasketOpen?: Dispatch<SetStateAction<boolean>>
 }) => {
   return (
     <div className={clsx(styles.basket, isBasketOpen && styles.open)}>
