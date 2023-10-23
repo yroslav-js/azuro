@@ -263,6 +263,10 @@
     display: none;
 }
 
+.timeSort img {
+    display: none;
+}
+
 @media (max-width: 500px) {
     .contentHeading {
         padding: 3px 16px 0;
@@ -281,6 +285,7 @@
     }
 
     .timeSort img {
+        display: inline-block;
         cursor: pointer;
     }
 
