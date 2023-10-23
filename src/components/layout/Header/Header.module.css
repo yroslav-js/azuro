@@ -177,6 +177,10 @@
     height: auto;
 }
 
+.backnone {
+    display: none;
+}
+
 @media (max-width: 376px) {
     .header {
         height: 56px;
@@ -189,5 +193,26 @@
     .headerContent {
         padding: 0 16px;
         border-radius: 0;
+    }
+
+    .back {
+        width: 61px;
+        height: 28px;
+        color: var(--text-accent-2);
+        font-size: 13px;
+        font-weight: 700;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        position: relative;
+    }
+
+    .back::before {
+        content: url("/sports/arrowLeftBlue.svg");
+        position: absolute;
+        width: 7.41px;
+        height: 12px;
+        left: 8px;
+        top: 8px;
     }
 }

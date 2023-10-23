@@ -9,12 +9,15 @@ import clsx from "clsx";
 import Filters from "@/components/screens/Sports/Filters";
 import Basket from "@/components/screens/Sports/Basket";
 import Link from "next/link";
+import Image from "next/image";
 
 const Sports = () => {
   const sports = useAppSelector(state => state.azuroSlice.sports)
   const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(false)
   const [closedSportsIds, setClosedSportsIds] = useState<number[]>([])
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [isBasketOpen, setIsBasketOpen] = useState(false)
 
   useEffect(() => {
     setLoading(false)
@@ -22,7 +25,11 @@ const Sports = () => {
 
   return (
     <div className={styles.wrapper}>
-      <Filters/>
+      <div className={styles.mobileBasket} onClick={() => setIsBasketOpen(true)}>
+        You have combo bet with 4 odds in betslip
+        <Image src='/sports/basketMobile.png' alt='' width={30} height={30}/>
+      </div>
+      <Filters isFilterOpen={isFilterOpen} setIsFilterOpen={setIsFilterOpen}/>
 
       <div className={styles.content}>
         <div className={styles.tagFilter}>
@@ -46,7 +53,7 @@ const Sports = () => {
             <div>1h</div>
             <div>3h</div>
             <div>6h</div>
-            <img src="/sports/openFilter.svg" alt=""/>
+            <img src="/sports/openFilter.svg" alt="" onClick={() => setIsFilterOpen(true)}/>
           </div>
         </div>
         {[0, 1, 2].map(item => (<div key={item}
@@ -125,7 +132,7 @@ const Sports = () => {
           </div>))}
         </div>))}
       </div>
-      <Basket/>
+      <Basket setIsBasketOpen={setIsBasketOpen} isBasketOpen={isBasketOpen}/>
     </div>
   );
 };

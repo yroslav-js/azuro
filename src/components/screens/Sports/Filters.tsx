@@ -2,14 +2,26 @@
 
 import styles from "@/components/screens/Sports/Filters.module.css";
 import clsx from "clsx";
-import {useState} from "react";
+import {Dispatch, SetStateAction, useState} from "react";
 
-const Filters = () => {
+const Filters = (
+  {
+    isFilterOpen = false, setIsFilterOpen = () => {
+  }
+  }: {
+    isFilterOpen?: boolean,
+    setIsFilterOpen?: Dispatch<SetStateAction<boolean>>
+  }) => {
   const [filterType, setFilterType] = useState<'classic' | 'tag'>('classic')
 
   return (
-    <div className={styles.filters}>
+    <div className={clsx(styles.filters, isFilterOpen && styles.filterOpen)}>
       <div className={styles.filtersHeading}>
+        <div className={styles.filtersHeadingMobile}>
+          <span onClick={() => setIsFilterOpen(false)}>BACK</span>
+          <div>Filter</div>
+          <img src="/discord.svg" alt=""/>
+        </div>
         <div>
           <div className={clsx(styles.filterType, filterType === 'tag' && styles.filterTypeActive)}
                onClick={() => setFilterType('tag')}>Tag filter
@@ -20,6 +32,9 @@ const Filters = () => {
         </div>
       </div>
       <div className={clsx(styles.tagFilter, filterType === 'tag' && styles.chosenFilter)}>
+        <div className={styles.input}>
+          <input type="text" className={styles.search} placeholder='Search'/>
+        </div>
         <div className={styles.tagTitle}>SPORTS</div>
         <div className={styles.tags}>
           <div className={styles.tag}>
@@ -45,6 +60,7 @@ const Filters = () => {
           </div>))}
         </div>
         <button className={styles.clearFilter}>Clear</button>
+        <button className={styles.backToMain} onClick={() => setIsFilterOpen(false)}>Back to Main</button>
       </div>
       <div className={clsx(styles.classicFilter, filterType === 'classic' && styles.chosenFilter)}>
         <div className={styles.title}>SPORTS</div>

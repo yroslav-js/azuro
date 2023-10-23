@@ -7,7 +7,9 @@ import clsx from "clsx";
 const Event = () => {
   return (
     <div className={styles.wrapper}>
-      <Filters/>
+      <div className={styles.filter}>
+        <Filters/>
+      </div>
       <div className={styles.content}>
         <div className={styles.title}>
           <Link href='/sports'>
@@ -25,7 +27,7 @@ const Event = () => {
           </div>
           <div className={styles.time}>
             10:00 PM
-            <span>Today 12:00</span>
+            <span>Today <span>12:00</span></span>
           </div>
           <div className={styles.team}>
             <div className={styles.teamImg}>

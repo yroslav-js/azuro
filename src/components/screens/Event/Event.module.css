@@ -82,13 +82,14 @@
     text-align: center;
 }
 
-.time span {
+.time > span {
     width: 100%;
     margin-top: 10px;
     height: 24px;
     border-radius: 12px;
     display: flex;
     justify-content: center;
+    gap: 5px;
     align-items: center;
     background-color: var(--surface-transperent-40);
     color: var(--text-ctas-buttons);
@@ -177,4 +178,63 @@
 
 .oddsLast .odds {
     flex-wrap: wrap;
+}
+
+@media (max-width: 376px) {
+    .title a {
+        display: none;
+    }
+
+    .title {
+        display: block;
+        max-width: 100%;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 0 16px;
+        margin-bottom: 10px;
+    }
+
+    .filter {
+        display: none;
+    }
+
+    .head {
+        border-radius: 0;
+        height: 121px;
+        padding: 0 16px;
+    }
+
+    .time {
+        height: 100%;
+        padding-top: 25px;
+        min-width: 78px;
+    }
+
+    .time > span > span {
+        display: none;
+    }
+
+    .oddsWrapper {
+        padding-bottom: 30px;
+    }
+
+    .oddsWrapper > div {
+        padding: 0 16px;
+        max-width: 100%;
+        min-width: 100%;
+    }
+
+    .content {
+        overflow-y: auto;
+        height: calc(100vh - 130px);
+        margin-top: -16px;
+        padding-top: 16px;
+    }
+
+    .oddsLast .odds > div {
+        width: 49%;
+    }
 }

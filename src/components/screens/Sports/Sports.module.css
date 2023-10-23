@@ -259,6 +259,10 @@
     display: none;
 }
 
+.mobileBasket {
+    display: none;
+}
+
 @media (max-width: 376px) {
     .contentHeading {
         padding: 3px 16px 0;
@@ -268,6 +272,8 @@
     .content {
         padding-bottom: 49px;
         height: calc(100vh - 146px);
+        margin-top: -16px;
+        padding-top: 16px;
     }
 
     .timeSort > div {
@@ -342,6 +348,9 @@
     .teamsWrapper .more p {
         margin-right: 0;
         margin-left: 0;
+        height: 21px;
+        display: flex;
+        align-items: center;
     }
 
     .teams {
@@ -411,5 +420,26 @@
     .tag span {
         margin-left: 4px;
         color: var(--text-low-priority);
+    }
+
+    .mobileBasket {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 74px;
+        height: 28px;
+        padding-left: 12px;
+        display: flex;
+        align-items: center;
+        background-color: var(--text-accent-2);
+        color: var(--text-ctas-buttons);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .mobileBasket img {
+        position: absolute;
+        right: 12px;
+        top: -8px;
     }
 }
