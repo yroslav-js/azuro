@@ -63,6 +63,7 @@
 .basketContent {
     padding: 14px 16px 16px;
     overflow-y: auto;
+    overflow-x: hidden;
     height: fit-content;
     max-height: calc(100vh - 146px);
 }
