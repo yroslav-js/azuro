@@ -42,7 +42,7 @@
     border-radius: 10px;
 }
 
-@media (max-width: 376px) {
+@media (max-width: 500px) {
     .notFound {
         margin: -16px 0 0;
         border-radius: 0;

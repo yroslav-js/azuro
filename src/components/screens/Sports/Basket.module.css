@@ -384,7 +384,7 @@
     cursor: pointer;
 }
 
-@media (max-width: 376px) {
+@media (max-width: 500px) {
     .basket {
         position: fixed;
         top: 16px;

@@ -240,7 +240,7 @@
     height: 18px;
 }
 
-@media (max-width: 376px) {
+@media (max-width: 500px) {
     .input {
         display: block;
     }

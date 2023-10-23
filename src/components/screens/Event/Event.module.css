@@ -180,7 +180,7 @@
     flex-wrap: wrap;
 }
 
-@media (max-width: 376px) {
+@media (max-width: 500px) {
     .title a {
         display: none;
     }
