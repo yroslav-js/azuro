@@ -385,10 +385,60 @@
     cursor: pointer;
 }
 
+.closeModal {
+    display: none;
+}
+
 @media (max-width: 500px) {
+    .closeModal {
+        display: block;
+        position: fixed;
+        opacity: 0;
+        pointer-events: none;
+        top: -48px;
+        right: 8px;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(0, 0, 0, .4);
+        box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.1);
+        transition: opacity .2s linear;
+        border-radius: 50%;
+    }
+
+    .closeModal::after, .closeModal::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 2px;
+        background-color: var(--surface-high-priority);
+    }
+
+    .closeModal::after {
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .closeModal::before {
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    .open .closeModal {
+        opacity: 1;
+        pointer-events: initial;
+    }
+
+    .oddsWrapper {
+        width: 100vw;
+    }
+
+    .selection {
+        width: 100vw;
+    }
+
     .basket {
         position: fixed;
-        top: 16px;
+        top: 64px;
         left: 0;
         right: 0;
         max-width: 100%;
@@ -399,18 +449,30 @@
         transition: transform .2s linear;
     }
 
+    .open.basket::after {
+        content: "";
+        position: absolute;
+        top: -64px;
+        left: -1px;
+        bottom: -74px;
+        right: -1px;
+        background-color: rgba(55, 55, 55, 0.25);
+        z-index: -1;
+    }
+
     .open {
         transform: translateY(0);
     }
 
     .basketContent {
         max-height: calc(100vh - 60px);
-        padding-bottom: 80px;
+        padding-bottom: 128px;
+        background-color: var(--surface-high-priority);
     }
 
     .placeBetWrapper {
         position: fixed;
-        bottom: 15px;
+        bottom: 63px;
         left: -1px;
         right: -1px;
         height: 74px;
@@ -425,5 +487,13 @@
         width: 100%;
         height: 48px;
         margin-top: 0;
+    }
+
+    .total > div {
+        gap: 17px;
+    }
+
+    .totalEvent {
+        width: 100%;
     }
 }

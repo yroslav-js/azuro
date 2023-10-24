@@ -4,12 +4,16 @@ import styles from './Basket.module.css'
 import clsx from "clsx";
 import {Dispatch, SetStateAction} from "react";
 
-const Basket = ({isBasketOpen = false, setIsBasketOpen = () => {}}: {
+const Basket = ({
+                  isBasketOpen = false, setIsBasketOpen = () => {
+  }
+                }: {
   isBasketOpen?: boolean,
   setIsBasketOpen?: Dispatch<SetStateAction<boolean>>
 }) => {
   return (
     <div className={clsx(styles.basket, isBasketOpen && styles.open)}>
+      <div className={styles.closeModal} onClick={() => setIsBasketOpen(false)}></div>
       <div className={styles.basketHeading}>
         <div>Bet slip</div>
         {/*<div>My Bets</div>*/}
@@ -74,7 +78,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => {}}: {
           </div>))}
         </div>
         <div className={styles.placeBetWrapper}>
-          <button className={styles.placeBet} onClick={() => setIsBasketOpen(false)}>Place bet $ 40</button>
+          <button className={styles.placeBet}>Place bet $ 40</button>
         </div>
       </div>
     </div>

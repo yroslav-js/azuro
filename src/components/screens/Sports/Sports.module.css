@@ -364,7 +364,7 @@
     }
 
     .oddsWrapper {
-        width: 100%;
+        width: 107%;
         max-width: max-content;
         margin: 0 -16px;
         padding: 0 16px;
@@ -373,7 +373,17 @@
     }
 }
 
+@media (max-width: 1370px) {
+    .timeSort {
+        gap: 4px;
+    }
+}
+
 @media (max-width: 500px) {
+    .wrapper {
+        max-width: 100%;
+    }
+
     .contentHeading {
         padding: 3px 16px 0;
         margin-bottom: 11px;
@@ -415,84 +425,7 @@
         margin-bottom: 10px;
     }
 
-    .teamsHeading > div {
-        display: none;
-    }
-
-    .teamsHeading > p {
-        margin-right: auto;
-        width: 72px;
-        height: 24px;
-        background-color: var(--transperent-accent-1);
-        border-radius: 12px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .teamsHeading span {
-        width: 28px;
-        height: 28px;
-        border-radius: 8px;
-        box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.1);
-    }
-
-    .teamsHeading img {
-        height: 18px;
-    }
-
-    .more {
-        display: none;
-    }
-
-    .teamsWrapper {
-        width: 100%;
-        margin-bottom: 9px;
-    }
-
-    .teamsWrapper .more {
-        display: flex;
-        margin-left: auto;
-        gap: 8px;
-    }
-
-    .teamsWrapper .more p {
-        margin-right: 0;
-        margin-left: 0;
-        height: 21px;
-        display: flex;
-        align-items: center;
-    }
-
-    .teams {
-        height: 21px;
-        justify-content: start;
-        padding: 0;
-    }
-
-    .teams > p {
-        margin: 0 3px 0 5px;
-    }
-
-    .teams span {
-        display: none;
-    }
-
-    .event {
-        background-color: transparent;
-        align-items: start;
-        flex-direction: column;
-        padding: 0;
-        gap: 0;
-    }
-
-    .more {
-        height: auto;
-        width: auto;
-    }
-
     .oddsWrapper {
-        width: calc(100vw - 32px);
         margin: 0 -16px;
         padding: 0 16px;
         overflow-x: auto;
