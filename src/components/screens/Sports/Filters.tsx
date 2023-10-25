@@ -59,8 +59,10 @@ const Filters = (
             {item}
           </div>))}
         </div>
-        <button className={styles.clearFilter}>Clear</button>
-        <button className={styles.backToMain} onClick={() => setIsFilterOpen(false)}>Back to Main</button>
+        <div className={styles.buttonsWrapper}>
+          <button className={styles.clearFilter}>Clear</button>
+          <button className={styles.clearFilter} onClick={() => setIsFilterOpen(false)}>Apply</button>
+        </div>
       </div>
       <div className={clsx(styles.classicFilter, filterType === 'classic' && styles.chosenFilter)}>
         <div className={styles.title}>SPORTS</div>

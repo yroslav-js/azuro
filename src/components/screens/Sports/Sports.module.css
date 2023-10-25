@@ -388,6 +388,10 @@
 }
 
 @media (max-width: 500px) {
+    .timeSort > div {
+        display: none;
+    }
+
     .wrapper {
         max-width: 100%;
     }
