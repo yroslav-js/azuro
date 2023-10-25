@@ -2,8 +2,10 @@
     min-width: 374px;
     border-radius: 12px;
     border: 1px solid var(--text-accent-2);
-    /*height: 548px;*/
+    height: fit-content;
     background-color: var(--surface-high-priority);
+    overflow: hidden;
+    box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.1);
 }
 
 .basketHeading {

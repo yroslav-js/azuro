@@ -19,11 +19,10 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={styles.header}>
+    <header className={clsx(styles.header, pathname.includes('sports') && styles.sports)}>
       <div className={clsx(styles.logo, 'flexCenter')}>
         <img src="/logo.svg" alt=""/>
       </div>
-
       <div className={styles.headerContent}>
         <Link href='/sports' className={/[0-9]/.test(pathname) ? styles.back : styles.backnone}>BACK</Link>
         <div className={styles.portfolioWrap}>
@@ -41,9 +40,16 @@ const Header = () => {
           <input type="text" className={styles.search} placeholder='Search'/>
         </div>
         <button className={clsx(styles.add, 'flexCenter')}>Add event</button>
+        <div className={styles.odds}>
+          <div className={styles.activeOdds}>EU <span>Odds</span></div>
+          <div>UK <span>Odds</span></div>
+          <div>US <span>Odds</span></div>
+        </div>
         <button className={clsx(styles.notification, 'flexCenter')}><img src="/notification.svg" alt=""/></button>
         <img src="/discord.svg" alt="" className={styles.discord}/>
-        <button className={clsx(styles.signout, 'flexCenter')}>Sign out <img src="/logout.svg" alt=""/></button>
+        <button className={clsx(styles.signout, 'flexCenter')}>Sign out
+          {/*<img src="/logout.svg" alt=""/>*/}
+        </button>
       </div>
     </header>
   );

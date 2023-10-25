@@ -379,6 +379,14 @@
     }
 }
 
+@media (max-width: 1350px) {
+    .timeSort img {
+        display: inline-block;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+}
+
 @media (max-width: 500px) {
     .wrapper {
         max-width: 100%;
@@ -394,15 +402,6 @@
         height: calc(100vh - 146px);
         margin-top: -16px;
         padding-top: 16px;
-    }
-
-    .timeSort > div {
-        display: none;
-    }
-
-    .timeSort img {
-        display: inline-block;
-        cursor: pointer;
     }
 
     .events {
