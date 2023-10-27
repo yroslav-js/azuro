@@ -34,14 +34,29 @@ const Sports = () => {
     dispatch(fetchSports(sortTime[sort]))
   }, [sort]);
 
-  // useEffect(() => {
-  //   basket.length && localStorage && localStorage.setItem('basket', JSON.stringify(basket))
-  //   basket.length && localStorage && dispatch(setBasketEvents([...basket]))
-  // }, [basket])
-  //
-  // useEffect(() => {
-  //   localStorage && setBasket([...JSON.parse(localStorage.getItem('basket') || '')])
-  // }, []);
+  useEffect(() => {
+    const setStorage = () => {
+      basket.length && localStorage && localStorage.setItem('basket', JSON.stringify(basket))
+      basket.length && localStorage && dispatch(setBasketEvents([...basket]))
+    }
+
+    window.addEventListener('storage', setStorage)
+
+    return () => {
+      window.removeEventListener('storage', setStorage)
+    }
+  }, [basket])
+
+  useEffect(() => {
+    const setBasketStorage = () => {
+      localStorage && setBasket([...JSON.parse(localStorage.getItem('basket') || '')])
+    }
+    window.addEventListener('storage', setBasketStorage)
+
+    return () => {
+      window.removeEventListener('storage', setBasketStorage)
+    }
+  }, []);
 
   useEffect(() => {
     setLoading(false)
