@@ -53,7 +53,7 @@ const Sports = () => {
         You have combo bet with 4 odds in betslip
         <Image src='/sports/basketMobile.png' alt='' width={30} height={30}/>
       </div>
-      <Filters isFilterOpen={isFilterOpen} setIsFilterOpen={setIsFilterOpen}/>
+      {/*<Filters isFilterOpen={isFilterOpen} setIsFilterOpen={setIsFilterOpen}/>*/}
 
       {/*<Lottie options={{*/}
       {/*  loop: true,*/}
