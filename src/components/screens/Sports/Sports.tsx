@@ -34,14 +34,14 @@ const Sports = () => {
     dispatch(fetchSports(sortTime[sort]))
   }, [sort]);
 
-  useEffect(() => {
-    basket.length && localStorage.setItem('basket', JSON.stringify(basket))
-    basket.length && dispatch(setBasketEvents([...basket]))
-  }, [basket])
-
-  useEffect(() => {
-    setBasket([...JSON.parse(localStorage.getItem('basket') || '')])
-  }, []);
+  // useEffect(() => {
+  //   basket.length && localStorage.setItem('basket', JSON.stringify(basket))
+  //   basket.length && dispatch(setBasketEvents([...basket]))
+  // }, [basket])
+  //
+  // useEffect(() => {
+  //   setBasket([...JSON.parse(localStorage.getItem('basket') || '')])
+  // }, []);
 
   useEffect(() => {
     setLoading(false)
