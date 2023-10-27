@@ -194,7 +194,7 @@ const Sports = () => {
           </div>))}
         </div>) : null)}
       </div>
-      <Basket basket={basket} setBasket={setBasket} setIsBasketOpen={setIsBasketOpen} isBasketOpen={isBasketOpen}/>
+      {/*<Basket basket={basket} setBasket={setBasket} setIsBasketOpen={setIsBasketOpen} isBasketOpen={isBasketOpen}/>*/}
     </div>
   );
 };
