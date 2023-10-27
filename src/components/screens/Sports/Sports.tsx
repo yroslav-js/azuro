@@ -10,8 +10,8 @@ import Filters from "@/components/screens/Sports/Filters";
 import Basket from "@/components/screens/Sports/Basket";
 import Link from "next/link";
 import Image from "next/image";
-import Lottie from 'react-lottie';
-import * as animationData from './Gradient-background.json'
+// import Lottie from 'react-lottie';
+// import * as animationData from './Gradient-background.json'
 import {setBasketEvents} from "@/redux/features/azuroSlice";
 import {fetchSports, sortTime} from "@/redux/subgraph/callFunctions";
 
