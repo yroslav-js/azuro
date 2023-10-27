@@ -14,6 +14,8 @@ const Event = ({id}: { id: string }) => {
   const game = useAppSelector(state => state.azuroSlice.sports.map(sport => sport.games.find(game => game.id === id)).filter(item => item))
   const event = game?.length ? game[0] : undefined
 
+  console.log('sdfsdfsdfsdfdsf')
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.filter}>
