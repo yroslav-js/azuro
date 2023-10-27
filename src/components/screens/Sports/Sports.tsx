@@ -35,10 +35,15 @@ const Sports = () => {
   }, [sort]);
 
   useEffect(() => {
+    console.log(1)
     const setStorage = () => {
+      console.log(2)
       basket.length && localStorage && localStorage.setItem('basket', JSON.stringify(basket))
       basket.length && localStorage && dispatch(setBasketEvents([...basket]))
+      console.log(3)
     }
+
+    setStorage()
 
     window.addEventListener('storage', setStorage)
 
@@ -51,6 +56,9 @@ const Sports = () => {
     const setBasketStorage = () => {
       localStorage && setBasket([...JSON.parse(localStorage.getItem('basket') || '')])
     }
+
+    setBasketStorage()
+
     window.addEventListener('storage', setBasketStorage)
 
     return () => {

@@ -22,6 +22,8 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
       basket?.length && localStorage && dispatch(setBasketEvents([...basket]))
     }
 
+    setStorage()
+
     window.addEventListener('storage', setStorage)
 
     return () => {
@@ -34,12 +36,16 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
       if (setBasket && localStorage) setBasket([...JSON.parse(localStorage.getItem('basket') || '')])
     }
 
+    setBasketStorage()
+
     window.addEventListener('storage', setBasketStorage)
 
     return () => {
       window.removeEventListener('storage', setBasketStorage)
     }
   }, []);
+
+  console.log(basketEvents, basket)
 
   return (
     <div className={clsx(styles.basket, isBasketOpen && styles.open)}>
