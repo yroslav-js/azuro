@@ -35,12 +35,12 @@ const Sports = () => {
   }, [sort]);
 
   useEffect(() => {
-    basket.length && localStorage.setItem('basket', JSON.stringify(basket))
-    basket.length && dispatch(setBasketEvents([...basket]))
+    basket.length && localStorage && localStorage.setItem('basket', JSON.stringify(basket))
+    basket.length && localStorage && dispatch(setBasketEvents([...basket]))
   }, [basket])
 
   useEffect(() => {
-    setBasket([...JSON.parse(localStorage.getItem('basket') || '')])
+    localStorage && setBasket([...JSON.parse(localStorage.getItem('basket') || '')])
   }, []);
 
   useEffect(() => {
