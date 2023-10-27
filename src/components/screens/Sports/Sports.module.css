@@ -3,6 +3,7 @@
     justify-content: space-between;
     gap: 16px;
     width: 100%;
+    position: relative;
 }
 
 .content {
@@ -40,6 +41,7 @@
     color: var(--text-accent-2);
     font-size: 13px;
     font-weight: 500;
+    cursor: pointer;
 }
 
 .timeSort .activeSort {
@@ -149,12 +151,20 @@
     justify-content: space-between;
     height: 56px;
     align-items: center;
-    padding: 0 16px;
+    padding: 0 5px;
     background-color: var(--surface-high-priority);
     font-size: 16px;
     font-weight: 700;
     color: var(--text-high-priority);
     border-radius: 6px;
+}
+
+.teams > p {
+    display: none;
+}
+
+.teams > span {
+    margin: 0 10px 0 5px;
 }
 
 .team > div {
@@ -163,6 +173,7 @@
 }
 
 .team span {
+    min-width: 30px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -171,6 +182,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.team img {
+    width: 20px;
+    height: 20px;
 }
 
 .oddsWrapper {
@@ -189,6 +205,10 @@
     font-weight: 400;
 }
 
+.oddsHeading img {
+    margin-left: 7px;
+}
+
 .odds {
     display: flex;
     height: 57px;
@@ -202,9 +222,16 @@
     border: 1px solid var(--elements-accent-5);
     box-shadow: 0px 4px 7px 0px #0000001A;
     background-color: var(--surface-high-priority);
+    cursor: pointer;
+}
+
+.activeOdd {
+    border-color: var(--elements-orange);
+    box-shadow: 0px 2px 10px 0px rgba(245, 116, 37, 0.5);
 }
 
 .odd div {
+    text-align: center;
     border-bottom: 1px solid var(--transperent-accent-2);
     display: flex;
     align-items: center;
@@ -215,6 +242,10 @@
     color: var(--text-mid-priority);
 }
 
+.activeOdd div {
+    border-bottom-color: var(--transperent-accent-4);
+}
+
 .odd span {
     display: flex;
     height: 30px;
@@ -223,6 +254,10 @@
     font-size: 16px;
     font-weight: 700;
     color: var(--text-accent-2);
+}
+
+.activeOdd span {
+    color: var(--elements-orange);
 }
 
 .more {
@@ -267,11 +302,21 @@
     display: none;
 }
 
+.displayNone {
+    display: none;
+}
+
 @media (max-width: 1918px) {
     .oddsWrapper {
-        min-width: 344px;
         max-width: 344px;
-        overflow: hidden;
+    }
+
+    .displayNoneFirst {
+        display: none;
+    }
+
+    .oddsHeading {
+        max-width: 168px;
     }
 }
 
@@ -280,9 +325,21 @@
         min-width: 168px;
         max-width: 168px;
     }
+
+    .displayNoneSecond {
+        display: none;
+    }
 }
 
 @media (max-width: 1562px) {
+    .displayNoneFirst, .displayNoneSecond, .displayNone {
+        display: block;
+    }
+
+    .teams > p {
+        display: inline;
+    }
+
     .wrapper {
         max-width: calc(100vw - 112px);
     }

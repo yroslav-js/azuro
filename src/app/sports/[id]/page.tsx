@@ -1,8 +1,8 @@
 import Event from "@/components/screens/Event/Event";
 
-const Page = () => {
+const Page = ({params}: { params: { id: string } }) => {
   return (
-    <Event/>
+    <Event id={params.id}/>
   );
 };
 

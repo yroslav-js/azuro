@@ -17,6 +17,9 @@ query Navigation($gameFilter: Game_filter, $sportFilter: Sport_filter) {
           outcomeId
         }
       }
+      participants {
+        image
+      }
     }
   }
 }

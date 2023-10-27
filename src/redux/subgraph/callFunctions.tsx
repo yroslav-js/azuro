@@ -22,9 +22,9 @@ export enum sortTime {
   '1h' = 3600,
   '3h' = 3600 * 3,
   '6h' = 3600 * 6,
-  'today' = getToday(),
-  'tomorrow' = 'tomorrow',
-  'all' = 0
+  'Today' = getToday(),
+  'Tomorrow' = 'Tomorrow',
+  'All' = 0
 }
 
 export const fetchSports = createAsyncThunk(
@@ -39,7 +39,7 @@ export const fetchSports = createAsyncThunk(
         sporthub_in: ["sports"]
       }
 
-      if (sortTime === 'tomorrow') {
+      if (sortTime === 'Tomorrow') {
         gameFilter.startsAt_gt = Math.floor(getToday() + 60 + Date.now() / 1000)
         gameFilter.startsAt_lt = Math.floor(getToday() + 60 + 24 * 3600 + Date.now() / 1000)
       } else if (sortTime) gameFilter.startsAt_lt = Math.floor(Date.now() / 1000) + sortTime

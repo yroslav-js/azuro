@@ -15,7 +15,7 @@ const Header = () => {
   const pathname = usePathname()
 
   useEffect(() => {
-    dispatch(fetchSports(sortTime['all']))
+    dispatch(fetchSports(sortTime['All']))
   }, []);
 
   return (

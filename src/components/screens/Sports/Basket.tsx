@@ -2,15 +2,29 @@
 
 import styles from './Basket.module.css'
 import clsx from "clsx";
-import {Dispatch, SetStateAction} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
+import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
+import {getMarketName, getSelectionName} from "@azuro-org/dictionaries";
+import {setBasketEvents} from "@/redux/features/azuroSlice";
 
-const Basket = ({
-                  isBasketOpen = false, setIsBasketOpen = () => {
-  }
-                }: {
+const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, setBasket}: {
+  basket: any,
+  setBasket: any,
   isBasketOpen?: boolean,
   setIsBasketOpen?: Dispatch<SetStateAction<boolean>>
 }) => {
+  const basketEvents = useAppSelector(state => state.azuroSlice.basket)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    basket?.length && localStorage.setItem('basket', JSON.stringify(basket))
+    basket?.length && dispatch(setBasketEvents([...basket]))
+  }, [basket])
+
+  useEffect(() => {
+    if (setBasket) setBasket([...JSON.parse(localStorage.getItem('basket') || '')])
+  }, []);
+
   return (
     <div className={clsx(styles.basket, isBasketOpen && styles.open)}>
       <div className={styles.closeModal} onClick={() => setIsBasketOpen(false)}></div>
@@ -39,19 +53,36 @@ const Basket = ({
           <div className={styles.selectionAmount}>50$</div>
           <div className={styles.selectionAmount}>100$</div>
         </div>
-        {[0, 1, 2, 3].map(item => (<div key={item} className={styles.event}>
+        {!!basket?.length && basketEvents.map(item => (<div key={item.id} className={styles.event}>
           <div className={styles.eventHead}>
             <img className={styles.flag} src="/sports/flag.png" alt=""/>
-            Celta Vigo - Alaves
+            {item.title}
             <img className={styles.delete} src="/sports/garbage.svg" alt=""/>
           </div>
           <div className={styles.oddsWrapper}>
-            {[0, 1].map(item => (<div key={item}>
-              <div className={styles.oddsHeading}>Full time result <img src="" alt=""/></div>
+            {item.conditions?.map(outcome => (<div key={outcome.outcomes[0].outcomeId}>
+              <div className={styles.oddsHeading}>{getMarketName({outcomeId: outcome.outcomes[0].outcomeId})}</div>
               <div className={styles.odds}>
-                {[0, 1, 2].map(item => (<div key={item} className={styles.odd}>
-                  <div>1</div>
-                  <span>1.69</span>
+                {outcome.outcomes.map(odd => (<div onClick={() => {
+                  const indexItem = basket.findIndex((indexItem: any) => indexItem.id === item.id)
+                  if (indexItem !== -1) {
+                    if (basket[indexItem]?.outcomeId === odd.outcomeId)
+                      return setBasket((prevState: any) => [...prevState.filter((_: any, index: number) => index !== indexItem)])
+                    return setBasket((prevState: any) => [...prevState.map((event: any, index: number) => {
+                      if (index === indexItem) return {...event, outcomeId: odd.outcomeId}
+                      return {...event}
+                    })])
+                  }
+                  setBasket((prevState: any) => [...prevState, {
+                    id: item.id,
+                    outcomeId: odd.outcomeId,
+                    title: item.title,
+                    conditions: [...item.conditions]
+                  }])
+                }} key={odd.outcomeId} className={clsx(styles.odd,
+                  item.outcomeId === odd.outcomeId && styles.activeOdd)}>
+                  <div>{getSelectionName({outcomeId: odd.outcomeId, withPoint: false})}</div>
+                  <span>{Number(odd.currentOdds).toFixed(2)}</span>
                 </div>))}
               </div>
             </div>))}

@@ -10,16 +10,17 @@ const initialState: IInitialState = {
       item: 'Top events',
       slug: ''
     }]
-  }
+  },
+  basket: []
 }
 
 export const azuroSlice = createSlice({
   name: 'azuro',
   initialState,
   reducers: {
-    // setSome: (state, action) => {
-    //   state.sports = action.payload
-    // }
+    setBasketEvents: (state, action) => {
+      state.basket = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchSports.fulfilled, (state, action: PayloadAction<ISports[] | []>) => {
@@ -38,7 +39,7 @@ export const azuroSlice = createSlice({
 })
 
 export const {
-  // setSome
+  setBasketEvents
 } = azuroSlice.actions
 
 export default azuroSlice.reducer

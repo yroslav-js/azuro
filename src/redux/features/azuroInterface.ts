@@ -10,6 +10,7 @@ export interface IGames {
   title: string,
   startsAt: string,
   conditions: IConditions[]
+  participants: { image: string }[]
 }
 
 export interface ISports {
@@ -30,6 +31,12 @@ export interface IFilter {
 }
 
 export interface IInitialState {
-  sports: ISports[] | [],
+  sports: ISports[] | []
   sportFilter: IFilter
+  basket: {
+    id: string
+    outcomeId: string
+    title: string
+    conditions: IConditions[]
+  }[]
 }
