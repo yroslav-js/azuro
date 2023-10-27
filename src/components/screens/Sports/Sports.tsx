@@ -34,14 +34,14 @@ const Sports = () => {
     dispatch(fetchSports(sortTime[sort]))
   }, [sort]);
 
-  useEffect(() => {
-    basket.length && localStorage && localStorage.setItem('basket', JSON.stringify(basket))
-    basket.length && localStorage && dispatch(setBasketEvents([...basket]))
-  }, [basket])
-
-  useEffect(() => {
-    localStorage && setBasket([...JSON.parse(localStorage.getItem('basket') || '')])
-  }, []);
+  // useEffect(() => {
+  //   basket.length && localStorage && localStorage.setItem('basket', JSON.stringify(basket))
+  //   basket.length && localStorage && dispatch(setBasketEvents([...basket]))
+  // }, [basket])
+  //
+  // useEffect(() => {
+  //   localStorage && setBasket([...JSON.parse(localStorage.getItem('basket') || '')])
+  // }, []);
 
   useEffect(() => {
     setLoading(false)
@@ -194,7 +194,7 @@ const Sports = () => {
           </div>))}
         </div>) : null)}
       </div>
-      <Basket basket={basket} setBasket={setBasket} setIsBasketOpen={setIsBasketOpen} isBasketOpen={isBasketOpen}/>
+      {/*<Basket basket={basket} setBasket={setBasket} setIsBasketOpen={setIsBasketOpen} isBasketOpen={isBasketOpen}/>*/}
     </div>
   );
 };
