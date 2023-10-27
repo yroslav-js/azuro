@@ -17,12 +17,12 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    basket?.length && localStorage.setItem('basket', JSON.stringify(basket))
-    basket?.length && dispatch(setBasketEvents([...basket]))
+    basket?.length && localStorage && localStorage.setItem('basket', JSON.stringify(basket))
+    basket?.length && localStorage && dispatch(setBasketEvents([...basket]))
   }, [basket])
 
   useEffect(() => {
-    if (setBasket) setBasket([...JSON.parse(localStorage.getItem('basket') || '')])
+    if (setBasket && localStorage) setBasket([...JSON.parse(localStorage.getItem('basket') || '')])
   }, []);
 
   return (
