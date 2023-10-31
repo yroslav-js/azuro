@@ -6,7 +6,7 @@ import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {Dispatch, FC, SetStateAction, useState} from "react";
 import {IFilter} from "@/redux/features/azuroInterface";
 
-const filters: IFilter = {
+const filters: any = {
   filterTitle: 'BY STATUS',
   items: [
     {
@@ -48,7 +48,7 @@ const Filters: FC<{ setLoading: Dispatch<SetStateAction<boolean>>, loading: bool
         {[sports, filters].map((filter => (
           <div key={filter.filterTitle}>
             <div className={styles.filterTitle}>{filter.filterTitle}</div>
-            <div className={styles.filterItems}>{filter.items.map(({item}, id) => (
+            <div className={styles.filterItems}>{filter.items.map(({item}: { item: any }, id: number) => (
               <div onClick={() => {
                 if (loading) return
                 setLoading(true)
