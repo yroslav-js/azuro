@@ -191,7 +191,7 @@
 
 .oddsWrapper {
     display: flex;
-    align-items: center;
+    align-items: end;
     gap: 8px;
 }
 
@@ -200,7 +200,7 @@
     font-size: 13px;
     display: flex;
     align-items: center;
-    height: 16px;
+    min-height: 16px;
     color: var(--text-mid-priority);
     font-weight: 400;
 }
