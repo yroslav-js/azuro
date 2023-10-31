@@ -5,16 +5,36 @@ import Filters from "@/components/screens/Sports/Filters";
 import Basket from "@/components/screens/Sports/Basket";
 import Link from "next/link";
 import clsx from "clsx";
-import {useState} from "react";
-import {useAppSelector} from "@/hooks/reduxHooks";
+import {useEffect, useState} from "react";
+import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {getMarketName, getSelectionName} from "@azuro-org/dictionaries";
+import {fetchSports, fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
+import {usePathname} from "next/navigation";
 
-const Event = ({id}: { id: string }) => {
+const Event = ({id, league, sports}: { id: string, sports: string, league: string }) => {
   const [basket, setBasket] = useState<any>([])
-  const game = useAppSelector(state => state.azuroSlice.sports.map(sport => sport.games.find(game => game.id === id)).filter(item => item))
-  const event = game?.length ? game[0] : undefined
+  const game = useAppSelector(state => state.azuroSlice.sports.find(sport => sport.slug === sports)?.games.find(game => game.id === id))
+  const pathname = usePathname()
+  const dispatch = useAppDispatch()
 
-  console.log('sdfsdfsdfsdfdsf')
+  useEffect(() => {
+    if (!game) {
+      if (pathname === '/sports') {
+        const promise = dispatch(fetchSportsGames({sortTime: sortTime['All']}))
+        return () => promise.abort()
+      } else {
+        const promise = dispatch(fetchSportsGames({
+          sortTime: sortTime['All'],
+          filter: pathname.split('/sports/').pop()
+        }))
+        return () => promise.abort()
+      }
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    dispatch(fetchSports())
+  }, []);
 
   return (
     <div className={styles.wrapper}>
@@ -32,12 +52,12 @@ const Event = ({id}: { id: string }) => {
         <div className={styles.head}>
           <div className={styles.team}>
             <div className={styles.teamImg}>
-              <img src={event?.participants[0].image} onError={({currentTarget}) => {
+              <img src={game?.participants[0].image} onError={({currentTarget}) => {
                 currentTarget.onerror = null;
                 currentTarget.src = "/sports/team.svg";
               }} alt=""/>
             </div>
-            {event?.title.slice(0, event?.title.indexOf('-'))}
+            {game?.title.slice(0, game?.title.indexOf('-'))}
           </div>
           <div className={styles.time}>
             10:00 PM
@@ -45,18 +65,18 @@ const Event = ({id}: { id: string }) => {
           </div>
           <div className={styles.team}>
             <div className={styles.teamImg}>
-              <img src={event?.participants[1].image} onError={({currentTarget}) => {
+              <img src={game?.participants[1].image} onError={({currentTarget}) => {
                 currentTarget.onerror = null;
                 currentTarget.src = "/sports/team.svg";
               }} alt=""/>
             </div>
-            {event?.title.slice(event?.title.indexOf('-') + 1, event?.title.length)}
+            {game?.title.slice(game?.title.indexOf('-') + 1, game?.title.length)}
           </div>
         </div>
         <div className={styles.oddsWrapper}>
-          {event?.conditions.map((item, index) => (
+          {game?.conditions.map((item, index) => (
             <div
-              className={event.conditions.length - 1 === index && event.conditions.length % 2 !== 0 ? styles.oddsLast : ''}
+              className={game.conditions.length - 1 === index && game.conditions.length % 2 !== 0 ? styles.oddsLast : ''}
               key={item.outcomes[0].outcomeId}>
               <div className={styles.oddsTitle}>
                 <span>{getMarketName({outcomeId: item.outcomes[0].outcomeId})} <img src="/sports/i.svg" alt=""/></span>
@@ -71,16 +91,16 @@ const Event = ({id}: { id: string }) => {
                     if (item !== -1) {
                       if (basket[item]?.outcomeId === outcome.outcomeId)
                         return setBasket((prevState: any) => [...prevState.filter((_: any, index: number) => index !== item)])
-                      return setBasket((prevState: any) => [...prevState.map((event: any, index: number) => {
-                        if (index === item) return {...event, outcomeId: outcome.outcomeId}
-                        return {...event}
+                      return setBasket((prevState: any) => [...prevState.map((game: any, index: number) => {
+                        if (index === item) return {...game, outcomeId: outcome.outcomeId}
+                        return {...game}
                       })])
                     }
                     setBasket((prevState: any) => [...prevState, {
                       id: id,
                       outcomeId: outcome.outcomeId,
-                      title: event.title,
-                      conditions: [...event.conditions]
+                      title: game.title,
+                      conditions: [...game.conditions]
                     }])
                   }}
                   key={outcome.outcomeId} className={clsx(styles.odd,

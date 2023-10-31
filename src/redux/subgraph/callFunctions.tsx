@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {apolloClient} from "@/redux/subgraph/apollo";
-import {getSports} from "@/redux/subgraph/graphql";
+import {getSports, getSportsGames} from "@/redux/subgraph/graphql";
 
 interface IGameFilter {
   startsAt_gt: number
@@ -9,8 +9,8 @@ interface IGameFilter {
 }
 
 interface ISportFilter {
-    name?: "Football",
-    sporthub_in: ["sports"]
+  slug?: string,
+  sporthub_in: ["sports"]
 }
 
 const getToday = () => {
@@ -27,9 +27,9 @@ export enum sortTime {
   'All' = 0
 }
 
-export const fetchSports = createAsyncThunk(
-  'get sports',
-  async (sortTime: sortTime) => {
+export const fetchSportsGames = createAsyncThunk(
+  'get sports games',
+  async ({sortTime, filter}: { sortTime: sortTime, filter?: string }) => {
     try {
       const gameFilter: IGameFilter = {
         startsAt_gt: Math.floor(Date.now() / 1000),
@@ -39,11 +39,37 @@ export const fetchSports = createAsyncThunk(
         sporthub_in: ["sports"]
       }
 
+      if (filter && filter !== '/sports') sportFilter.slug = filter
+
       if (sortTime === 'Tomorrow') {
         gameFilter.startsAt_gt = Math.floor(getToday() + 60 + Date.now() / 1000)
         gameFilter.startsAt_lt = Math.floor(getToday() + 60 + 24 * 3600 + Date.now() / 1000)
       } else if (sortTime) gameFilter.startsAt_lt = Math.floor(Date.now() / 1000) + sortTime
 
+      const res = await apolloClient.query({
+        query: getSportsGames,
+        variables: {
+          gameFilter,
+          sportFilter
+        }
+      })
+      return res?.data?.sports || []
+    } catch (e) {
+    }
+  }
+)
+
+export const fetchSports = createAsyncThunk(
+  'get sports',
+  async () => {
+    try {
+      const gameFilter: IGameFilter = {
+        startsAt_gt: Math.floor(Date.now() / 1000),
+        hasActiveConditions: true,
+      }
+      const sportFilter: ISportFilter = {
+        sporthub_in: ["sports"]
+      }
       const res = await apolloClient.query({
         query: getSports,
         variables: {

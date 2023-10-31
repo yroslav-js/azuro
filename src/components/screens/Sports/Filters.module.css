@@ -283,10 +283,6 @@
         transform: translate(-50%, -50%) rotate(-45deg);
     }
 
-    .input {
-        display: block;
-    }
-
     .filters {
         display: block;
         position: absolute;

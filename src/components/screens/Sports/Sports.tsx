@@ -13,7 +13,8 @@ import Image from "next/image";
 import Lottie from 'react-lottie';
 import * as animationData from './Gradient-background.json'
 import {setBasketEvents} from "@/redux/features/azuroSlice";
-import {fetchSports, sortTime} from "@/redux/subgraph/callFunctions";
+import {fetchSports, fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
+import {usePathname, useSearchParams} from "next/navigation";
 
 const sortItems = ['All', 'Today', 'Tomorrow', '1h', '3h', '6h']
 
@@ -29,19 +30,35 @@ const Sports = () => {
   const [basket, setBasket] = useState<any>([])
   const basketEvents = useAppSelector(state => state.azuroSlice.basket)
   const [sort, setSort] = useState<keyof typeof sortTime>('All')
+  const query = useSearchParams()
+  const pathname = usePathname()
+  const [firstRender, setFirstRender] = useState(true)
 
   useEffect(() => {
-    dispatch(fetchSports(sortTime[sort]))
-  }, [sort]);
+    if (pathname === '/sports') {
+      const promise = dispatch(fetchSportsGames({sortTime: sortTime[sort]}))
+      return () => promise.abort()
+    } else {
+      const promise = dispatch(fetchSportsGames({sortTime: sortTime[sort], filter: pathname.split('/sports/').pop()}))
+      return () => promise.abort()
+    }
+  }, [pathname, sort]);
 
   useEffect(() => {
-    basket.length && localStorage && localStorage.setItem('basket', JSON.stringify(basket))
-    basket.length && localStorage && dispatch(setBasketEvents([...basket]))
-  }, [basket])
+    dispatch(fetchSports())
+  }, []);
 
   useEffect(() => {
     localStorage && setBasket([...JSON.parse(localStorage.getItem('basket') || '[]')])
+    setFirstRender(false)
   }, []);
+
+  useEffect(() => {
+    if (!firstRender) {
+      localStorage && localStorage.setItem('basket', JSON.stringify(basket))
+      localStorage && dispatch(setBasketEvents([...basket]))
+    }
+  }, [basket])
 
   useEffect(() => {
     setLoading(false)
@@ -82,11 +99,11 @@ const Sports = () => {
           </div>))}
         </div>
         <div className={styles.contentHeading}>
-          <div>Top Events</div>
+          <div>Top {sports.find(sport => sport.slug === pathname.split('/sports/').pop())?.name} Events</div>
           <div className={styles.timeSort}>
             {sortItems.map((item) => (
               <div key={item} onClick={() => {
-                if (!loading && sort !== item) {
+                if (sort !== item) {
                   setLoading(true)
                   setSort(item as keyof typeof sortTime)
                 }
@@ -95,8 +112,8 @@ const Sports = () => {
             <img src="/sports/openFilter.svg" alt="" onClick={() => setIsFilterOpen(true)}/>
           </div>
         </div>
-        {!loading && sports.map(sport => sport.games?.length ? (<div key={sport.name}
-                                                                     className={clsx(styles.events, closedSportsIds.find(id => id === sport.sportId) !== undefined && styles.closed)}>
+        {!loading && sports.map(sport => sport.games.length ? (<div key={sport.name}
+                                                                    className={clsx(styles.events, closedSportsIds.find(id => id === sport.sportId) !== undefined && styles.closed)}>
           <div className={styles.eventHeading} onClick={() => setClosedSportsIds(prevState => {
             if (prevState.find(id => id === sport.sportId) !== undefined) return [...prevState.filter(id => id !== sport.sportId)]
             return [...prevState, sport.sportId]
@@ -135,7 +152,7 @@ const Sports = () => {
                     }} alt=""/></span> {game.title.slice(game.title.indexOf('-') + 1, game.title.length)}
                     </div>
                   </div>
-                  <Link href={`/sports/${game.id}`} className={styles.more}>
+                  <Link href={`/sports/${sport.slug}/${game.league.slug}/${game.id}`} className={styles.more}>
                     <div>MORE MARKETS</div>
                     <p>
                       <svg style={{transform: 'rotate(90deg)'}} width="12" height="8" viewBox="0 0 12 8" fill="none"
@@ -181,7 +198,7 @@ const Sports = () => {
                     </div>
                   </div>))}
               </div>
-              <Link href={`/sports/${game.id}`} className={styles.more}>
+              <Link href={`/sports/${sport.slug}/${game.league.slug}/${game.id}`} className={styles.more}>
                 <div>MORE MARKETS</div>
                 <p>
                   <svg style={{transform: 'rotate(90deg)'}} width="12" height="8" viewBox="0 0 12 8" fill="none"

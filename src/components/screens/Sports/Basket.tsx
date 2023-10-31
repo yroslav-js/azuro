@@ -15,17 +15,19 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
 }) => {
   const basketEvents = useAppSelector(state => state.azuroSlice.basket)
   const dispatch = useAppDispatch()
+  const [firstRender, setFirstRender] = useState(true)
 
   useEffect(() => {
-    basket?.length && localStorage && localStorage.setItem('basket', JSON.stringify(basket))
-    basket?.length && localStorage && dispatch(setBasketEvents([...basket]))
+    if (!firstRender) {
+      localStorage && localStorage.setItem('basket', JSON.stringify(basket))
+      localStorage && dispatch(setBasketEvents([...basket]))
+    }
   }, [basket])
 
   useEffect(() => {
     if (setBasket && localStorage) setBasket([...JSON.parse(localStorage.getItem('basket') || '[]')])
+    setFirstRender(false)
   }, []);
-
-  console.log(basketEvents, basket)
 
   return (
     <div className={clsx(styles.basket, isBasketOpen && styles.open)}>

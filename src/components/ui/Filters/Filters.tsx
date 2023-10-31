@@ -1,7 +1,7 @@
 "use client"
 
 import styles from "./Filters.module.css";
-import {fetchSports, sortTime} from "@/redux/subgraph/callFunctions";
+import {fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
 import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {Dispatch, FC, SetStateAction, useState} from "react";
 import {IFilter} from "@/redux/features/azuroInterface";
@@ -53,8 +53,7 @@ const Filters: FC<{ setLoading: Dispatch<SetStateAction<boolean>>, loading: bool
                 if (loading) return
                 setLoading(true)
                 setSort(item.toLowerCase() as keyof typeof sortTime)
-                dispatch(fetchSports(sortTime[`${item.toLowerCase() as keyof typeof sortTime}`]
-                ))
+                dispatch(fetchSportsGames({sortTime: sortTime[`${item.toLowerCase() as keyof typeof sortTime}`]}))
               }}
                    key={item} className={sort === item.toLowerCase() ? styles.active : ''}>
                 <p>{item}</p></div>

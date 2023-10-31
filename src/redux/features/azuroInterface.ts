@@ -1,38 +1,45 @@
 export interface IConditions {
   outcomes: {
-    currentOdds: string,
+    currentOdds: string
     outcomeId: string
   }[]
 }
 
 export interface IGames {
-  id: string,
-  title: string,
-  startsAt: string,
+  id: string
+  title: string
+  startsAt: string
   conditions: IConditions[]
   participants: { image: string }[]
+  league: { slug: string }
+}
+
+export interface ILeagues {
+  id: string
+  slug: string
 }
 
 export interface ISports {
-  id: string,
-  sportId: string,
-  name: string,
-  slug: string,
+  id: string
+  sportId: string
+  name: string
+  slug: string
   games: IGames[]
-
+  league: { slug: string }
 }
 
 export interface IFilter {
-  filterTitle: string
-  items: {
-    item: string,
-    slug: string
-  }[]
+  id: string
+  sportId: string
+  name: string
+  slug: string
+  games: { id: string }[]
+  countries: { leagues: ILeagues[] }[]
 }
 
 export interface IInitialState {
   sports: ISports[] | []
-  sportFilter: IFilter
+  sportFilter: IFilter[]
   basket: {
     id: string
     outcomeId: string

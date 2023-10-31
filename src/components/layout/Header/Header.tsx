@@ -5,18 +5,12 @@ import Image from "next/image";
 import clsx from "clsx";
 import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {useEffect} from "react";
-import {fetchSports, sortTime} from "@/redux/subgraph/callFunctions";
+import {fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
 import {usePathname} from "next/navigation";
 import Link from "next/link";
 
 const Header = () => {
-  const dispatch = useAppDispatch()
-  const sports = useAppSelector(state => state.azuroSlice.sports)
   const pathname = usePathname()
-
-  useEffect(() => {
-    dispatch(fetchSports(sortTime['All']))
-  }, []);
 
   return (
     <header className={clsx(styles.header, pathname.includes('sports') && styles.sports)}>
