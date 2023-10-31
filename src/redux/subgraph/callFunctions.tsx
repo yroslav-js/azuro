@@ -6,10 +6,13 @@ interface IGameFilter {
   startsAt_gt: number
   startsAt_lt?: number
   hasActiveConditions: boolean
+  league_?: {
+    slug: string
+  }
 }
 
 interface ISportFilter {
-  slug?: string,
+  slug?: string
   sporthub_in: ["sports"]
 }
 
@@ -29,7 +32,7 @@ export enum sortTime {
 
 export const fetchSportsGames = createAsyncThunk(
   'get sports games',
-  async ({sortTime, filter}: { sortTime: sortTime, filter?: string }) => {
+  async ({sortTime, filter, league}: { sortTime: sortTime, filter?: string, league?: string }) => {
     try {
       const gameFilter: IGameFilter = {
         startsAt_gt: Math.floor(Date.now() / 1000),
@@ -40,6 +43,7 @@ export const fetchSportsGames = createAsyncThunk(
       }
 
       if (filter && filter !== '/sports') sportFilter.slug = filter
+      if (league) gameFilter.league_ = {slug: league}
 
       if (sortTime === 'Tomorrow') {
         gameFilter.startsAt_gt = Math.floor(getToday() + 60 + Date.now() / 1000)

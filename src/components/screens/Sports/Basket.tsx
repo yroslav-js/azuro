@@ -61,7 +61,25 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
           <div className={styles.eventHead}>
             <img className={styles.flag} src="/sports/flag.png" alt=""/>
             {item.title}
-            <img className={styles.delete} src="/sports/garbage.svg" alt=""/>
+            <img className={styles.delete}
+              //      onClick={() => {
+              //   const indexItem = basket.findIndex((indexItem: any) => indexItem.id === item.id)
+              //   if (indexItem !== -1) {
+              //     if (basket[indexItem]?.outcomeId === odd.outcomeId)
+              //       return setBasket((prevState: any) => [...prevState.filter((_: any, index: number) => index !== indexItem)])
+              //     return setBasket((prevState: any) => [...prevState.map((event: any, index: number) => {
+              //       if (index === indexItem) return {...event, outcomeId: odd.outcomeId}
+              //       return {...event}
+              //     })])
+              //   }
+              //   setBasket((prevState: any) => [...prevState, {
+              //     id: item.id,
+              //     outcomeId: odd.outcomeId,
+              //     title: item.title,
+              //     conditions: [...item.conditions]
+              //   }])
+              // }}
+                 src="/sports/garbage.svg" alt=""/>
           </div>
           <div className={styles.oddsWrapper}>
             {item.conditions?.map(outcome => (<div key={outcome.outcomes[0].outcomeId}>

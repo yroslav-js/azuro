@@ -91,7 +91,7 @@
     cursor: pointer;
 }
 
-.filter + div {
+div + .filterWrapper {
     margin-top: 8px;
 }
 
@@ -105,8 +105,53 @@
 }
 
 .leagues {
+    width: 322px;
+    border: 1px solid var(--text-accent-2);
+    background-color: var(--surface-high-priority);
+    margin-left: auto;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.leagues > span {
     position: absolute;
-    display: none;
+    height: 100%;
+    width: 1px;
+    top: -17px;
+    left: -9px;
+    background-color: var(--text-accent-2);
+}
+
+.leagues > div {
+    border-radius: 0;
+    position: relative;
+    overflow: initial;
+}
+
+.leagues > div::before {
+    content: "";
+    position: absolute;
+    width: 9px;
+    height: 1px;
+    background-color: var(--text-accent-2);
+    top: 50%;
+    left: -9px;
+}
+
+.leagues > div {
+    border-top: 1px solid var(--text-accent-2);
+    margin-top: 0;
+}
+
+.leagues > div:first-child {
+    border-radius: 6px 6px 0 0;
+    border-top: none;
+}
+
+.leagues > div:last-child {
+    border-radius: 0 0 8px 8px;
 }
 
 .tagFilter {

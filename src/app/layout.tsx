@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import Layout from "@/components/layout/Layout/Layout";
 import {Provider} from "react-redux";
 import {Providers} from "@/redux/provider";
+import {WagmiAppConfig} from "@/components/layout/WagmiAppConfig";
 
 const helvetica = localFont({
   src: [
@@ -43,9 +44,11 @@ export default function RootLayout({
   return (
     <html lang="en">
     <body className={helvetica.className}>
-    <Providers>
-      {children}
-    </Providers>
+    <WagmiAppConfig>
+      <Providers>
+        {children}
+      </Providers>
+    </WagmiAppConfig>
     </body>
     </html>
   )

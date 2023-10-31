@@ -8,9 +8,20 @@ import {useEffect} from "react";
 import {fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
 import {usePathname} from "next/navigation";
 import Link from "next/link";
+import {useConnect, useNetwork, useSwitchNetwork} from "wagmi";
+import {chains} from "@/components/layout/WagmiAppConfig";
 
 const Header = () => {
   const pathname = usePathname()
+  const {connect, connectors} = useConnect()
+  const {switchNetwork} = useSwitchNetwork()
+  const {chain} = useNetwork()
+
+  useEffect(() => {
+    if (chains[0].id !== chain?.id) {
+      switchNetwork?.(chains[0].id)
+    }
+  }, [])
 
   return (
     <header className={clsx(styles.header, pathname.includes('sports') && styles.sports)}>
@@ -20,7 +31,7 @@ const Header = () => {
       <div className={styles.headerContent}>
         <Link href='/sports' className={/[0-9]/.test(pathname) ? styles.back : styles.backnone}>BACK</Link>
         <div className={styles.portfolioWrap}>
-          <Image src='/metamask.png' alt='' width={40} height={40}/>
+          <Image src='/metamask.png' alt='' width={40} height={40} onClick={() => connect({connector: connectors[0]})}/>
           <div className={styles.portfolio}>
             <div>portfolio</div>
             <p><img src="/tether.svg" alt=""/> 4k</p>

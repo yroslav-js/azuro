@@ -17,6 +17,7 @@ export interface IGames {
 export interface ILeagues {
   id: string
   slug: string
+  name: string
 }
 
 export interface ISports {

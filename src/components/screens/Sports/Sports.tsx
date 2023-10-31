@@ -39,8 +39,22 @@ const Sports = () => {
       const promise = dispatch(fetchSportsGames({sortTime: sortTime[sort]}))
       return () => promise.abort()
     } else {
-      const promise = dispatch(fetchSportsGames({sortTime: sortTime[sort], filter: pathname.split('/sports/').pop()}))
-      return () => promise.abort()
+      const pathArray = pathname.split('/')
+      console.log(pathArray)
+      if (pathArray.length === 2) {
+        const promise = dispatch(fetchSportsGames({sortTime: sortTime[sort]}))
+        return () => promise.abort()
+      } else if (pathArray.length === 3) {
+        const promise = dispatch(fetchSportsGames({sortTime: sortTime[sort], filter: pathArray.pop()}))
+        return () => promise.abort()
+      } else if (pathArray.length === 4) {
+        const promise = dispatch(fetchSportsGames({
+          sortTime: sortTime[sort],
+          filter: pathArray[2],
+          league: pathArray.pop()
+        }))
+        return () => promise.abort()
+      }
     }
   }, [pathname, sort]);
 
