@@ -6,16 +6,186 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {getMarketName, getSelectionName} from "@azuro-org/dictionaries";
 import {setBasketEvents} from "@/redux/features/azuroSlice";
+import {useAccount, useContractWrite, useWaitForTransaction} from 'wagmi'
+import {encodeAbiParameters, formatUnits, parseAbiParameters, parseUnits} from "viem";
+import {IBasket} from "@/redux/features/azuroInterface";
+import {CONTRACT_ADDRESS, USDT_ADDRESS} from "@/contract/config";
+import abi from "@/contract/abi";
+import {ethers} from "ethers";
+
 
 const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, setBasket}: {
-  basket: any,
-  setBasket: any,
+  basket: IBasket[],
+  setBasket: Dispatch<SetStateAction<IBasket[]>>,
   isBasketOpen?: boolean,
   setIsBasketOpen?: Dispatch<SetStateAction<boolean>>
 }) => {
   const basketEvents = useAppSelector(state => state.azuroSlice.basket)
   const dispatch = useAppDispatch()
   const [firstRender, setFirstRender] = useState(true)
+  const [amount, setAmount] = useState('0.01')
+  const {address} = useAccount()
+
+  // const data = basket.length > 1 ? encodeAbiParameters(
+  //   parseAbiParameters('(uint256, uint64)[]'),
+  //   [
+  //     basket.map(conditions => {
+  //       return [
+  //         BigInt(conditions.conditionId),
+  //         BigInt(conditions.outcomeId),
+  //       ]
+  //     }) as readonly (readonly [bigint, bigint])[],
+  //   ]
+  // ) : basket.length && encodeAbiParameters(
+  //   parseAbiParameters('uint256, uint64'),
+  //   [BigInt(basket[0]?.conditions[0]?.conditionId || ''),
+  //     BigInt(basket[0]?.conditions[0]?.outcomes[0]?.outcomeId || ''),]
+  // )
+
+  const data1 = encodeAbiParameters(
+    parseAbiParameters('uint256, uint64'),
+    [BigInt(basket[0]?.conditions[0]?.conditionId || ''),
+      BigInt(basket[0]?.conditions[0]?.outcomes[0]?.outcomeId || ''),]
+  )
+  const data2 = encodeAbiParameters(
+    parseAbiParameters('uint256, uint64'),
+    [BigInt(basket[1]?.conditions[0]?.conditionId || ''),
+      BigInt(basket[1]?.conditions[0]?.outcomes[0]?.outcomeId || ''),]
+  )
+
+
+  console.log([
+    basket.map(conditions => {
+      return [
+        BigInt(conditions.conditionId),
+        BigInt(conditions.outcomeId),
+      ]
+    }) as readonly (readonly [bigint, bigint])[],
+  ])
+
+  // const data = encodeAbiParameters(
+  //   parseAbiParameters('uint256, uint64'),
+  //   [BigInt(basket[0]?.conditions[0]?.conditionId || ''),
+  //     BigInt(basket[0]?.conditions[0]?.outcomes[0]?.outcomeId || ''),]
+  // )
+
+  const prematchCoreAddress = '0x8ea11e2aefab381e87b644e018ae1f78aa338851'
+  const currentOdds = 1.5
+  const slippage = 5
+  const minOdds = 1 + (currentOdds - 1) * (100 - slippage) / 100
+  const oddsDecimals = 12
+  const rawMinOdds = parseUnits(minOdds.toFixed(oddsDecimals), oddsDecimals)
+  // const USDT_DECIMALS = 6
+  const POLYGON_DECIMALS = 18
+  const affiliate = '0x0000000000000000000000000000000000000000'
+  const lp = '0xe47F16bc95f4cF421f008BC5C23c1D3d5F402935'
+
+
+  // console.log(lp,
+  //   [
+  //     {
+  //       core: prematchCoreAddress,
+  //       amount: "10000",
+  //       expiresAt: BigInt(Math.floor(Date.now() / 1000) + 20000),
+  //       extraData: {
+  //         affiliate,
+  //         minOdds: 0,
+  //         data,
+  //       }
+  //     }
+  //   ])
+
+  const usdtAbi = [{
+    "inputs": [{"internalType": "address", "name": "owner", "type": "address"}, {
+      "internalType": "address",
+      "name": "spender",
+      "type": "address"
+    }],
+    "name": "allowance",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  }, {
+    "inputs": [{"internalType": "address", "name": "spender", "type": "address"}, {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }],
+    "name": "approve",
+    "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }, {
+    "inputs": [{"internalType": "address", "name": "account", "type": "address"}, {
+      "internalType": "uint256",
+      "name": "amount",
+      "type": "uint256"
+    }], "name": "mint", "outputs": [], "stateMutability": "nonpayable", "type": "function"
+  }, {
+    "inputs": [{"internalType": "address", "name": "account", "type": "address"}],
+    "name": "balanceOf",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  }]
+
+  const {write: usdtWrite, data: usdtData} = useContractWrite({
+    address: CONTRACT_ADDRESS,
+    abi: usdtAbi,
+    functionName: 'mint',
+    args: [
+      address,
+      parseUnits(amount, 6)
+    ],
+  })
+
+  const {isSuccess} = useWaitForTransaction({
+    hash: usdtData?.hash,
+  })
+
+  const {write: approveWrite, data: approveData} = useContractWrite({
+    address: USDT_ADDRESS,
+    abi: usdtAbi,
+    functionName: 'approve',
+    args: [
+      CONTRACT_ADDRESS,
+      parseUnits(amount, 6).toString()
+    ],
+  })
+
+  const {isSuccess: isApproveSuccess} = useWaitForTransaction({
+    hash: approveData?.hash,
+  })
+
+  const {write} = useContractWrite({
+    address: CONTRACT_ADDRESS,
+    abi: abi,
+    functionName: 'bet',
+    args: [
+      lp,
+      basket.map(item => {
+        return {
+          core: prematchCoreAddress,
+          amount: parseUnits(amount, 6).toString(),
+          expiresAt: BigInt(Math.floor(Date.now() / 1000) + 20000),
+          extraData: {
+            affiliate,
+            minOdds: 0,
+            data: encodeAbiParameters(
+              parseAbiParameters('uint256, uint64'),
+              [BigInt(item.conditionId), BigInt(item.outcomeId)]
+            ),
+          }
+        }
+      }),
+      // '0x99a5116128821826E88f9c06B4c0d6454bb2Ded3'
+      '0x0000000000000000000000000000000000000000'
+    ],
+  })
+
+  useEffect(() => {
+    isApproveSuccess && write()
+  }, [isApproveSuccess])
 
   useEffect(() => {
     if (!firstRender) {
@@ -62,23 +232,9 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
             <img className={styles.flag} src="/sports/flag.png" alt=""/>
             {item.title}
             <img className={styles.delete}
-              //      onClick={() => {
-              //   const indexItem = basket.findIndex((indexItem: any) => indexItem.id === item.id)
-              //   if (indexItem !== -1) {
-              //     if (basket[indexItem]?.outcomeId === odd.outcomeId)
-              //       return setBasket((prevState: any) => [...prevState.filter((_: any, index: number) => index !== indexItem)])
-              //     return setBasket((prevState: any) => [...prevState.map((event: any, index: number) => {
-              //       if (index === indexItem) return {...event, outcomeId: odd.outcomeId}
-              //       return {...event}
-              //     })])
-              //   }
-              //   setBasket((prevState: any) => [...prevState, {
-              //     id: item.id,
-              //     outcomeId: odd.outcomeId,
-              //     title: item.title,
-              //     conditions: [...item.conditions]
-              //   }])
-              // }}
+                 onClick={() => {
+                   return setBasket((prevState) => [...prevState.filter((basketItem) => basketItem.id !== item.id)])
+                 }}
                  src="/sports/garbage.svg" alt=""/>
           </div>
           <div className={styles.oddsWrapper}>
@@ -86,20 +242,21 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
               <div className={styles.oddsHeading}>{getMarketName({outcomeId: outcome.outcomes[0].outcomeId})}</div>
               <div className={styles.odds}>
                 {outcome.outcomes.map(odd => (<div onClick={() => {
-                  const indexItem = basket.findIndex((indexItem: any) => indexItem.id === item.id)
+                  const indexItem = basket.findIndex((indexItem) => indexItem.id === item.id)
                   if (indexItem !== -1) {
                     if (basket[indexItem]?.outcomeId === odd.outcomeId)
-                      return setBasket((prevState: any) => [...prevState.filter((_: any, index: number) => index !== indexItem)])
-                    return setBasket((prevState: any) => [...prevState.map((event: any, index: number) => {
+                      return setBasket((prevState) => [...prevState.filter((_, index: number) => index !== indexItem)])
+                    return setBasket((prevState) => [...prevState.map((event, index: number) => {
                       if (index === indexItem) return {...event, outcomeId: odd.outcomeId}
                       return {...event}
                     })])
                   }
-                  setBasket((prevState: any) => [...prevState, {
+                  setBasket(prevState => [...prevState, {
                     id: item.id,
                     outcomeId: odd.outcomeId,
                     title: item.title,
-                    conditions: [...item.conditions]
+                    conditions: item.conditions,
+                    conditionId: outcome.conditionId
                   }])
                 }} key={odd.outcomeId} className={clsx(styles.odd,
                   item.outcomeId === odd.outcomeId && styles.activeOdd)}>
@@ -131,7 +288,10 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
           </div>))}
         </div>
         <div className={styles.placeBetWrapper}>
-          <button className={styles.placeBet}>Place bet $ 40</button>
+          <button className={styles.placeBet} onClick={() => {
+            approveWrite()
+          }}>Place bet $ 40
+          </button>
         </div>
       </div>
     </div>

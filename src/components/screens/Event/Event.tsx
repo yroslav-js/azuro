@@ -10,9 +10,10 @@ import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {getMarketName, getSelectionName} from "@azuro-org/dictionaries";
 import {fetchSports, fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
 import {usePathname} from "next/navigation";
+import {IBasket} from "@/redux/features/azuroInterface";
 
 const Event = ({id, league, sports}: { id: string, sports: string, league: string }) => {
-  const [basket, setBasket] = useState<any>([])
+  const [basket, setBasket] = useState<IBasket[]>([])
   const game = useAppSelector(state => state.azuroSlice.sports.find(sport => sport.slug === sports)?.games.find(game => game.id === id))
   const pathname = usePathname()
   const dispatch = useAppDispatch()

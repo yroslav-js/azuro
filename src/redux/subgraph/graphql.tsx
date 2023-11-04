@@ -16,6 +16,7 @@ query Navigation($gameFilter: Game_filter, $sportFilter: Sport_filter) {
           currentOdds
           outcomeId
         }
+        conditionId
       }
       participants {
         image

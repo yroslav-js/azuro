@@ -77,12 +77,10 @@ export default function Home() {
   // const marketDescription = getMarketDescription({outcomeId: 29})
   const selectionName = getSelectionName({outcomeId: 29})
 
-  console.log(marketName, selectionName)
-
-  console.log(getSelectionName({
-    outcomeId: 7039,
-    withPoint: true
-  }))
+  // console.log(getSelectionName({
+  //   outcomeId: 7039,
+  //   withPoint: true
+  // }))
   //
   //
   // const func = async () => {

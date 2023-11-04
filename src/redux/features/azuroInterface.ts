@@ -1,4 +1,5 @@
 export interface IConditions {
+  conditionId: string
   outcomes: {
     currentOdds: string
     outcomeId: string
@@ -12,6 +13,14 @@ export interface IGames {
   conditions: IConditions[]
   participants: { image: string }[]
   league: { slug: string }
+}
+
+export interface IBasket {
+  id: string
+  outcomeId: string
+  title: string
+  conditionId: string
+  conditions: IConditions[]
 }
 
 export interface ILeagues {

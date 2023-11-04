@@ -15,6 +15,7 @@ import * as animationData from './Gradient-background.json'
 import {setBasketEvents} from "@/redux/features/azuroSlice";
 import {fetchSports, fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
 import {usePathname, useSearchParams} from "next/navigation";
+import {IBasket} from "@/redux/features/azuroInterface";
 
 const sortItems = ['All', 'Today', 'Tomorrow', '1h', '3h', '6h']
 
@@ -27,7 +28,7 @@ const Sports = () => {
   const [isBasketOpen, setIsBasketOpen] = useState(false)
   const [isStopped, setIsStopped] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
-  const [basket, setBasket] = useState<any>([])
+  const [basket, setBasket] = useState<IBasket[]>([])
   const basketEvents = useAppSelector(state => state.azuroSlice.basket)
   const [sort, setSort] = useState<keyof typeof sortTime>('All')
   const query = useSearchParams()
@@ -40,7 +41,6 @@ const Sports = () => {
       return () => promise.abort()
     } else {
       const pathArray = pathname.split('/')
-      console.log(pathArray)
       if (pathArray.length === 2) {
         const promise = dispatch(fetchSportsGames({sortTime: sortTime[sort]}))
         return () => promise.abort()
@@ -196,9 +196,10 @@ const Sports = () => {
                               return {...event}
                             })])
                           }
-                          setBasket((prevState: any) => [...prevState, {
+                          setBasket((prevState) => [...prevState, {
                             id: game.id,
                             outcomeId: outcome.outcomeId,
+                            conditionId: odd.conditionId,
                             title: game.title,
                             conditions: [...game.conditions]
                           }])
