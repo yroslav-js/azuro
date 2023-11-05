@@ -24,7 +24,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   const dispatch = useAppDispatch()
   const [firstRender, setFirstRender] = useState(true)
   const {address} = useAccount()
-  const [amount, setAmount] = useState<string[]>([])
+  const [amount, setAmount] = useState(new Map())
 
   // const currentOdds = 1.5
   // const slippage = 5
@@ -52,13 +52,22 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   //   hash: usdtData?.hash,
   // })
 
+  const sumOfMap = () => {
+    let sum = 0
+    amount.forEach(v => {
+      sum += v
+    })
+
+    return sum
+  }
+
   const {write: approveWrite, data: approveData} = useContractWrite({
     address: USDT_ADDRESS,
     abi: tokenAbi,
     functionName: 'approve',
     args: [
       CONTRACT_ADDRESS,
-      parseUnits(amount.reduce((a, n) => +a + +n, 0).toString(), TOKEN_DECIMALS).toString()
+      parseUnits(sumOfMap().toString(), TOKEN_DECIMALS).toString()
     ],
   })
 
@@ -75,7 +84,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
       basket.map((item, index) => {
         return {
           core: prematchCoreAddress,
-          amount: parseUnits(amount[index], TOKEN_DECIMALS).toString(),
+          amount: parseUnits(amount.get(item.id) || '0', TOKEN_DECIMALS).toString(),
           expiresAt: BigInt(Math.floor(Date.now() / 1000) + 20000),
           extraData: {
             affiliate,
@@ -96,6 +105,9 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   }, [isApproveSuccess])
 
   useEffect(() => {
+      setAmount(map => new Map(...basket.map(item => {
+        return map.set(item.id, map.has(item.id) ? map.get(item.id) : '0')
+      })))
     if (!firstRender) {
       localStorage && localStorage.setItem('basket', JSON.stringify(basket))
       localStorage && dispatch(setBasketEvents([...basket]))
@@ -105,11 +117,12 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   useEffect(() => {
     if (setBasket && localStorage) {
       const events: IBasket[] = JSON.parse(localStorage.getItem('basket') || '[]')
-      setAmount(events.map((_) => '0'))
       setBasket([...events])
     }
     setFirstRender(false)
   }, []);
+
+  console.log(amount)
 
   return (
     <div className={clsx(styles.basket, isBasketOpen && styles.open)}>
@@ -179,7 +192,9 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
             </div>))}
           </div>
           <div className={styles.amount}>
-            <input type="number"/>
+            <input type="number" value={amount.get(item.id)} onChange={(e) => {
+              setAmount(map => new Map(map.set(item.id, Math.abs(+e.target.value).toString())))
+            }}/>
             <div>200$</div>
             <div>50$</div>
             <div>10%</div>
