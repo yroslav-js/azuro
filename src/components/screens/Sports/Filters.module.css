@@ -2,8 +2,7 @@
     min-width: 374px;
     max-width: 374px;
     border-radius: 12px;
-    background-color: var(--surface-background);
-    border: 1px solid var(--text-accent-2);
+    background-color: var(--surface-mid-priority);
     box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.20);
     height: fit-content;
     position: relative;

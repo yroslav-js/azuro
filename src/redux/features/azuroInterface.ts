@@ -12,7 +12,7 @@ export interface IGames {
   startsAt: string
   conditions: IConditions[]
   participants: { image: string }[]
-  league: { slug: string }
+  league: ILeagues
 }
 
 export interface IBasket {

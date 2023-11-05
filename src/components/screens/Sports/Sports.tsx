@@ -78,6 +78,8 @@ const Sports = () => {
     setLoading(false)
   }, [sports]);
 
+  console.log(sports)
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.mobileBasket} onClick={() => setIsBasketOpen(true)}>
@@ -144,7 +146,7 @@ const Sports = () => {
             <div className={styles.event}>
               <div className={styles.teamsWrapper}>
                 <div className={styles.teamsHeading}>
-                  <div>La Liga</div>
+                  <div>{game.league.name}</div>
                   <p>{formatDate(+game.startsAt)}</p>
                   <span><img src="/share.svg" alt=""/></span>
                   <span><img src="/bookmark.svg" alt=""/></span>

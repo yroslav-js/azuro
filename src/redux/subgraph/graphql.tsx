@@ -23,6 +23,8 @@ query Navigation($gameFilter: Game_filter, $sportFilter: Sport_filter) {
       }
       league {
         slug
+        name
+        id
       }
     }
   }

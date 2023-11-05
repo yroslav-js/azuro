@@ -13,7 +13,6 @@
     "@azuro-org/dictionaries": "^3.0.9",
     "@azuro-org/toolkit": "^3.0.0",
     "@reduxjs/toolkit": "^1.9.7",
-    "@usedapp/core": "^1.2.13",
     "clsx": "^2.0.0",
     "ethers": "^5.7.2",
     "graphql": "^16.8.1",

@@ -1,9 +1,9 @@
 :root {
-    --surface-background: #f2f2f7;
+    --surface-background: #E1E1E5;
     --surface-transperent-80: rgba(255, 255, 255, 0.8);
     --surface-transperent-40: rgba(255, 255, 255, 0.4);
     --surface-high-priority: #ffffff;
-    --surface-mid-priority: #e6e6ec;
+    --surface-mid-priority: #F2F2F7;
     --elements-orange: #f57425;
     --elements-red: #ed2939;
     --elements-transperent-black-40: rgba(0, 0, 0, .4);

@@ -54,7 +54,7 @@
     width: 100%;
     border-radius: 10px;
     overflow: hidden;
-    background-color: var(--surface-high-priority);
+    background-color: var(--surface-mid-priority);
     box-shadow: 0px 4px 7px 0px #0000001A;
     padding-bottom: 4px;
     margin-bottom: 16px;

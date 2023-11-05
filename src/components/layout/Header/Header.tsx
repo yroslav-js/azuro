@@ -52,9 +52,9 @@ const Header = () => {
         </div>
         <button className={clsx(styles.notification, 'flexCenter')}><img src="/notification.svg" alt=""/></button>
         <img src="/discord.svg" alt="" className={styles.discord}/>
-        <button className={clsx(styles.signout, 'flexCenter')}>Sign out
-          {/*<img src="/logout.svg" alt=""/>*/}
-        </button>
+        {/*<button className={clsx(styles.signout, 'flexCenter')}>Sign out*/}
+        {/*  /!*<img src="/logout.svg" alt=""/>*!/*/}
+        {/*</button>*/}
       </div>
     </header>
   );

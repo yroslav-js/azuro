@@ -7,7 +7,7 @@ interface IGameFilter {
   startsAt_lt?: number
   hasActiveConditions: boolean
   league_?: {
-    slug: string
+    slug_in: string[]
   }
 }
 
@@ -43,7 +43,7 @@ export const fetchSportsGames = createAsyncThunk(
       }
 
       if (filter && filter !== '/sports') sportFilter.slug = filter
-      if (league) gameFilter.league_ = {slug: league}
+      if (league) gameFilter.league_ = {slug_in: [league]}
 
       if (sortTime === 'Tomorrow') {
         gameFilter.startsAt_gt = Math.floor(getToday() + 60 + Date.now() / 1000)

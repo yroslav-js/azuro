@@ -1,42 +1,81 @@
 .basket {
     min-width: 374px;
     border-radius: 12px;
-    border: 1px solid var(--text-accent-2);
     height: fit-content;
-    background-color: var(--surface-high-priority);
+    background-color: var(--surface-mid-priority);
     overflow: hidden;
-    box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1);
 }
 
 .basketHeading {
     display: flex;
     border-radius: 12px 12px 0 0;
-    height: 44px;
+    height: 48px;
     overflow: hidden;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--surface-high-priority);
+    padding: 0 16px;
 }
 
-.basketHeading > div {
-    /*width: 50%;*/
-    width: 100%;
+.betSlip {
+    width: 78px;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-high-priority);
+}
+
+.clearAll {
+    width: 78px;
+    height: 24px;
+    border-radius: 12px;
+    background-color: var(--surface-background);
+    padding: 0 8px 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-low-priority);
+    cursor: pointer;
+}
+
+.betType {
+    width: 125px;
+    background-color: var(--surface-mid-priority);
+    border-radius: 9px;
+    height: 36px;
+    border: 1px solid var(--surface-background);
+    display: flex;
+    justify-content: space-between;
+    padding: 1px;
+}
+
+.betType div {
+    width: 50%;
+    font-size: 13px;
+    color: var(--text-mid-priority);
+    font-weight: 400;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--surface-high-priority);
-    font-size: 17px;
-    color: var(--text-high-priority);
-    font-weight: 700;
+    height: 100%;
 }
 
-.basketHeading > div + div {
-    box-shadow: 5px 0px 4px 0px rgba(0, 0, 0, 0.15) inset;
-    color: var(--text-low-priority);
-    background: var(--surface-background);
+.betType .betTypeActive {
+    height: 100%;
+    border: 1px solid var(--text-accent-2);
+    border-radius: 7px;
+    box-shadow: 0 4px 10px 0 #00000026;
+    font-weight: 500;
+    color: var(--text-high-priority);
+    background-color: var(--surface-high-priority);
 }
 
 .emptyBasket {
-    padding: 112px 18px 170px;
-    font-size: 20px;
-    line-height: 24px;
+    padding: 112px 16px 170px;
+    font-size: 16px;
+    line-height: 21px;
     color: var(--text-low-priority);
     font-weight: 400;
     text-align: center;
@@ -49,7 +88,7 @@
 }
 
 .emptyBasket button {
-    background-color: var(--surface-mid-priority);
+    background-color: var(--surface-background);
     border-radius: 10px;
     height: 48px;
     width: 100%;
@@ -70,40 +109,6 @@
     max-height: calc(100vh - 146px);
 }
 
-.betType {
-    width: 100%;
-    background-color: var(--surface-mid-priority);
-    border-radius: 12px;
-    height: 44px;
-    border: 1px solid var(--surface-high-priority);
-    display: flex;
-    justify-content: space-between;
-    overflow: hidden;
-    padding: 1px;
-    margin-bottom: 11px;
-}
-
-.betType div {
-    width: 50%;
-    font-size: 16px;
-    color: var(--text-mid-priority);
-    font-weight: 400;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
-.betType .betTypeActive {
-    height: 100%;
-    border: 2px solid var(--text-accent-2);
-    border-radius: 10px;
-    box-shadow: 0px 4px 7px 0px #0000001A;
-    font-weight: 500;
-    color: var(--text-high-priority);
-    background-color: var(--surface-high-priority);
-}
-
 .selectionText {
     font-weight: 500;
     font-size: 15px;
@@ -118,61 +123,71 @@
     width: 374px;
     margin-left: -16px;
     margin-right: -16px;
-    padding: 0 16px;
-    margin-bottom: 12px;
+    padding: 0 16px 12px;
 }
 
 .selectionSelect {
     display: flex;
-    max-width: 184px;
-    background-color: var(--surface-mid-priority);
-    padding: 4px;
-    height: 48px;
+    max-width: 182px;
+    width: 182px;
+    min-width: 182px;
+    background-color: var(--surface-background);
+    padding: 2px;
+    height: 44px;
     border-radius: 24px;
+    gap: 8px;
+    overflow: hidden;
+    justify-content: space-between;
+}
+
+.selectionSelect input {
+    width: 62px;
+    padding-left: 14px;
+    background-color: var(--surface-background);
+    display: flex;
+    text-align: center;
+    align-items: center;
+    height: 100%;
+    font-size: 13px;
+    color: var(--text-low-priority);
+    border-radius: 20px;
 }
 
 .selectionSelect div {
     display: flex;
     height: 100%;
-    width: 70px;
     border-radius: 20px;
     align-items: center;
     justify-content: center;
-    color: var(--text-low-priority);
-    font-size: 13px;
     font-weight: 400;
-}
-
-.selectionSelect div.selectionLong {
     width: 106px;
-}
-
-.selectionSelect .activeSelection {
-    border: 1px solid var(--elements-accent-5);
-    box-shadow: 0px 4px 7px 0px #0000001A;
-    font-size: 16px;
-    color: var(--text-mid-priority);
     background-color: var(--surface-high-priority);
+    border: 1px solid var(--transperent-accent-2);
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.15);
+    color: var(--text-mid-priority);
+    font-size: 16px;
 }
 
 .selectionAmount {
     min-width: 101px;
     min-height: 100%;
-    border-radius: 24px;
-    border: 1px solid var(--elements-accent-5);
+    border-radius: 22px;
+    background-color: var(--surface-high-priority);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 16px;
     color: var(--text-mid-priority);
     font-weight: 400;
+    height: 44px;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.15);
 }
 
 .activeSelectionAmount {
     border: none;
     background-color: var(--text-accent-2);
     color: var(--text-ctas-buttons);
-    box-shadow: 0px 4px 7px 0px #0000001A;
+    box-shadow: 0 4px 7px 0 #0000001A;
 }
 
 .event {
@@ -205,8 +220,8 @@
     align-items: end;
     gap: 10px;
     width: 374px;
-    margin: 0 -16px 12px;
-    padding: 0 16px;
+    margin: 0 -16px;
+    padding: 0 16px 12px;
     overflow-x: auto;
     overflow-y: hidden;
 }
@@ -223,32 +238,32 @@
 
 .odds {
     display: flex;
-    height: 57px;
+    height: 44px;
     gap: 8px;
 }
 
 .odd {
     height: 100%;
-    width: 80px;
+    width: 60px;
     border-radius: 6px;
     border: 1px solid var(--elements-accent-5);
-    box-shadow: 0px 4px 7px 0px #0000001A;
+    box-shadow: 0 4px 7px 0 #0000001A;
     background-color: var(--surface-high-priority);
     cursor: pointer;
 }
 
 .activeOdd {
     border-color: var(--elements-orange);
-    box-shadow: 0px 2px 10px 0px rgba(245, 116, 37, 0.5);
+    box-shadow: 0 2px 10px 0 rgba(245, 116, 37, 0.5);
 }
 
 .odd div {
     border-bottom: 1px solid var(--transperent-accent-2);
     display: flex;
     align-items: center;
-    height: 27px;
+    height: 21px;
     justify-content: center;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--text-mid-priority);
 }
@@ -259,10 +274,10 @@
 
 .odd span {
     display: flex;
-    height: 30px;
+    height: 23px;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--text-accent-2);
 }
@@ -274,16 +289,15 @@
 .amount {
     display: flex;
     justify-content: space-between;
-    height: 48px;
+    height: 56px;
     gap: 8px;
-    margin-bottom: 12px;
+    padding-bottom: 12px;
 }
 
 .amount div {
     height: 100%;
     width: 72px;
-    border-radius: 24px;
-    border: 1px solid var(--elements-accent-5);
+    border-radius: 22px;
     min-height: 100%;
     display: flex;
     align-items: center;
@@ -291,13 +305,16 @@
     font-size: 16px;
     color: var(--text-mid-priority);
     font-weight: 400;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.15);
+    background-color: var(--surface-high-priority);
+    cursor: pointer;
 }
 
 .amount input {
     width: 100px;
     height: 100%;
     border-radius: 8px;
-    background-color: var(--surface-mid-priority);
+    background-color: var(--surface-background);
     display: flex;
     align-items: center;
     text-align: center;
@@ -310,7 +327,7 @@
     padding: 15px 12px 12px;
     width: 100%;
     border-radius: 8px;
-    background-color: var(--surface-mid-priority);
+    background-color: var(--surface-background);
 }
 
 .total > div {
@@ -383,7 +400,7 @@
 }
 
 .placeBet {
-    box-shadow: 0px 4px 7px 0px #0000001A;
+    box-shadow: 0 4px 7px 0 #0000001A;
     width: 100%;
     height: 48px;
     margin-top: 8px;
@@ -417,7 +434,7 @@
         width: 40px;
         height: 40px;
         background-color: rgba(0, 0, 0, .4);
-        box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.1);
         transition: opacity .2s linear;
         border-radius: 50%;
     }
@@ -496,7 +513,7 @@
         height: 74px;
         padding: 10px 16px 16px;
         background-color: var(--surface-transperent-40);
-        box-shadow: 0px -5px 10px 0px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.1);
         backdrop-filter: blur(5px);
         z-index: 200;
     }
