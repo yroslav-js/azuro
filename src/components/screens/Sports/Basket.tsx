@@ -55,7 +55,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   const sumOfMap = () => {
     let sum = 0
     amount.forEach(v => {
-      sum += v
+      sum += +v
     })
 
     return sum
@@ -105,9 +105,9 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   }, [isApproveSuccess])
 
   useEffect(() => {
-      setAmount(map => new Map(...basket.map(item => {
-        return map.set(item.id, map.has(item.id) ? map.get(item.id) : '0')
-      })))
+    setAmount(map => new Map(...basket.map(item => {
+      return map.set(item.id, map.has(item.id) ? map.get(item.id) : '0')
+    })))
     if (!firstRender) {
       localStorage && localStorage.setItem('basket', JSON.stringify(basket))
       localStorage && dispatch(setBasketEvents([...basket]))
