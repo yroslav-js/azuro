@@ -181,6 +181,7 @@
     font-weight: 400;
     height: 44px;
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.15);
+    cursor: pointer;
 }
 
 .activeSelectionAmount {
@@ -308,6 +309,13 @@
     box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.15);
     background-color: var(--surface-high-priority);
     cursor: pointer;
+}
+
+.amount .activeAmount {
+    border: none;
+    background-color: var(--text-accent-2);
+    color: var(--text-ctas-buttons);
+    box-shadow: 0 4px 7px 0 #0000001A;
 }
 
 .amount input {

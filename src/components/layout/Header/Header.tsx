@@ -4,18 +4,38 @@ import styles from './Header.module.css'
 import Image from "next/image";
 import clsx from "clsx";
 import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
-import {useEffect} from "react";
-import {fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
+import {useEffect, useState} from "react";
+import {fetchSearch, fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
 import {usePathname} from "next/navigation";
 import Link from "next/link";
 import {useConnect, useNetwork, useSwitchNetwork} from "wagmi";
 import {chains} from "@/components/layout/WagmiAppConfig";
+import {clearSearch} from "@/redux/features/azuroSlice";
+import {iconsIndex, sportsIcon} from "@/utils/sports-icon";
 
 const Header = () => {
   const pathname = usePathname()
   const {connect, connectors} = useConnect()
   const {switchNetwork} = useSwitchNetwork()
   const {chain} = useNetwork()
+  const [value, setValue] = useState('')
+  const dispatch = useAppDispatch()
+  const search = useAppSelector(state => state.azuroSlice.search)
+
+  useEffect(() => {
+    dispatch(clearSearch())
+    let promise: any
+    const timeout = setTimeout(() => {
+      if (value) {
+        promise = dispatch(fetchSearch(value))
+      }
+    }, 1000)
+
+    return () => {
+      promise?.abort()
+      clearTimeout(timeout)
+    }
+  }, [value]);
 
   useEffect(() => {
     if (chains[0].id !== chain?.id) {
@@ -42,7 +62,31 @@ const Header = () => {
           <div>Private events</div>
         </div>
         <div className={styles.input}>
-          <input type="text" className={styles.search} placeholder='Search'/>
+          <input type="text" value={value} onChange={e => setValue(e.target.value)} className={styles.search}
+                 placeholder='Search'/>
+          {!!value && <div className={styles.resultsWrapper}>
+            {!!search.length && <div className={styles.results}>
+              {/*<div className={styles.recently}>RECENTLY</div>*/}
+              {search.map((event, index) => (
+                <Link style={index % 2 ? {backgroundColor: 'rgba(225, 225, 229, 1)'} : {}}
+                      href={`/sports/${event.sport.slug}/${event.league.slug}/${event.id}`} key={event.id}
+                      className={styles.result}>
+                  {sportsIcon[iconsIndex[event.sport.slug as keyof typeof iconsIndex] || 0]}
+                  <div className={styles.resultText}>
+                    <div className={styles.searchTitle}>{event.title}</div>
+                    <div className={styles.searchOdd}>Full time result</div>
+                    <div className={styles.searchLeague}>{event.league.name}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>}
+            {!search.length && <div className={styles.empty}>
+              <Image width={90} height={90} src="/sports/noEvents.png" alt=""/>
+              <div>
+                We couldn't find any events matching your query. Try another query.
+              </div>
+            </div>}
+          </div>}
         </div>
         <button className={clsx(styles.add, 'flexCenter')}>Add event</button>
         <div className={styles.odds}>

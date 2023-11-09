@@ -20,6 +20,7 @@ export interface IBasket {
   outcomeId: string
   title: string
   conditionId: string
+  currentOdds: string
   conditions: IConditions[]
 }
 
@@ -38,17 +39,32 @@ export interface ISports {
   league: { slug: string }
 }
 
+export interface IFilterLeagues extends ILeagues {
+  games: { id: string }[]
+}
+
 export interface IFilter {
   id: string
   sportId: string
   name: string
   slug: string
-  games: { id: string }[]
-  countries: { leagues: ILeagues[] }[]
+  countries: { leagues: IFilterLeagues[] }[]
+}
+
+export interface ISearch {
+  title: string
+  id: string
+  league: {
+    slug: string
+    name: string
+  }
+  sport: {
+    slug: string
+  }
 }
 
 export interface IInitialState {
-  sports: ISports[] | []
+  sports: ISports[]
   sportFilter: IFilter[]
   basket: {
     id: string
@@ -56,4 +72,5 @@ export interface IInitialState {
     title: string
     conditions: IConditions[]
   }[]
+  search: ISearch[]
 }

@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {apolloClient} from "@/redux/subgraph/apollo";
-import {getSports, getSportsGames} from "@/redux/subgraph/graphql";
+import {getSports, getSportsGames, search} from "@/redux/subgraph/graphql";
 
 interface IGameFilter {
   startsAt_gt: number
@@ -9,6 +9,7 @@ interface IGameFilter {
   league_?: {
     slug_in: string[]
   }
+  title_contains_nocase?: string
 }
 
 interface ISportFilter {
@@ -32,7 +33,7 @@ export enum sortTime {
 
 export const fetchSportsGames = createAsyncThunk(
   'get sports games',
-  async ({sortTime, filter, league}: { sortTime: sortTime, filter?: string, league?: string }) => {
+  async ({sortTime, filter, league}: { sortTime: sortTime, filter?: string, league?: string[] }) => {
     try {
       const gameFilter: IGameFilter = {
         startsAt_gt: Math.floor(Date.now() / 1000),
@@ -43,7 +44,7 @@ export const fetchSportsGames = createAsyncThunk(
       }
 
       if (filter && filter !== '/sports') sportFilter.slug = filter
-      if (league) gameFilter.league_ = {slug_in: [league]}
+      if (league) gameFilter.league_ = {slug_in: league}
 
       if (sortTime === 'Tomorrow') {
         gameFilter.startsAt_gt = Math.floor(getToday() + 60 + Date.now() / 1000)
@@ -59,6 +60,7 @@ export const fetchSportsGames = createAsyncThunk(
       })
       return res?.data?.sports || []
     } catch (e) {
+      return []
     }
   }
 )
@@ -83,6 +85,33 @@ export const fetchSports = createAsyncThunk(
       })
       return res?.data?.sports || []
     } catch (e) {
+      return []
+    }
+  }
+)
+
+export const fetchSearch = createAsyncThunk(
+  'search',
+  async (str: string) => {
+    try {
+      const gameFilter: IGameFilter = {
+        startsAt_gt: Math.floor(Date.now() / 1000),
+        hasActiveConditions: true,
+      }
+      const sportFilter: ISportFilter = {
+        sporthub_in: ["sports"]
+      }
+      gameFilter.title_contains_nocase = str
+      const res = await apolloClient.query({
+        query: search,
+        variables: {
+          gameFilter,
+          sportFilter
+        }
+      })
+      return res?.data?.games || []
+    } catch (e) {
+      return []
     }
   }
 )

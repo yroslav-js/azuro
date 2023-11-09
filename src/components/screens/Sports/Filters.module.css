@@ -96,11 +96,22 @@ div + .filterWrapper {
 
 .filter > span {
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.filter > span > img {
+    margin-right: -4px;
 }
 
 .filterActive {
     background-color: var(--text-accent-2);
     color: var(--text-ctas-buttons);
+}
+
+.filterActive svg path {
+    fill: white;
 }
 
 .leagues {
@@ -214,7 +225,7 @@ div + .filterWrapper {
     padding: 0 12px;
 }
 
-.tags + .tagTitle {
+.leagueTag + .tagTitle, .leagueTag .tagTitle {
     margin-top: 16px;
 }
 
@@ -224,9 +235,15 @@ div + .filterWrapper {
 }
 
 .tag img {
-    width: 20px;
-    height: auto;
     margin-right: 8px;
+}
+
+.tag svg {
+    margin-right: 8px;
+}
+
+.tag svg path {
+    fill: var(--text-accent-2);
 }
 
 .clearFilter {

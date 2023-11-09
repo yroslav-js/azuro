@@ -88,20 +88,29 @@ const Event = ({id, league, sports}: { id: string, sports: string, league: strin
                   item.outcomes.length === 3 ? styles.oddsThree : styles.oddsEven)}>
                 {item.outcomes.map(outcome => (<div
                   onClick={() => {
-                    const item = basket.findIndex((item: any) => item.id === id)
-                    if (item !== -1) {
-                      if (basket[item]?.outcomeId === outcome.outcomeId)
-                        return setBasket((prevState: any) => [...prevState.filter((_: any, index: number) => index !== item)])
-                      return setBasket((prevState: any) => [...prevState.map((game: any, index: number) => {
-                        if (index === item) return {...game, outcomeId: outcome.outcomeId}
+                    const basketItem = basket.findIndex((item) => item.id === id)
+                    if (basketItem !== -1) {
+                      if (basket[basketItem]?.outcomeId === outcome.outcomeId)
+                        return setBasket(prevState => [...prevState.filter((_, index) => index !== basketItem)])
+                      return setBasket(prevState => [...prevState.map((game, index) => {
+                        if (index === basketItem) return {
+                          id: id,
+                          outcomeId: outcome.outcomeId,
+                          title: game.title,
+                          conditions: [...game.conditions],
+                          conditionId: item.conditionId,
+                          currentOdds: outcome.currentOdds,
+                        }
                         return {...game}
                       })])
                     }
-                    setBasket((prevState: any) => [...prevState, {
+                    setBasket(prevState => [...prevState, {
                       id: id,
                       outcomeId: outcome.outcomeId,
                       title: game.title,
-                      conditions: [...game.conditions]
+                      conditions: [...game.conditions],
+                      conditionId: item.conditionId,
+                      currentOdds: outcome.currentOdds,
                     }])
                   }}
                   key={outcome.outcomeId} className={clsx(styles.odd,

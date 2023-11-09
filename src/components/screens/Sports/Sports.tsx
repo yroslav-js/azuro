@@ -51,7 +51,7 @@ const Sports = () => {
         const promise = dispatch(fetchSportsGames({
           sortTime: sortTime[sort],
           filter: pathArray[2],
-          league: pathArray.pop()
+          league: pathArray.pop()?.split('%20').filter(v => v)
         }))
         return () => promise.abort()
       }
@@ -77,8 +77,6 @@ const Sports = () => {
   useEffect(() => {
     setLoading(false)
   }, [sports]);
-
-  console.log(sports)
 
   return (
     <div className={styles.wrapper}>
@@ -189,19 +187,27 @@ const Sports = () => {
                     <div className={styles.odds}>
                       {odd.outcomes.map(outcome => (<div
                         onClick={() => {
-                          const item = basket.findIndex((item: any) => item.id === game.id)
+                          const item = basket.findIndex((item) => item.id === game.id)
                           if (item !== -1) {
                             if (basket[item]?.outcomeId === outcome.outcomeId)
-                              return setBasket((prevState: any) => [...prevState.filter((_: any, index: number) => index !== item)])
-                            return setBasket((prevState: any) => [...prevState.map((event: any, index: number) => {
-                              if (index === item) return {...event, outcomeId: outcome.outcomeId}
+                              return setBasket(prevState => [...prevState.filter((_, index) => index !== item)])
+                            return setBasket(prevState => [...prevState.map((event, index) => {
+                              if (index === item) return {
+                                id: game.id,
+                                outcomeId: outcome.outcomeId,
+                                conditionId: odd.conditionId,
+                                currentOdds: outcome.currentOdds,
+                                title: game.title,
+                                conditions: [...game.conditions]
+                              }
                               return {...event}
                             })])
                           }
-                          setBasket((prevState) => [...prevState, {
+                          setBasket((prevState): IBasket[] => [...prevState, {
                             id: game.id,
                             outcomeId: outcome.outcomeId,
                             conditionId: odd.conditionId,
+                            currentOdds: outcome.currentOdds,
                             title: game.title,
                             conditions: [...game.conditions]
                           }])

@@ -38,15 +38,31 @@ query Navigation($gameFilter: Game_filter, $sportFilter: Sport_filter) {
     sportId
     name
     slug
-    games(where: $gameFilter, first: 500){
-      id
-    }
     countries {
       leagues {
+         games(where: $gameFilter, first: 500){
+           id
+         }
         id
         name
         slug
       }
+    }
+  }
+}
+`
+
+export const search = gql`
+query Navigation($gameFilter: Game_filter) {
+  games(subgraphError: allow, where: $gameFilter) {
+    title
+    id
+    league {
+      slug
+      name
+    }
+    sport {
+      slug
     }
   }
 }
