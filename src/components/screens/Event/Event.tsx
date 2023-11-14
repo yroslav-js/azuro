@@ -39,9 +39,6 @@ const Event = ({id, league, sports}: { id: string, sports: string, league: strin
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.filter}>
-        <Filters/>
-      </div>
       <div className={styles.content}>
         <div className={styles.title}>
           <Link href='/sports'>

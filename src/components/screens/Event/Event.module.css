@@ -212,12 +212,6 @@
     }
 }
 
-@media (max-width: 1350px) {
-    .filter {
-        display: none;
-    }
-}
-
 @media (max-width: 500px) {
     .title a {
         display: none;

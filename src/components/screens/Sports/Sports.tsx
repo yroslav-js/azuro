@@ -12,28 +12,46 @@ import Link from "next/link";
 import Image from "next/image";
 import Lottie from 'react-lottie';
 import * as animationData from './Gradient-background.json'
-import {setBasketEvents} from "@/redux/features/azuroSlice";
+import {setBasketEvents, setIsFilterOpen, setSortItem} from "@/redux/features/azuroSlice";
 import {fetchSports, fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
-import {usePathname, useSearchParams} from "next/navigation";
-import {IBasket} from "@/redux/features/azuroInterface";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import {IBasket, IFilter, ISortItem} from "@/redux/features/azuroInterface";
+import {iconsIndex, sportsIcon} from "@/utils/sports-icon";
 
-const sortItems = ['All', 'Today', 'Tomorrow', '1h', '3h', '6h']
+const sortItems: ISortItem[] = ['All', 'Today', 'Tomorrow', '1h', '3h', '6h']
+
+const topEventAmount = (sports: IFilter[]) => {
+  let amount = 0
+  sports.map(sport => sport.countries.map(game => game.leagues.map(league => {
+    amount += league.games.length
+  })))
+  return amount
+}
+
+const filterAmount = (sport: IFilter) => {
+  let amount = 0
+  sport.countries.map(game => game.leagues.map(league => {
+    amount += league.games.length
+  }))
+  return amount
+}
 
 const Sports = () => {
   const sports = useAppSelector(state => state.azuroSlice.sports)
+  const sort = useAppSelector(state => state.azuroSlice.sortItem)
+  const isFilterOpen = useAppSelector(state => state.azuroSlice.isFilterOpen)
+  const sportFilter = useAppSelector(state => state.azuroSlice.sportFilter)
   const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(true)
   const [closedSportsIds, setClosedSportsIds] = useState<string[]>([])
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [isBasketOpen, setIsBasketOpen] = useState(false)
   const [isStopped, setIsStopped] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [basket, setBasket] = useState<IBasket[]>([])
-  const basketEvents = useAppSelector(state => state.azuroSlice.basket)
-  const [sort, setSort] = useState<keyof typeof sortTime>('All')
   const query = useSearchParams()
   const pathname = usePathname()
   const [firstRender, setFirstRender] = useState(true)
+  const router = useRouter()
 
   useEffect(() => {
     if (pathname === '/sports') {
@@ -84,7 +102,6 @@ const Sports = () => {
         You have combo bet with 4 odds in betslip
         <Image src='/sports/basketMobile.png' alt='' width={30} height={30}/>
       </div>
-      <Filters isFilterOpen={isFilterOpen} setIsFilterOpen={setIsFilterOpen}/>
 
       {/*<Lottie options={{*/}
       {/*  loop: true,*/}
@@ -100,17 +117,21 @@ const Sports = () => {
       {/*        isPaused={isPaused}/>*/}
 
       <div className={styles.content}>
+        <span className={styles.tagFilterArrow}><img src="/sports/arrowRightGray.svg" alt=""/></span>
         <div className={styles.tagFilter}>
-          <div className={styles.tag}>
-            <img src="/sports/topeventsBlue.svg" alt=""/>
+          <div className={clsx(styles.tag, pathname === '/sports' && styles.tagActive)}
+               onClick={() => router.push('/sports/')}>
+            {sportsIcon[iconsIndex["top"]]}
             Top events
-            <span>34</span>
+            <span>{topEventAmount(sportFilter)}</span>
           </div>
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(item => (<div key={item} className={styles.tag}>
-            <img src="/sports/ball-blue.svg" alt=""/>
-            Football
-            <span>34</span>
-          </div>))}
+          {sportFilter.map(sport => (
+            <div onClick={() => router.push(`/sports/${sport.slug}`)} key={sport.slug}
+                 className={clsx(styles.tag, !!pathname.split('/').find(str => str === sport.slug) && styles.tagActive)}>
+              {sportsIcon[iconsIndex[sport.slug as keyof typeof iconsIndex] || 0]}
+              {sport.name}
+              <span>{filterAmount(sport)}</span>
+            </div>))}
         </div>
         <div className={styles.contentHeading}>
           <div>Top {sports.find(sport => sport.slug === pathname.split('/sports/').pop())?.name} Events</div>
@@ -119,11 +140,15 @@ const Sports = () => {
               <div key={item} onClick={() => {
                 if (sort !== item) {
                   setLoading(true)
-                  setSort(item as keyof typeof sortTime)
+                  dispatch(setSortItem(item))
                 }
               }}
                    className={sort === item ? styles.activeSort : ''}>{item}</div>))}
-            <img src="/sports/openFilter.svg" alt="" onClick={() => setIsFilterOpen(true)}/>
+          </div>
+          <div className={styles.openFilter} onClick={() => dispatch(setIsFilterOpen(true))}>
+            FILTER
+            <img src="/sports/openFilter.svg" alt=""/>
+            <span>1</span>
           </div>
         </div>
         {!loading && sports.map(sport => sport.games.length ? (<div key={sport.name}
@@ -140,7 +165,7 @@ const Sports = () => {
             {sport.name.toUpperCase()}
             <img className={styles.headArrow} src="/arrow.svg" alt=""/>
           </div>
-          {sport.games.slice(0, 3).map(game => (<div key={game.id} className={styles.eventWrapper}>
+          {sport.games.map(game => (<div key={game.id} className={styles.eventWrapper}>
             <div className={styles.event}>
               <div className={styles.teamsWrapper}>
                 <div className={styles.teamsHeading}>

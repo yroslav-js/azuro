@@ -58,6 +58,8 @@
     left: 0;
     right: 0;
     bottom: 0;
+    height: 0;
+    overflow: hidden;
 }
 
 .classicFilter.chosenFilter {
@@ -65,6 +67,7 @@
     pointer-events: all;
     position: relative;
     top: 0;
+    height: fit-content;
 }
 
 .title {
@@ -103,11 +106,16 @@ div + .filterWrapper {
 
 .filter > span > img {
     margin-right: -4px;
+    display: none;
 }
 
 .filterActive {
     background-color: var(--text-accent-2);
     color: var(--text-ctas-buttons);
+}
+
+.filterActive > span > img {
+    display: inline-block;
 }
 
 .filterActive svg path {
@@ -177,6 +185,7 @@ div + .filterWrapper {
     pointer-events: none;
     opacity: 0;
     transition: opacity .2s linear;
+    height: 0;
 }
 
 .tagFilter.chosenFilter {
@@ -184,6 +193,7 @@ div + .filterWrapper {
     pointer-events: all;
     position: relative;
     top: 0;
+    height: fit-content;
 }
 
 .tagTitle {
@@ -220,18 +230,29 @@ div + .filterWrapper {
     cursor: pointer;
 }
 
+.tagActive {
+    background-color: var(--text-accent-2);
+    color: var(--text-ctas-buttons);
+}
+
 .byStatusTags .tag {
     width: fit-content;
     padding: 0 12px;
 }
 
-.leagueTag + .tagTitle, .leagueTag .tagTitle {
+.leagueTag + .tagTitle,
+.leagueTag .tagTitle,
+.tags + .tagTitle {
     margin-top: 16px;
 }
 
 .tag span {
     color: var(--text-low-priority);
     margin-left: auto;
+}
+
+.tagActive span {
+    color: var(--text-ctas-buttons);
 }
 
 .tag img {
@@ -244,6 +265,10 @@ div + .filterWrapper {
 
 .tag svg path {
     fill: var(--text-accent-2);
+}
+
+.tagActive > svg > path {
+    fill: var(--text-ctas-buttons);
 }
 
 .clearFilter {
@@ -313,6 +338,21 @@ div + .filterWrapper {
     display: none;
 }
 
+.pageBg {
+    opacity: 0;
+    position: fixed;
+    width: 1024px;
+    height: 996px;
+    top: 0;
+    right: 0;
+    background: linear-gradient(270deg,
+    rgba(0, 0, 0, 0.40) 24.41%,
+    rgba(0, 0, 0, 0.00) 61.67%);
+    z-index: 29;
+    pointer-events: none;
+    transition: opacity .2s linear;
+}
+
 @media (max-width: 1350px) {
     .classicFilter .clearFilter {
         display: block;
@@ -349,16 +389,18 @@ div + .filterWrapper {
         position: absolute;
         top: 0;
         right: 0;
-        transform: translateX(105%);
+        transform: translate(105%, 96px);
         z-index: 1;
-        min-height: 100%;
         width: 372px;
         transition: transform .2s linear;
-        max-height: calc(100vh - 100px);
+        height: 0;
+        /*overflow: hidden;*/
     }
 
     .filterOpen {
-        transform: translateX(0);
+        transform: translate(-16px, 96px);
+        height: fit-content;
+        overflow: initial;
     }
 
     .backToMain {
@@ -369,6 +411,23 @@ div + .filterWrapper {
         display: flex;
         justify-content: space-between;
         gap: 8px;
+    }
+}
+
+@media (max-width: 1025px) {
+    .showPageBg.pageBg {
+        opacity: 1;
+        pointer-events: initial;
+    }
+
+    .filters {
+        transform: translate(105%, 16px);
+        z-index: 30;
+        box-shadow: none;
+    }
+
+    .filterOpen {
+        transform: translate(-16px, 16px);
     }
 }
 

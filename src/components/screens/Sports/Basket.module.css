@@ -5,6 +5,13 @@
     background-color: var(--surface-mid-priority);
     overflow: hidden;
     box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    transition: opacity .2s linear;
+}
+
+.zeroOpacity {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .basketHeading {
@@ -429,6 +436,20 @@
 
 .closeModal {
     display: none;
+}
+
+@media (max-width: 1025px) {
+    .basket {
+        display: block;
+        position: fixed;
+        top: 0;
+        right: 0;
+        transform: translate(105%, 16px);
+        z-index: 20;
+        width: 372px;
+        transition: transform .2s linear;
+        max-height: calc(100vh - 100px);
+    }
 }
 
 @media (max-width: 500px) {

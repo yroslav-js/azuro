@@ -66,7 +66,17 @@ const Header = () => {
                  placeholder='Search'/>
           {!!value && <div className={styles.resultsWrapper}>
             {!!search.length && <div className={styles.results}>
-              {/*<div className={styles.recently}>RECENTLY</div>*/}
+              {/*<div className={styles.searchHeading}>*/}
+              {/*  <span>ALL</span>*/}
+              {/*  <span>TOP RATED</span>*/}
+              {/*</div>*/}
+              {/*<div className={styles.searchSort}>*/}
+              {/*  <div className={styles.amountResults}>RESULTS: {search.length}</div>*/}
+              {/*  <div className={styles.sort}>*/}
+              {/*    SORT*/}
+              {/*    <span></span>*/}
+              {/*  </div>*/}
+              {/*</div>*/}
               {search.map((event, index) => (
                 <Link style={index % 2 ? {backgroundColor: 'rgba(225, 225, 229, 1)'} : {}}
                       href={`/sports/${event.sport.slug}/${event.league.slug}/${event.id}`} key={event.id}

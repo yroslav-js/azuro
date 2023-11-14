@@ -167,13 +167,15 @@
     min-height: 54px;
     border-radius: 26px;
     z-index: 10;
-    padding-top: 58px;
+    padding-top: 59px;
 }
 
 .results {
     margin: 4px;
-    border-radius: 22px;
+    border-radius: 0 0 22px 22px;
     overflow: hidden;
+    max-height: 450px;
+    overflow-y: auto;
 }
 
 .recently {
@@ -340,7 +342,7 @@
     }
 
     .input {
-        width: calc((100% - 307px) * 0.6);
+        width: calc((100% - 150px) * 0.6);
         position: relative;
     }
 

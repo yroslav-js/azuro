@@ -7,7 +7,38 @@ query Navigation($gameFilter: Game_filter, $sportFilter: Sport_filter) {
     sportId
     name
     slug
-    games(where: $gameFilter, first: 10) {
+    games(where: $gameFilter, first: 4, orderBy: turnover, orderDirection: desc) {
+      id
+      title
+      startsAt
+      conditions {
+        outcomes {
+          currentOdds
+          outcomeId
+        }
+        conditionId
+      }
+      participants {
+        image
+      }
+      league {
+        slug
+        name
+        id
+      }
+    }
+  }
+}
+`
+
+export const getFilteredSportsGames = gql`
+query Navigation($gameFilter: Game_filter, $sportFilter: Sport_filter) {
+  sports(subgraphError: allow, where: $sportFilter) {
+    id
+    sportId
+    name
+    slug
+    games(where: $gameFilter, first: 500, orderBy: turnover, orderDirection: desc) {
       id
       title
       startsAt

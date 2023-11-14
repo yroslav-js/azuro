@@ -125,6 +125,7 @@ body {
     background: var(--surface-background);
     max-width: 100vw;
     width: 100%;
+    overflow-x: hidden;
 }
 
 .flexCenter {

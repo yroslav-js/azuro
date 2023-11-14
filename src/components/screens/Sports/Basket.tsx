@@ -22,6 +22,7 @@ import abi from "@/contract/abi";
 import tokenAbi from "@/contract/tokenAbi";
 import Image from "next/image";
 import {chains} from "@/components/layout/WagmiAppConfig";
+import {ethers} from "ethers";
 
 const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, setBasket}: {
   basket: IBasket[],
@@ -30,6 +31,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   setIsBasketOpen?: Dispatch<SetStateAction<boolean>>
 }) => {
   const basketEvents = useAppSelector(state => state.azuroSlice.basket)
+  const isFilterOpen = useAppSelector(state => state.azuroSlice.isFilterOpen)
   const dispatch = useAppDispatch()
   const [firstRender, setFirstRender] = useState(true)
   const [amount, setAmount] = useState(new Map())
@@ -70,6 +72,34 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
     return sum
   }
 
+  const a = ethers.utils.defaultAbiCoder.encode(
+    [
+      "tuple(uint256 conditionId, uint64 outcomeId)[]",
+      "uint64"
+    ],
+    [
+      basket.map(({conditionId, outcomeId}) => {
+        return [
+          BigInt(conditionId),
+          BigInt(outcomeId),
+        ]
+      }),
+      '12000000000000'
+    ]
+  )
+
+  const data = encodeAbiParameters(
+    parseAbiParameters('(uint256, uint64)[]'),
+    [
+      basket.map(({conditionId, outcomeId}) => {
+        return [
+          BigInt(conditionId),
+          BigInt(outcomeId),
+        ]
+      }) as readonly (readonly [bigint, bigint])[],
+    ]
+  )
+
   const {write: approveWrite, data: approveData} = useContractWrite({
     address: USDT_ADDRESS,
     abi: tokenAbi,
@@ -77,6 +107,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
     args: [
       CONTRACT_ADDRESS,
       parseUnits(+amountForEach ? (+amountForEach * basket.length).toString() : sumOfMap().toString(), TOKEN_DECIMALS).toString()
+      // parseUnits('0.1', TOKEN_DECIMALS).toString()
     ],
   })
 
@@ -90,7 +121,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
     functionName: 'bet',
     args: [
       lp,
-      basket.map((item, index) => {
+      basket.map(item => {
         return {
           core: prematchCoreAddress,
           amount: parseUnits(+amountForEach ? amountForEach : amount.get(item.id) || '0', TOKEN_DECIMALS).toString(),
@@ -108,6 +139,26 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
       referrer
     ],
   })
+
+  // const {write} = useContractWrite({
+  //   address: CONTRACT_ADDRESS,
+  //   abi: abi,
+  //   functionName: 'bet',
+  //   args: [
+  //     lp,
+  //     [{
+  //       core: prematchCoreAddress,
+  //       amount: parseUnits('0.1' || '0', TOKEN_DECIMALS).toString(),
+  //       expiresAt: BigInt(Math.floor(Date.now() / 1000) + 2000),
+  //       extraData: {
+  //         affiliate,
+  //         minOdds: 0,
+  //         data: a,
+  //       }
+  //     }],
+  //     referrer
+  //   ],
+  // })
 
   useEffect(() => {
     isApproveSuccess && write()
@@ -132,7 +183,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   }, []);
 
   return (
-    <div className={clsx(styles.basket, isBasketOpen && styles.open)}>
+    <div className={clsx(styles.basket, isBasketOpen && styles.open, isFilterOpen && styles.zeroOpacity)}>
       <div className={styles.closeModal} onClick={() => setIsBasketOpen(false)}></div>
       <div className={styles.basketHeading}>
         <div className={styles.betSlip}>Bet slip</div>
