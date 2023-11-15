@@ -1,44 +1,13 @@
 import {gql} from "@apollo/client";
 
-export const getSportsGames = gql`
+export const getSportsGames = (limit: number) => gql`
 query Navigation($gameFilter: Game_filter, $sportFilter: Sport_filter) {
   sports(subgraphError: allow, where: $sportFilter) {
     id
     sportId
     name
     slug
-    games(where: $gameFilter, first: 4, orderBy: turnover, orderDirection: desc) {
-      id
-      title
-      startsAt
-      conditions {
-        outcomes {
-          currentOdds
-          outcomeId
-        }
-        conditionId
-      }
-      participants {
-        image
-      }
-      league {
-        slug
-        name
-        id
-      }
-    }
-  }
-}
-`
-
-export const getFilteredSportsGames = gql`
-query Navigation($gameFilter: Game_filter, $sportFilter: Sport_filter) {
-  sports(subgraphError: allow, where: $sportFilter) {
-    id
-    sportId
-    name
-    slug
-    games(where: $gameFilter, first: 500, orderBy: turnover, orderDirection: desc) {
+    games(where: $gameFilter, first: ${limit}, orderBy: turnover, orderDirection: desc) {
       id
       title
       startsAt
@@ -83,9 +52,9 @@ query Navigation($gameFilter: Game_filter, $sportFilter: Sport_filter) {
 }
 `
 
-export const search = gql`
+export const getSearch = (by: string, direction: string) => gql`
 query Navigation($gameFilter: Game_filter) {
-  games(subgraphError: allow, where: $gameFilter) {
+  games(subgraphError: allow, where: $gameFilter, first: 50, orderBy: ${by}, orderDirection: ${direction}) {
     title
     id
     league {

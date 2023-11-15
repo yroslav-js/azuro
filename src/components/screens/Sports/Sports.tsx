@@ -3,55 +3,53 @@
 import styles from './Sports.module.css'
 import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {getMarketName, getSelectionName} from "@azuro-org/dictionaries";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {formatDate} from "@/utils/formatDate";
 import clsx from "clsx";
-import Filters from "@/components/screens/Sports/Filters";
 import Basket from "@/components/screens/Sports/Basket";
 import Link from "next/link";
 import Image from "next/image";
-import Lottie from 'react-lottie';
-import * as animationData from './Gradient-background.json'
 import {setBasketEvents, setIsFilterOpen, setSortItem} from "@/redux/features/azuroSlice";
 import {fetchSports, fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
-import {usePathname, useRouter, useSearchParams} from "next/navigation";
-import {IBasket, IFilter, ISortItem} from "@/redux/features/azuroInterface";
+import {usePathname, useRouter} from "next/navigation";
+import {IBasket, ISortItem} from "@/redux/features/azuroInterface";
 import {iconsIndex, sportsIcon} from "@/utils/sports-icon";
+import {filterAmount, topEventAmount} from "@/utils/amount";
+
+var odds = require('odds-converter')
 
 const sortItems: ISortItem[] = ['All', 'Today', 'Tomorrow', '1h', '3h', '6h']
 
-const topEventAmount = (sports: IFilter[]) => {
-  let amount = 0
-  sports.map(sport => sport.countries.map(game => game.leagues.map(league => {
-    amount += league.games.length
-  })))
-  return amount
-}
+const gcd = (a: number, b: number): number => {
+  if (b < 0.0000001) return a;
+  return gcd(b, Math.floor(a % b));
+};
 
-const filterAmount = (sport: IFilter) => {
-  let amount = 0
-  sport.countries.map(game => game.leagues.map(league => {
-    amount += league.games.length
-  }))
-  return amount
+const getUKOdds = (fraction: number) => {
+  const len = fraction.toFixed(2).length - 2;
+  let denominator = Math.pow(10, len);
+  let numerator = fraction * denominator;
+  const divisor = gcd(numerator, denominator);
+  numerator /= divisor;
+  denominator /= divisor;
+
+  return Math.floor(numerator) + '/' + Math.floor(denominator)
 }
 
 const Sports = () => {
   const sports = useAppSelector(state => state.azuroSlice.sports)
   const sort = useAppSelector(state => state.azuroSlice.sortItem)
-  const isFilterOpen = useAppSelector(state => state.azuroSlice.isFilterOpen)
   const sportFilter = useAppSelector(state => state.azuroSlice.sportFilter)
+  const oddsFormat = useAppSelector(state => state.azuroSlice.oddsFormat)
   const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(true)
   const [closedSportsIds, setClosedSportsIds] = useState<string[]>([])
   const [isBasketOpen, setIsBasketOpen] = useState(false)
-  const [isStopped, setIsStopped] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
   const [basket, setBasket] = useState<IBasket[]>([])
-  const query = useSearchParams()
   const pathname = usePathname()
   const [firstRender, setFirstRender] = useState(true)
   const router = useRouter()
+  const ref = useRef<null | HTMLDivElement>(null)
 
   useEffect(() => {
     if (pathname === '/sports') {
@@ -87,6 +85,7 @@ const Sports = () => {
 
   useEffect(() => {
     if (!firstRender) {
+      if (!basket.length) setIsBasketOpen(false)
       localStorage && localStorage.setItem('basket', JSON.stringify(basket))
       localStorage && dispatch(setBasketEvents([...basket]))
     }
@@ -103,22 +102,15 @@ const Sports = () => {
         <Image src='/sports/basketMobile.png' alt='' width={30} height={30}/>
       </div>
 
-      {/*<Lottie options={{*/}
-      {/*  loop: true,*/}
-      {/*  autoplay: true,*/}
-      {/*  animationData: animationData,*/}
-      {/*  rendererSettings: {*/}
-      {/*    preserveAspectRatio: 'xMidYMid slice'*/}
-      {/*  }*/}
-      {/*}}*/}
-      {/*        height={400}*/}
-      {/*        width={400}*/}
-      {/*        isStopped={isStopped}*/}
-      {/*        isPaused={isPaused}/>*/}
-
       <div className={styles.content}>
-        <span className={styles.tagFilterArrow}><img src="/sports/arrowRightGray.svg" alt=""/></span>
-        <div className={styles.tagFilter}>
+        <span className={styles.tagFilterArrow} onClick={() => {
+          const px = ref.current?.scrollLeft
+          ref.current?.scroll({
+            left: Number(px) + 300,
+            behavior: 'smooth'
+          })
+        }}><img src="/sports/arrowRightGray.svg" alt=""/></span>
+        <div className={styles.tagFilter} ref={ref}>
           <div className={clsx(styles.tag, pathname === '/sports' && styles.tagActive)}
                onClick={() => router.push('/sports/')}>
             {sportsIcon[iconsIndex["top"]]}
@@ -148,7 +140,8 @@ const Sports = () => {
           <div className={styles.openFilter} onClick={() => dispatch(setIsFilterOpen(true))}>
             FILTER
             <img src="/sports/openFilter.svg" alt=""/>
-            <span>1</span>
+            {!!pathname.split('/sports')[1].length &&
+              <span>{pathname.split('/sports')[1].replace(/%20/gi, '/').split('/').length - 1}</span>}
           </div>
         </div>
         {!loading && sports.map(sport => sport.games.length ? (<div key={sport.name}
@@ -241,7 +234,11 @@ const Sports = () => {
                         className={clsx(styles.odd,
                           basket.find((item: any) => item.id === game.id)?.outcomeId === outcome.outcomeId && styles.activeOdd)}>
                         <div>{getSelectionName({outcomeId: outcome.outcomeId, withPoint: false})}</div>
-                        <span>{Number(outcome.currentOdds).toFixed(2)}</span>
+                        <span>{
+                          oddsFormat === "EU" ? Number(outcome.currentOdds).toFixed(2) :
+                            oddsFormat === "UK" ? getUKOdds(Number(outcome.currentOdds)) :
+                              odds.decimal.toAmerican(Number(outcome.currentOdds).toFixed(2))
+                        }</span>
                       </div>))}
                     </div>
                   </div>))}

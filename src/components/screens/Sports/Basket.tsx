@@ -23,6 +23,8 @@ import tokenAbi from "@/contract/tokenAbi";
 import Image from "next/image";
 import {chains} from "@/components/layout/WagmiAppConfig";
 import {ethers} from "ethers";
+import Lottie from 'react-lottie';
+import * as animationData from './Gradient-background.json'
 
 const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, setBasket}: {
   basket: IBasket[],
@@ -34,6 +36,8 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   const isFilterOpen = useAppSelector(state => state.azuroSlice.isFilterOpen)
   const dispatch = useAppDispatch()
   const [firstRender, setFirstRender] = useState(true)
+  const [isStopped, setIsStopped] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
   const [amount, setAmount] = useState(new Map())
   const [amountForEach, setAmountForEach] = useState('0')
   const {connect, connectors} = useConnect()
@@ -183,139 +187,177 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   }, []);
 
   return (
-    <div className={clsx(styles.basket, isBasketOpen && styles.open, isFilterOpen && styles.zeroOpacity)}>
-      <div className={styles.closeModal} onClick={() => setIsBasketOpen(false)}></div>
-      <div className={styles.basketHeading}>
-        <div className={styles.betSlip}>Bet slip</div>
-        <div className={styles.betType}>
-          <div>Combo</div>
-          <div className={styles.betTypeActive}>Ordinar</div>
+    <>
+      {!!basket.length &&
+        <div className={styles.openBasket} onClick={() => setIsBasketOpen(true)}>
+          <Lottie
+            options={{
+              loop: true,
+              autoplay: true,
+              animationData: animationData,
+              rendererSettings: {
+                preserveAspectRatio: 'xMidYMid slice'
+              },
+            }}
+            height={54}
+            width={300}
+            isStopped={isStopped}
+            isPaused={isPaused}/>
+          <img src="/sports/basketMobile.png" alt=""/> Place bet, you have <span>{basket.length}</span> bets in betslip
         </div>
-        <div className={styles.clearAll} onClick={() => setBasket([])}>
-          <img src="/sports/basketClearAll.svg" alt=""/> Clear all
-        </div>
-      </div>
-      {!basket.length && <div className={styles.emptyBasket}>
-        <Image width={90} height={90} src="/sports/manual.png" alt=""/>
-        <p>To add a bet to your betslip, choose a market and make your selection</p>
-        <button>How to play</button>
-      </div>}
-      {!!basket.length && <div className={styles.basketContent}>
-        <div className={styles.selectionText}>Amount for each selection</div>
-        <div className={styles.selection}>
-          <div className={styles.selectionSelect}>
-            <input type="number" placeholder='Amount' value={amountForEach}
-                   onChange={e => setAmountForEach(Math.abs(+e.target.value).toString())}/>
-            <div className={clsx(styles.activeSelection, styles.selectionLong)}>Distribute</div>
+      }
+      <div className={clsx(styles.pageBg, isBasketOpen && styles.showPageBg)}></div>
+      <div className={clsx(styles.basket, isBasketOpen && styles.open, isFilterOpen && styles.zeroOpacity)}>
+        <div className={styles.closeModal} onClick={() => setIsBasketOpen(false)}></div>
+        <div className={styles.basketHeading}>
+          <div className={styles.betSlip}>Bet slip</div>
+          <div className={styles.betType}>
+            <div>Combo</div>
+            <div className={styles.betTypeActive}>Ordinar</div>
           </div>
-          {['10', '25', '50', '100'].map(item => (
-            <div key={item} onClick={() => setAmountForEach(amountForEach === item ? '0' : item)}
-                 className={clsx(styles.selectionAmount, amountForEach === item && styles.activeSelectionAmount)}>
-              {item}$
+          <div className={styles.clearAll} onClick={() => setBasket([])}>
+            <img src="/sports/basketClearAll.svg" alt=""/> Clear all
+          </div>
+        </div>
+        {!basket.length && <div className={styles.emptyBasket}>
+          <Image width={90} height={90} src="/sports/manual.png" alt=""/>
+          <p>To add a bet to your betslip, choose a market and make your selection</p>
+          <button>How to play</button>
+        </div>}
+        {!!basket.length && <div className={styles.basketContent}>
+          <div className={styles.selectionText}>Amount for each selection</div>
+          <div className={styles.selection}>
+            <div className={styles.selectionSelect}>
+              <input type="number" placeholder='Amount' value={amountForEach}
+                     onChange={e => setAmountForEach(Math.abs(+e.target.value).toString())}/>
+              <div className={clsx(styles.activeSelection, styles.selectionLong)}>Distribute</div>
             </div>
-          ))}
-        </div>
-        {!!basket?.length && basketEvents.map(item => (<div key={item.id} className={styles.event}>
-          <div className={styles.eventHead}>
-            <img className={styles.flag} src="/sports/flag.png" alt=""/>
-            {item.title}
-            <img className={styles.delete}
-                 onClick={() => {
-                   return setBasket((prevState) => [...prevState.filter((basketItem) => basketItem.id !== item.id)])
-                 }}
-                 src="/sports/garbage.svg" alt=""/>
-          </div>
-          <div className={styles.oddsWrapper}>
-            {item.conditions?.map(outcome => (<div key={outcome.outcomes[0].outcomeId}>
-              <div className={styles.oddsHeading}>{getMarketName({outcomeId: outcome.outcomes[0].outcomeId})}</div>
-              <div className={styles.odds}>
-                {outcome.outcomes.map(odd => (<div onClick={() => {
-                  const indexItem = basket.findIndex((indexItem) => indexItem.id === item.id)
-                  if (indexItem !== -1) {
-                    if (basket[indexItem]?.outcomeId === odd.outcomeId)
-                      return setBasket((prevState) => [...prevState.filter((_, index: number) => index !== indexItem)])
-                    return setBasket((prevState) => [...prevState.map((event, index: number) => {
-                      if (index === indexItem) return {
-                        id: item.id,
-                        outcomeId: odd.outcomeId,
-                        title: item.title,
-                        conditions: item.conditions,
-                        currentOdds: odd.currentOdds,
-                        conditionId: outcome.conditionId
-                      }
-                      return {...event}
-                    })])
-                  }
-                  setBasket(prevState => [...prevState, {
-                    id: item.id,
-                    outcomeId: odd.outcomeId,
-                    title: item.title,
-                    conditions: item.conditions,
-                    currentOdds: odd.currentOdds,
-                    conditionId: outcome.conditionId
-                  }])
-                }} key={odd.outcomeId} className={clsx(styles.odd,
-                  item.outcomeId === odd.outcomeId && styles.activeOdd)}>
-                  <div>{getSelectionName({outcomeId: odd.outcomeId, withPoint: false})}</div>
-                  <span>{Number(odd.currentOdds).toFixed(2)}</span>
-                </div>))}
+            {['10', '25', '50', '100'].map(item => (
+              <div key={item} onClick={() => setAmountForEach(amountForEach === item ? '0' : item)}
+                   className={clsx(styles.selectionAmount, amountForEach === item && styles.activeSelectionAmount)}>
+                {item}$
               </div>
-            </div>))}
-          </div>
-          <div className={styles.amount}>
-            <input type="number" value={+amountForEach || amount.get(item.id)} onChange={(e) => {
-              setAmount(map => new Map(map.set(item.id, Math.abs(+e.target.value).toString())))
-            }}/>
-            {['200', '50'].map(value => (
-              <div onClick={() => {
-                if (amount.get(item.id) === value) {
-                  return setAmount(map => new Map(map.set(item.id, 0)))
-                }
-                setAmount(map => new Map(map.set(item.id, value)))
-              }} key={value}
-                   className={amount.get(item.id) === value ? styles.activeAmount : ''}>{value}$</div>
             ))}
-            <div className={amount.get(item.id) === Number(balance?.formatted) / 10 + '' ? styles.activeAmount : ''}
-                 onClick={() => {
-                   if (amount.get(item.id) === Number(balance?.formatted) / 10 + '') {
-                     return setAmount(map => new Map(map.set(item.id, 0)))
-                   }
-                   setAmount(map => new Map(map.set(item.id, Number(balance?.formatted) / 10 + '')))
-                 }}>10%
-            </div>
           </div>
-        </div>))}
-        <div className={styles.total}>
-          <div className={styles.totalOddsText}>
-            <span>Total odds</span>
-            <span>
+          {!!basket?.length && basketEvents.map(item => (<div key={item.id} className={styles.event}>
+            <div className={styles.eventHead}>
+              <img className={styles.flag} src="/sports/flag.png" alt=""/>
+              {item.title}
+              <img className={styles.delete}
+                   onClick={() => {
+                     return setBasket((prevState) => [...prevState.filter((basketItem) => basketItem.id !== item.id)])
+                   }}
+                   src="/sports/garbage.svg" alt=""/>
+            </div>
+            <div className={styles.oddsWrapper}>
+              {item.conditions?.map(outcome => (<div key={outcome.outcomes[0].outcomeId}>
+                <div className={styles.oddsHeading}>{getMarketName({outcomeId: outcome.outcomes[0].outcomeId})}</div>
+                <div className={styles.odds}>
+                  {outcome.outcomes.map(odd => (<div onClick={() => {
+                    const indexItem = basket.findIndex((indexItem) => indexItem.id === item.id)
+                    if (indexItem !== -1) {
+                      if (basket[indexItem]?.outcomeId === odd.outcomeId)
+                        return setBasket((prevState) => [...prevState.filter((_, index: number) => index !== indexItem)])
+                      return setBasket((prevState) => [...prevState.map((event, index: number) => {
+                        if (index === indexItem) return {
+                          id: item.id,
+                          outcomeId: odd.outcomeId,
+                          title: item.title,
+                          conditions: item.conditions,
+                          currentOdds: odd.currentOdds,
+                          conditionId: outcome.conditionId
+                        }
+                        return {...event}
+                      })])
+                    }
+                    setBasket(prevState => [...prevState, {
+                      id: item.id,
+                      outcomeId: odd.outcomeId,
+                      title: item.title,
+                      conditions: item.conditions,
+                      currentOdds: odd.currentOdds,
+                      conditionId: outcome.conditionId
+                    }])
+                  }} key={odd.outcomeId} className={clsx(styles.odd,
+                    item.outcomeId === odd.outcomeId && styles.activeOdd)}>
+                    <div>{getSelectionName({outcomeId: odd.outcomeId, withPoint: false})}</div>
+                    <span>{Number(odd.currentOdds).toFixed(2)}</span>
+                  </div>))}
+                </div>
+              </div>))}
+            </div>
+            <div className={styles.amount}>
+              <input type="number" value={+amountForEach || amount.get(item.id)} onChange={(e) => {
+                setAmount(map => new Map(map.set(item.id, Math.abs(+e.target.value).toString())))
+              }}/>
+              {['200', '50'].map(value => (
+                <div onClick={() => {
+                  if (amount.get(item.id) === value) {
+                    return setAmount(map => new Map(map.set(item.id, 0)))
+                  }
+                  setAmount(map => new Map(map.set(item.id, value)))
+                }} key={value}
+                     className={amount.get(item.id) === value && !+amountForEach ? styles.activeAmount : ''}>{value}$</div>
+              ))}
+              <div
+                className={amount.get(item.id) === Number(balance?.formatted || 0) / 10 + '' && !+amountForEach ? styles.activeAmount : ''}
+                onClick={() => {
+                  if (amount.get(item.id) === Number(balance?.formatted || 0) / 10 + '') {
+                    return setAmount(map => new Map(map.set(item.id, 0)))
+                  }
+                  setAmount(map => new Map(map.set(item.id, Number(balance?.formatted || 0) / 10 + '')))
+                }}>10%
+              </div>
+            </div>
+          </div>))}
+          <div className={styles.total}>
+            <div className={styles.totalOddsText}>
+              <span>Total odds</span>
+              <span>
               {basket.reduce((a, n) => +a * +n.currentOdds, 1).toFixed(2)}
             </span>
+            </div>
+            <div className={styles.totalReturnText}><span>Total potential return</span>
+              <span
+                className={styles.blue}>$ {((+amountForEach * basket.length || sumOfMap()) * basket.reduce((a, n) => +a * +n.currentOdds, 1)).toFixed(2)}</span>
+            </div>
+            {/*{[0, 1, 2, 3].map(item => (<div className={styles.totalEvents} key={item}>*/}
+            {/*  <img src="/sports/garbageGray.svg" alt=""/>*/}
+            {/*  <div className={styles.totalEvent}>*/}
+            {/*    <span className={styles.eventName}>1x </span>*/}
+            {/*    <span className={styles.eventOdds}>1.69</span>*/}
+            {/*    <span className={styles.eventTeam}>/ Celta Vigo - Alaves</span>*/}
+            {/*    <span className={styles.eventCost}>$ 16.9</span>*/}
+            {/*  </div>*/}
+            {/*</div>))}*/}
           </div>
-          <div className={styles.totalReturnText}><span>Total potential return</span>
-            <span
-              className={styles.blue}>$ {((+amountForEach * basket.length || sumOfMap()) * basket.reduce((a, n) => +a * +n.currentOdds, 1)).toFixed(2)}</span>
+          <div className={styles.placeBetWrapper}>
+            <p>
+              <Lottie
+                options={{
+                  loop: true,
+                  autoplay: true,
+                  animationData: animationData,
+                  rendererSettings: {
+                    preserveAspectRatio: 'xMidYMid slice'
+                  },
+                }}
+                height={48}
+                width={342}
+                isStopped={isStopped}
+                isPaused={isPaused}/>
+            </p>
+            <button className={styles.placeBet} onClick={() => {
+              if (isConnected && chain?.id === chains[0].id) {
+                approveWrite()
+              } else connect({connector: connectors[0]})
+            }}>Place bet
+              $ {+amountForEach ? +amountForEach * basket.length : sumOfMap()}
+            </button>
           </div>
-          {/*{[0, 1, 2, 3].map(item => (<div className={styles.totalEvents} key={item}>*/}
-          {/*  <img src="/sports/garbageGray.svg" alt=""/>*/}
-          {/*  <div className={styles.totalEvent}>*/}
-          {/*    <span className={styles.eventName}>1x </span>*/}
-          {/*    <span className={styles.eventOdds}>1.69</span>*/}
-          {/*    <span className={styles.eventTeam}>/ Celta Vigo - Alaves</span>*/}
-          {/*    <span className={styles.eventCost}>$ 16.9</span>*/}
-          {/*  </div>*/}
-          {/*</div>))}*/}
-        </div>
-        <div className={styles.placeBetWrapper}>
-          <button className={styles.placeBet} onClick={() => {
-            if (isConnected && chain?.id === chains[0].id) {
-              approveWrite()
-            } else connect({connector: connectors[0]})
-          }}>Place bet $ 40
-          </button>
-        </div>
-      </div>}
-    </div>
+        </div>}
+      </div>
+    </>
   );
 };
 

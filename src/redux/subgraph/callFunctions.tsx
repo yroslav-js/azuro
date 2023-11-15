@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {apolloClient} from "@/redux/subgraph/apollo";
-import {getFilteredSportsGames, getSports, getSportsGames, search} from "@/redux/subgraph/graphql";
+import {getSearch, getSports, getSportsGames} from "@/redux/subgraph/graphql";
 
 interface IGameFilter {
   startsAt_gt: number
@@ -9,7 +9,7 @@ interface IGameFilter {
   league_?: {
     slug_in: string[]
   }
-  title_contains_nocase?: string
+  title_starts_with_nocase?: string
 }
 
 interface ISportFilter {
@@ -52,7 +52,7 @@ export const fetchSportsGames = createAsyncThunk(
       } else if (sortTime) gameFilter.startsAt_lt = Math.floor(Date.now() / 1000) + sortTime
 
       const res = await apolloClient.query({
-        query: filter ? getFilteredSportsGames : getSportsGames,
+        query: filter ? getSportsGames(500) : getSportsGames(4),
         variables: {
           gameFilter,
           sportFilter
@@ -92,18 +92,18 @@ export const fetchSports = createAsyncThunk(
 
 export const fetchSearch = createAsyncThunk(
   'search',
-  async (str: string) => {
+  async ({str, by, direction}: { str: string, by: string, direction: 'asc' | 'desc' }) => {
     try {
       const gameFilter: IGameFilter = {
         startsAt_gt: Math.floor(Date.now() / 1000),
-        hasActiveConditions: true,
+        hasActiveConditions: true
       }
       const sportFilter: ISportFilter = {
         sporthub_in: ["sports"]
       }
-      gameFilter.title_contains_nocase = str
+      gameFilter.title_starts_with_nocase = str
       const res = await apolloClient.query({
-        query: search,
+        query: getSearch(by, direction),
         variables: {
           gameFilter,
           sportFilter

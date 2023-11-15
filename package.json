@@ -17,6 +17,7 @@
     "ethers": "^5.7.2",
     "graphql": "^16.8.1",
     "next": "13.5.4",
+    "odds-converter": "^1.0.4",
     "react": "^18",
     "react-dom": "^18",
     "react-lottie": "^1.2.3",

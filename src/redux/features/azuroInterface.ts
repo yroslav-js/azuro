@@ -65,6 +65,8 @@ export interface ISearch {
 
 export type ISortItem = 'All' | 'Today' | 'Tomorrow' | '1h' | '3h' | '6h'
 
+export type IOddsFormat = 'EU' | 'UK' | 'US'
+
 export interface IInitialState {
   sports: ISports[]
   sportFilter: IFilter[]
@@ -77,4 +79,5 @@ export interface IInitialState {
   search: ISearch[]
   isFilterOpen: boolean
   sortItem: ISortItem
+  oddsFormat: IOddsFormat
 }

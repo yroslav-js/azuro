@@ -2,37 +2,18 @@
 
 import styles from "@/components/screens/Sports/Filters.module.css";
 import clsx from "clsx";
-import {Dispatch, SetStateAction, useState} from "react";
+import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {usePathname, useRouter} from "next/navigation";
 import {IFilter, IFilterLeagues, ISortItem} from "@/redux/features/azuroInterface";
 import {iconsIndex, sportsIcon} from "@/utils/sports-icon";
 import {setIsFilterOpen, setSortItem} from "@/redux/features/azuroSlice";
+import {filterAmount, leagueAmount, topEventAmount} from "@/utils/amount";
 
-const topEventAmount = (sports: IFilter[]) => {
-  let amount = 0
-  sports.map(sport => sport.countries.map(game => game.leagues.map(league => {
-    amount += league.games.length
-  })))
-  return amount
-}
-
-const filterAmount = (sport: IFilter) => {
-  let amount = 0
-  sport.countries.map(game => game.leagues.map(league => {
-    amount += league.games.length
-  }))
-  return amount
-}
-
-const leagueAmount = (league: IFilterLeagues) => {
-  let amount = 0
-  amount += league.games.length
-  return amount
-}
 
 const Filters = () => {
   const [filterType, setFilterType] = useState<'classic' | 'tag'>('classic')
+  const [isFilterShow, setIsFilterShow] = useState(false)
   const sports = useAppSelector(state => state.azuroSlice.sportFilter)
   const isFilterOpen = useAppSelector(state => state.azuroSlice.isFilterOpen)
   const sortItem = useAppSelector(state => state.azuroSlice.sortItem)
@@ -40,10 +21,16 @@ const Filters = () => {
   const pathname = usePathname()
   const dispatch = useAppDispatch()
 
+  useEffect(() => {
+    isFilterOpen ? setIsFilterShow(true) : setTimeout(() => {
+      setIsFilterShow(false)
+    }, 200)
+  }, [isFilterOpen])
+
   return (
     <>
       <div className={clsx(styles.pageBg, isFilterOpen && styles.showPageBg)}></div>
-      <div className={clsx(styles.filters, isFilterOpen && styles.filterOpen)}>
+      <div className={clsx(styles.filters, isFilterShow && styles.filterShow, isFilterOpen && styles.filterOpen)}>
         <div className={styles.filtersHeading}>
           <div className={styles.filtersHeadingMobile}>
             <span onClick={() => dispatch(setIsFilterOpen(false))}>BACK</span>

@@ -394,11 +394,16 @@ div + .filterWrapper {
         width: 372px;
         transition: transform .2s linear;
         height: 0;
-        /*overflow: hidden;*/
+        overflow: hidden;
     }
 
     .filterOpen {
         transform: translate(-16px, 96px);
+        height: fit-content;
+        overflow: initial;
+    }
+
+    .filterShow {
         height: fit-content;
         overflow: initial;
     }

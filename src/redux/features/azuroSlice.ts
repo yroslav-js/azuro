@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {fetchSearch, fetchSports, fetchSportsGames} from "@/redux/subgraph/callFunctions";
-import {IFilter, IInitialState, ISearch, ISortItem, ISports} from "@/redux/features/azuroInterface";
+import {IFilter, IInitialState, IOddsFormat, ISearch, ISortItem, ISports} from "@/redux/features/azuroInterface";
 
 const initialState: IInitialState = {
   sports: [],
@@ -8,7 +8,8 @@ const initialState: IInitialState = {
   basket: [],
   search: [],
   isFilterOpen: false,
-  sortItem: 'All'
+  sortItem: 'All',
+  oddsFormat: 'EU'
 }
 
 const sortedSports = {
@@ -40,16 +41,20 @@ export const azuroSlice = createSlice({
     },
     setSortItem: (state, action: PayloadAction<ISortItem>) => {
       state.sortItem = action.payload
+    },
+    setOddsFormat: (state, action: PayloadAction<IOddsFormat>) => {
+      state.oddsFormat = action.payload
     }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchSportsGames.fulfilled, (state, action: PayloadAction<ISports[]>) => {
-      state.sports = action.payload
+      // @ts-ignore
+      state.sports = action.payload.toSorted((a, b) => (sortedSports[a.slug] || 99) - (sortedSports[b.slug] || 99))
     }).addCase(fetchSportsGames.pending, state => {
       state.sports = []
     }).addCase(fetchSports.fulfilled, (state, action: PayloadAction<IFilter[]>) => {
       // @ts-ignore
-      state.sportFilter = action.payload.toSorted((a, b) => (sortedSports[a.slug] || 10) - (sortedSports[b.slug] || 10))
+      state.sportFilter = action.payload.toSorted((a, b) => (sortedSports[a.slug] || 99) - (sortedSports[b.slug] || 99))
     }).addCase(fetchSearch.fulfilled, (state, action: PayloadAction<ISearch[]>) => {
       state.search = action.payload
     })
@@ -60,7 +65,8 @@ export const {
   setBasketEvents,
   clearSearch,
   setIsFilterOpen,
-  setSortItem
+  setSortItem,
+  setOddsFormat
 } = azuroSlice.actions
 
 export default azuroSlice.reducer
