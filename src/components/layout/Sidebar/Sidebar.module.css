@@ -49,7 +49,7 @@
     fill: var(--text-accent-2);
 }
 
-.mobileSidebar{
+.mobileSidebar {
     display: none;
 }
 
@@ -76,7 +76,6 @@
     }
 
     .sidebar div {
-        width: 46px;
         text-align: center;
     }
 

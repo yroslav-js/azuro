@@ -217,7 +217,7 @@ div + .filterWrapper {
 
 .tag {
     width: 171px;
-    height: 36px;
+    min-height: 36px;
     border-radius: 18px;
     background-color: var(--surface-high-priority);
     border: 1px solid var(--surface-mid-priority);
@@ -226,7 +226,7 @@ div + .filterWrapper {
     font-size: 13px;
     color: var(--text-accent-2);
     font-weight: 500;
-    padding: 0 10px;
+    padding: 5px 10px;
     cursor: pointer;
 }
 
@@ -463,21 +463,12 @@ div + .filterWrapper {
         transform: translateX(0);
     }
 
-    .classicFilter {
-        opacity: 0;
-        display: none;
-    }
-
-    .tagFilter {
-        opacity: 1;
-        pointer-events: initial;
-        position: initial;
-        height: calc(100vh - 118px);
-        overflow-y: auto;
-    }
-
-    .filtersHeading > div {
-        display: none;
+    .filtersHeading {
+        padding: 0px;
+        border-radius: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .filtersHeading > .filtersHeadingMobile {
@@ -485,16 +476,11 @@ div + .filterWrapper {
         border-radius: 0;
         background-color: var(--surface-transperent-80);
         height: 44px;
-        border-top: 1px solid var(--text-accent-2);
-        border-bottom: 1px solid var(--text-accent-2);
         justify-content: space-between;
         align-items: center;
-        padding: 0 16px;
-    }
-
-    .filtersHeading {
-        padding: 0px;
-        border-radius: 0;
+        padding: 0 0 0 16px;
+        width: 0;
+        border: none;
     }
 
     .filtersHeadingMobile span {
@@ -527,6 +513,22 @@ div + .filterWrapper {
         font-weight: 500;
         color: var(--text-high-priority);
         margin-right: 33px;
+    }
+
+    .filtersHeading > div {
+        width: 196px;
+        padding: 1px;
+        height: 36px;
+        border: 1px solid var(--surface-background);
+        margin-right: auto;
+    }
+
+    .filtersHeading > div + div {
+        margin-left: -16px;
+    }
+
+    .filterType {
+        font-size: 13px;
     }
 
     .tagFilter {
@@ -570,5 +572,15 @@ div + .filterWrapper {
 
     .byStatusTags {
         flex-wrap: wrap;
+    }
+
+    .pageBg {
+        display: none;
+    }
+}
+
+@media (max-width: 370px) {
+    .filtersHeadingMobile span {
+        font-size: 0;
     }
 }

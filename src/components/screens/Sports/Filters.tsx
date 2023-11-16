@@ -9,6 +9,7 @@ import {IFilter, IFilterLeagues, ISortItem} from "@/redux/features/azuroInterfac
 import {iconsIndex, sportsIcon} from "@/utils/sports-icon";
 import {setIsFilterOpen, setSortItem} from "@/redux/features/azuroSlice";
 import {filterAmount, leagueAmount, topEventAmount} from "@/utils/amount";
+import Search from "@/components/ui/Search/Search";
 
 
 const Filters = () => {
@@ -30,12 +31,10 @@ const Filters = () => {
   return (
     <>
       <div className={clsx(styles.pageBg, isFilterOpen && styles.showPageBg)}></div>
-      <div className={clsx(styles.filters, isFilterShow && styles.filterShow, isFilterOpen && styles.filterOpen)}>
+      <div className={clsx(styles.filters, isFilterShow && styles.filterShow, isFilterOpen && styles.filterOpen, 'filters')}>
         <div className={styles.filtersHeading}>
           <div className={styles.filtersHeadingMobile}>
             <span onClick={() => dispatch(setIsFilterOpen(false))}>BACK</span>
-            <div>Filter</div>
-            <img src="/discord.svg" alt=""/>
           </div>
           <div>
             <div className={clsx(styles.filterType, filterType === 'tag' && styles.filterTypeActive)}
@@ -46,10 +45,8 @@ const Filters = () => {
             </div>
           </div>
         </div>
+        <Search/>
         <div className={clsx(styles.tagFilter, filterType === 'tag' && styles.chosenFilter)}>
-          <div className={styles.input}>
-            <input type="text" className={styles.search} placeholder='Search'/>
-          </div>
           <div className={styles.tagTitle}>SPORTS</div>
           <div className={styles.tags}>
             <div className={clsx(styles.tag, pathname === '/sports' && styles.tagActive)}

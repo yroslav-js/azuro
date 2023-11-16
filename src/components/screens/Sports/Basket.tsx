@@ -300,7 +300,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
                      className={amount.get(item.id) === value && !+amountForEach ? styles.activeAmount : ''}>{value}$</div>
               ))}
               <div
-                className={amount.get(item.id) === Number(balance?.formatted || 0) / 10 + '' && !+amountForEach ? styles.activeAmount : ''}
+                className={balance?.formatted && amount.get(item.id) === Number(balance?.formatted || 0) / 10 + '' && !+amountForEach ? styles.activeAmount : ''}
                 onClick={() => {
                   if (amount.get(item.id) === Number(balance?.formatted || 0) / 10 + '') {
                     return setAmount(map => new Map(map.set(item.id, 0)))
@@ -354,6 +354,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
             }}>Place bet
               $ {+amountForEach ? +amountForEach * basket.length : sumOfMap()}
             </button>
+            <span onClick={() => setIsBasketOpen(false)}></span>
           </div>
         </div>}
       </div>

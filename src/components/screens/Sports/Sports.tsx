@@ -52,6 +52,10 @@ const Sports = () => {
   const ref = useRef<null | HTMLDivElement>(null)
 
   useEffect(() => {
+    isBasketOpen && dispatch(setIsFilterOpen(false))
+  }, [isBasketOpen])
+
+  useEffect(() => {
     if (pathname === '/sports') {
       const promise = dispatch(fetchSportsGames({sortTime: sortTime[sort]}))
       return () => promise.abort()
@@ -97,11 +101,6 @@ const Sports = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.mobileBasket} onClick={() => setIsBasketOpen(true)}>
-        You have combo bet with 4 odds in betslip
-        <Image src='/sports/basketMobile.png' alt='' width={30} height={30}/>
-      </div>
-
       <div className={styles.content}>
         <span className={styles.tagFilterArrow} onClick={() => {
           const px = ref.current?.scrollLeft
@@ -237,7 +236,7 @@ const Sports = () => {
                         <span>{
                           oddsFormat === "EU" ? Number(outcome.currentOdds).toFixed(2) :
                             oddsFormat === "UK" ? getUKOdds(Number(outcome.currentOdds)) :
-                              odds.decimal.toAmerican(Number(outcome.currentOdds).toFixed(2))
+                              Number(odds.decimal.toAmerican(Number(outcome.currentOdds))).toFixed(0)
                         }</span>
                       </div>))}
                     </div>

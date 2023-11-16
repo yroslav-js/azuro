@@ -138,3 +138,17 @@ body {
     width: 0;
     height: 0;
 }
+
+.filters .searchInput {
+    display: none;
+}
+
+@media (max-width: 500px) {
+    .header .searchInput {
+        display: none;
+    }
+
+    .filters .searchInput {
+        display: block;
+    }
+}

@@ -474,6 +474,49 @@
 }
 
 @media (max-width: 1025px) {
+    .placeBetWrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+    }
+
+    .placeBetWrapper > span {
+        min-width: 48px;
+        min-height: 48px;
+        border-radius: 10px;
+        border: 2px solid var(--text-accent-2);
+        position: relative;
+        cursor: pointer;
+    }
+
+    .placeBetWrapper > span::after,
+    .placeBetWrapper > span::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 15px;
+        height: 2px;
+        background-color: var(--text-accent-2);
+    }
+
+    .placeBetWrapper > span::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .placeBetWrapper > span::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    .placeBetWrapper > p {
+        width: 287px;
+        top: 8px;
+    }
+
+    .placeBet {
+        width: 287px;
+    }
+
     .openBasket {
         display: flex;
         align-items: center;
@@ -490,6 +533,7 @@
         color: var(--text-ctas-buttons);
         cursor: pointer;
         gap: 4px;
+        box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.15);
     }
 
     .openBasket > div {
@@ -557,6 +601,7 @@
         box-shadow: 0 -5px 10px 0 rgba(0, 0, 0, 0.1);
         transition: opacity .2s linear;
         border-radius: 50%;
+        cursor: pointer;
     }
 
     .closeModal::after, .closeModal::before {
@@ -596,12 +641,15 @@
         left: 0;
         right: 0;
         max-width: 100%;
+        width: 100%;
         min-width: auto;
         height: 100vh;
+        min-height: calc(100vh - 64px);
         z-index: 100;
-        transform: translateY(100%);
+        transform: translateY(105%);
         transition: transform .2s linear;
         overflow: initial;
+        background-color: var(--surface-high-priority);
     }
 
     .open.basket::after {
@@ -620,14 +668,15 @@
     }
 
     .basketContent {
-        max-height: calc(100vh - 60px);
-        padding-bottom: 128px;
+        max-height: calc(100vh - 64px);
+        min-height: 100%;
+        padding-bottom: 140px;
         background-color: var(--surface-high-priority);
     }
 
     .placeBetWrapper {
         position: fixed;
-        bottom: 63px;
+        bottom: 0;
         left: -1px;
         right: -1px;
         height: 74px;
@@ -639,9 +688,23 @@
     }
 
     .placeBet {
-        width: 100%;
+        width: calc(100vw - 32px);
         height: 48px;
         margin-top: 0;
+    }
+
+    .placeBetWrapper > span {
+        display: none;
+    }
+
+    .placeBetWrapper > p {
+        top: 10px;
+        left: 16px;
+        width: calc(100vw - 32px)
+    }
+
+    .placeBetWrapper > p > div {
+        width: calc(100vw - 32px) !important;
     }
 
     .total > div {
@@ -650,5 +713,34 @@
 
     .totalEvent {
         width: 100%;
+    }
+
+    .openBasket {
+        left: 0;
+        right: 0;
+        bottom: 74px;
+        height: 28px;
+        padding: 0 12px;
+        width: auto;
+        border-radius: 0;
+        box-shadow: none;
+        z-index: 10;
+        overflow: initial;
+    }
+
+    .openBasket > div {
+        width: 100% !important;
+        height: 28px !important;
+    }
+
+    .openBasket img {
+        position: absolute;
+        right: 12px;
+        top: -8px;
+        z-index: 100;
+    }
+
+    .showPageBg {
+        display: none;
     }
 }

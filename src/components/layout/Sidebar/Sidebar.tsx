@@ -32,11 +32,11 @@ const Sidebar = () => {
             </div>
           )
         })}
-        <div style={{textAlign: 'right'}} onClick={() => {
-        }}>
-          <img style={{width: '28px', height: '28px', marginRight: '5px'}} src="/sidebar/menu.svg" alt=""/>
-          <p style={{marginTop: 0}}>Menu</p>
-        </div>
+        {/*<div style={{textAlign: 'right'}} onClick={() => {*/}
+        {/*}}>*/}
+        {/*  <img style={{width: '28px', height: '28px', marginRight: '5px'}} src="/sidebar/menu.svg" alt=""/>*/}
+        {/*  <p style={{marginTop: 0}}>Menu</p>*/}
+        {/*</div>*/}
       </aside>
     </>
   );
