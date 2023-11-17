@@ -442,6 +442,7 @@ div + .filterWrapper {
     }
 
     .filters {
+        overflow-y: auto;
         min-height: 100vh;
         display: block;
         position: fixed;
@@ -457,6 +458,7 @@ div + .filterWrapper {
         border-radius: 0;
         border: none;
         transition: transform .2s linear;
+        padding-bottom: 100px;
     }
 
     .filterOpen {
@@ -535,7 +537,7 @@ div + .filterWrapper {
         padding: 16px;
     }
 
-    .clearFilter {
+    .classicFilter .clearFilter, .clearFilter {
         display: none;
     }
 

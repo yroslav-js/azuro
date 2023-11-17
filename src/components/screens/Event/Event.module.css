@@ -26,10 +26,11 @@
     font-size: 15px;
 }
 
-.title a {
+.title p {
     display: flex;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
 }
 
 .head {
@@ -207,13 +208,13 @@
         margin-right: 10px;
     }
 
-    .title a {
+    .title p {
         gap: 5px;
     }
 }
 
 @media (max-width: 500px) {
-    .title a {
+    .title p {
         display: none;
     }
 

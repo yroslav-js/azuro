@@ -31,7 +31,8 @@ const Filters = () => {
   return (
     <>
       <div className={clsx(styles.pageBg, isFilterOpen && styles.showPageBg)}></div>
-      <div className={clsx(styles.filters, isFilterShow && styles.filterShow, isFilterOpen && styles.filterOpen, 'filters')}>
+      <div
+        className={clsx(styles.filters, isFilterShow && styles.filterShow, isFilterOpen && styles.filterOpen, 'filters')}>
         <div className={styles.filtersHeading}>
           <div className={styles.filtersHeadingMobile}>
             <span onClick={() => dispatch(setIsFilterOpen(false))}>BACK</span>

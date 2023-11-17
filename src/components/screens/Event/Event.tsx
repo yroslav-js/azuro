@@ -9,42 +9,33 @@ import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {getMarketName, getSelectionName} from "@azuro-org/dictionaries";
 import {fetchSports, fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {IBasket} from "@/redux/features/azuroInterface";
 
 const Event = ({id, league, sports}: { id: string, sports: string, league: string }) => {
   const [basket, setBasket] = useState<IBasket[]>([])
-  const game = useAppSelector(state => state.azuroSlice.sports.find(sport => sport.slug === sports)?.games.find(game => game.id === id))
   const pathname = usePathname()
+  const game = useAppSelector(state => state.azuroSlice.sports.find(item => item.id === pathname.split('/').pop()))
   const dispatch = useAppDispatch()
+  const router = useRouter()
 
   useEffect(() => {
-    if (!game) {
-      if (pathname === '/sports') {
-        const promise = dispatch(fetchSportsGames({sortTime: sortTime['All']}))
-        return () => promise.abort()
-      } else {
-        const promise = dispatch(fetchSportsGames({
-          sortTime: sortTime['All'],
-          filter: pathname.split('/sports/').pop()
-        }))
-        return () => promise.abort()
-      }
-    }
+    const promise = dispatch(fetchSportsGames({sortTime: sortTime['All'], id: pathname.split('/').pop()}))
+    return () => promise.abort()
   }, [pathname]);
 
-  useEffect(() => {
-    dispatch(fetchSports())
-  }, []);
+  // useEffect(() => {
+  //   dispatch(fetchSports())
+  // }, []);
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
         <div className={styles.title}>
-          <Link href='/sports'>
+          <p onClick={() => router.back()}>
             <img src="/sports/arrowLeftBlue.svg" alt=""/>
             <span>BACK</span>
-          </Link>
+          </p>
           Lorem ipsum 1 - Lorem ipsum 2 Crypto Betting odds 07 October 2023
         </div>
         <div className={styles.head}>
