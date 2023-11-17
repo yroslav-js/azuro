@@ -36,9 +36,6 @@ export const azuroSlice = createSlice({
     clearSearch: state => {
       state.search = []
     },
-    clearSports: state => {
-      state.sports = []
-    },
     setIsFilterOpen: (state, action: PayloadAction<boolean>) => {
       state.isFilterOpen = action.payload
     },
@@ -69,7 +66,7 @@ export const {
   clearSearch,
   setIsFilterOpen,
   setSortItem,
-  setOddsFormat
+  setOddsFormat,
 } = azuroSlice.actions
 
 export default azuroSlice.reducer

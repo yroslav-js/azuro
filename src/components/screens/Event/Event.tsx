@@ -1,32 +1,34 @@
 "use client"
 
 import styles from './Event.module.css'
-import Filters from "@/components/screens/Sports/Filters";
 import Basket from "@/components/screens/Sports/Basket";
-import Link from "next/link";
 import clsx from "clsx";
 import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {getMarketName, getSelectionName} from "@azuro-org/dictionaries";
-import {fetchSports, fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
+import {fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
 import {usePathname, useRouter} from "next/navigation";
 import {IBasket} from "@/redux/features/azuroInterface";
 
 const Event = ({id, league, sports}: { id: string, sports: string, league: string }) => {
   const [basket, setBasket] = useState<IBasket[]>([])
   const pathname = usePathname()
-  const game = useAppSelector(state => state.azuroSlice.sports.find(item => item.id === pathname.split('/').pop()))
+  console.log(pathname.split('/').pop())
+  const game = useAppSelector(state => state.azuroSlice.sports.find(item => item.slug === sports)?.games.find(item => item.id === id))
   const dispatch = useAppDispatch()
   const router = useRouter()
 
   useEffect(() => {
-    const promise = dispatch(fetchSportsGames({sortTime: sortTime['All'], id: pathname.split('/').pop()}))
+    const promise = dispatch(fetchSportsGames({
+      sortTime: sortTime['All'],
+      filter: sports,
+      league: [league],
+      id: id,
+    }))
     return () => promise.abort()
   }, [pathname]);
 
-  // useEffect(() => {
-  //   dispatch(fetchSports())
-  // }, []);
+  if (!game) return null
 
   return (
     <div className={styles.wrapper}>
@@ -41,12 +43,12 @@ const Event = ({id, league, sports}: { id: string, sports: string, league: strin
         <div className={styles.head}>
           <div className={styles.team}>
             <div className={styles.teamImg}>
-              <img src={game?.participants[0].image} onError={({currentTarget}) => {
+              <img src={game.participants[0].image} onError={({currentTarget}) => {
                 currentTarget.onerror = null;
                 currentTarget.src = "/sports/team.svg";
               }} alt=""/>
             </div>
-            {game?.title.slice(0, game?.title.indexOf('-'))}
+            {game.title.slice(0, game.title.indexOf('-'))}
           </div>
           <div className={styles.time}>
             10:00 PM
@@ -54,16 +56,16 @@ const Event = ({id, league, sports}: { id: string, sports: string, league: strin
           </div>
           <div className={styles.team}>
             <div className={styles.teamImg}>
-              <img src={game?.participants[1].image} onError={({currentTarget}) => {
+              <img src={game.participants[1].image} onError={({currentTarget}) => {
                 currentTarget.onerror = null;
                 currentTarget.src = "/sports/team.svg";
               }} alt=""/>
             </div>
-            {game?.title.slice(game?.title.indexOf('-') + 1, game?.title.length)}
+            {game.title.slice(game.title.indexOf('-') + 1, game.title.length)}
           </div>
         </div>
         <div className={styles.oddsWrapper}>
-          {game?.conditions.map((item, index) => (
+          {game.conditions.map((item, index) => (
             <div
               className={game.conditions.length - 1 === index && game.conditions.length % 2 !== 0 ? styles.oddsLast : ''}
               key={item.outcomes[0].outcomeId}>
@@ -80,16 +82,16 @@ const Event = ({id, league, sports}: { id: string, sports: string, league: strin
                     if (basketItem !== -1) {
                       if (basket[basketItem]?.outcomeId === outcome.outcomeId)
                         return setBasket(prevState => [...prevState.filter((_, index) => index !== basketItem)])
-                      return setBasket(prevState => [...prevState.map((game, index) => {
+                      return setBasket(prevState => [...prevState.map((gameBasket, index) => {
                         if (index === basketItem) return {
                           id: id,
                           outcomeId: outcome.outcomeId,
-                          title: game.title,
-                          conditions: [...game.conditions],
+                          title: gameBasket.title,
+                          conditions: [...gameBasket.conditions],
                           conditionId: item.conditionId,
                           currentOdds: outcome.currentOdds,
                         }
-                        return {...game}
+                        return {...gameBasket}
                       })])
                     }
                     setBasket(prevState => [...prevState, {

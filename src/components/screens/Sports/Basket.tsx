@@ -332,7 +332,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
             {/*</div>))}*/}
           </div>
           <div className={styles.placeBetWrapper}>
-            <p>
+            <div>
               <Lottie
                 options={{
                   loop: true,
@@ -346,7 +346,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
                 width={342}
                 isStopped={isStopped}
                 isPaused={isPaused}/>
-            </p>
+            </div>
             <button className={styles.placeBet} onClick={() => {
               if (isConnected && chain?.id === chains[0].id) {
                 approveWrite()
