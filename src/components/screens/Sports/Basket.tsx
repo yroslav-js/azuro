@@ -75,7 +75,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
     basket.forEach(event => {
       sum += +amount.get(event.id)
     })
-    return sum
+    return sum || 0
   }
 
   const {write: approveWrite, data: approveData} = useContractWrite({
@@ -108,7 +108,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
             minOdds: 0,
             data: encodeAbiParameters(
               parseAbiParameters('uint256, uint64'),
-              [BigInt(item.conditionId), BigInt(item.outcomeId)]
+              [BigInt(item.conditionId || 0), BigInt(item.outcomeId || 0)]
             ),
           }
         }
@@ -135,8 +135,8 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
             [
               basket.map(({conditionId, outcomeId}) => {
                 return [
-                  BigInt(conditionId),
-                  BigInt(outcomeId),
+                  BigInt(conditionId || 0),
+                  BigInt(outcomeId || 0),
                 ]
               }) as readonly (readonly [bigint, bigint])[],
             ]
