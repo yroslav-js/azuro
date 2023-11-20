@@ -13,8 +13,7 @@ const Sidebar = () => {
     <>
       <aside className={styles.sidebar}>
         {menu.map((item, id) => (
-          // <div key={id} className={item.path === path ? styles.active : ''}>
-          <div onClick={() => router.push(item.path)} key={id}
+          <div onClick={() => router.push(`/${item.path}`)} key={id}
                className={item.path === path.split('/')[1] ? styles.active : ''}>
             {item.img}
             <p>{item.name}</p>
@@ -26,7 +25,8 @@ const Sidebar = () => {
           if (id > 3) return null
           return (
             // <div key={id} className={item.path === path ? styles.active : ''}>
-            <div onClick={() => router.push(item.path)} key={id} className={item.path === path ? styles.active : ''}>
+            <div onClick={() => router.push(`/${item.path}`)} key={id}
+                 className={item.path === path ? styles.active : ''}>
               {item.img}
               <p>{item.name}</p>
             </div>

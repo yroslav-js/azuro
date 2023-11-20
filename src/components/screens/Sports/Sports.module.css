@@ -131,7 +131,14 @@
     margin-right: 8px;
     font-size: 11px;
     font-weight: 500;
+}
+
+.green {
     color: var(--elements-green);
+}
+
+.blue {
+    color: var(--text-accent-2);
 }
 
 .teamsHeading span {
@@ -364,11 +371,18 @@
         margin-right: auto;
         width: 72px;
         height: 24px;
-        background-color: var(--transperent-accent-1);
         border-radius: 12px;
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .green {
+        background-color: var(--transperent-accent-1);
+    }
+
+    .blue {
+        background-color: var(--transperent-accent-2);
     }
 
     .teamsHeading span {

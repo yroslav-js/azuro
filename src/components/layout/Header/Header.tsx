@@ -8,20 +8,26 @@ import {useEffect, useState} from "react";
 import {fetchSearch, fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
 import {usePathname} from "next/navigation";
 import Link from "next/link";
-import {useConnect, useNetwork, useSwitchNetwork} from "wagmi";
+import {useAccount, useBalance, useConnect, useNetwork, useSwitchNetwork} from "wagmi";
 import {chains} from "@/components/layout/WagmiAppConfig";
 import {clearSearch, setOddsFormat} from "@/redux/features/azuroSlice";
 import {iconsIndex, sportsIcon} from "@/utils/sports-icon";
 import Search from "@/components/ui/Search/Search";
+import dynamic from "next/dynamic";
+import Connect from "@/components/layout/Header/Connect/Connect";
+
+const Balance = dynamic(() => import('@/components/layout/Header/Balance'), {
+  ssr: false
+})
 
 const Header = () => {
   const pathname = usePathname()
-  const {connect, connectors} = useConnect()
+  const [isConnectOpen, setIsConnectOpen] = useState(false)
   const {switchNetwork} = useSwitchNetwork()
   const {chain} = useNetwork()
   const dispatch = useAppDispatch()
   const oddsFormat = useAppSelector(state => state.azuroSlice.oddsFormat)
-
+  const {isConnected} = useAccount()
 
   useEffect(() => {
     if (chains[0].id !== chain?.id) {
@@ -31,17 +37,17 @@ const Header = () => {
 
   return (
     <header className={clsx(styles.header, pathname.includes('sports') && styles.sports, 'header')}>
+      <Connect isConnectOpen={isConnectOpen}
+               setIsConnectOpen={setIsConnectOpen}/>
       <div className={clsx(styles.logo, 'flexCenter')}>
         <img src="/logo.svg" alt=""/>
       </div>
       <div className={styles.headerContent}>
         <Link href='/sports' className={/[0-9]/.test(pathname) ? styles.back : styles.backnone}>BACK</Link>
         <div className={styles.portfolioWrap}>
-          <Image src='/metamask.png' alt='' width={40} height={40} onClick={() => connect({connector: connectors[0]})}/>
-          <div className={styles.portfolio}>
-            <div>balance</div>
-            <p><img src="/tether.svg" alt=""/> 4k</p>
-          </div>
+          <Image src='/metamask.png' alt='' width={40} height={40}
+                 onClick={() => !isConnected && setIsConnectOpen(true)}/>
+          <Balance/>
         </div>
         <div className={styles.events}>
           <div className={styles.event}>All events</div>

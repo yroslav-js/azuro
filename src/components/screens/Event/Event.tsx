@@ -7,16 +7,19 @@ import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {getMarketName, getSelectionName} from "@azuro-org/dictionaries";
 import {fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
-import {usePathname, useRouter} from "next/navigation";
-import {IBasket} from "@/redux/features/azuroInterface";
+import {useRouter} from "next/navigation";
+import {IBasket, IRecentlyEvent} from "@/redux/features/azuroInterface";
+import {getUKOdds} from "@/utils/getUKOdds";
+
+var odds = require('odds-converter')
 
 const Event = ({id, league, sports}: { id: string, sports: string, league: string }) => {
   const [basket, setBasket] = useState<IBasket[]>([])
-  const pathname = usePathname()
-  console.log(pathname.split('/').pop())
   const game = useAppSelector(state => state.azuroSlice.sports.find(item => item.slug === sports)?.games.find(item => item.id === id))
   const dispatch = useAppDispatch()
   const router = useRouter()
+  const oddsFormat = useAppSelector(state => state.azuroSlice.oddsFormat)
+  const [isBasketOpen, setIsBasketOpen] = useState(false)
 
   useEffect(() => {
     const promise = dispatch(fetchSportsGames({
@@ -26,7 +29,27 @@ const Event = ({id, league, sports}: { id: string, sports: string, league: strin
       id: id,
     }))
     return () => promise.abort()
-  }, [pathname]);
+  }, []);
+
+  useEffect(() => {
+    if (game) {
+      const currentEvent: IRecentlyEvent = {
+        id: id,
+        title: game.title,
+        league: {
+          slug: game.league.slug,
+          name: game.league.name
+        },
+        condition: game.conditions[0].outcomes[0].outcomeId,
+        sport: {
+          slug: sports
+        }
+      }
+      const events = JSON.parse(localStorage.getItem('recently') || '[]').filter((event: IRecentlyEvent) => event.id !== id)
+      if (events.length === 6) events.pop()
+      localStorage.setItem('recently', JSON.stringify([currentEvent, ...events]))
+    }
+  }, [game]);
 
   if (!game) return null
 
@@ -106,46 +129,15 @@ const Event = ({id, league, sports}: { id: string, sports: string, league: strin
                   key={outcome.outcomeId} className={clsx(styles.odd,
                   basket.find((item: any) => item.id === id)?.outcomeId === outcome.outcomeId && styles.activeOdd)}>
                   {getSelectionName({outcomeId: outcome.outcomeId, withPoint: false})}
-                  <span>{Number(outcome.currentOdds).toFixed(2)}</span>
+                  <span>{oddsFormat === "EU" ? Number(outcome.currentOdds).toFixed(2) :
+                    oddsFormat === "UK" ? getUKOdds(Number(outcome.currentOdds)) :
+                      Number(odds.decimal.toAmerican(Number(outcome.currentOdds))).toFixed(0)}</span>
                 </div>))}
               </div>
             </div>))}
-          {/*<div>*/}
-          {/*  <div className={styles.oddsTitle}>*/}
-          {/*    <span>Both Teams To Score <img src="/sports/i.svg" alt=""/></span>*/}
-          {/*    <img src="/sports/arrowUpBlue.svg" alt=""/>*/}
-          {/*  </div>*/}
-          {/*  <div className={clsx(styles.odds, styles.oddsEven)}>*/}
-          {/*    {[0, 1].map(item => (<div key={item} className={styles.odd}>*/}
-          {/*      Yes <span>1.69</span>*/}
-          {/*    </div>))}*/}
-          {/*  </div>*/}
-          {/*</div>*/}
-          {/*{[0, 1, 2].map(item => (<div key={item}>*/}
-          {/*  <div className={styles.oddsTitle}>*/}
-          {/*    <span>Both Teams To Score <img src="/sports/i.svg" alt=""/></span>*/}
-          {/*    <img src="/sports/arrowUpBlue.svg" alt=""/>*/}
-          {/*  </div>*/}
-          {/*  <div className={clsx(styles.odds, styles.oddsEven)}>*/}
-          {/*    {[0, 1, 2, 3].map(item => (<div key={item} className={styles.odd}>*/}
-          {/*      Yes <span>1.69</span>*/}
-          {/*    </div>))}*/}
-          {/*  </div>*/}
-          {/*</div>))}*/}
-          {/*<div className={styles.oddsLast}>*/}
-          {/*  <div className={styles.oddsTitle}>*/}
-          {/*    <span>Total Goals <img src="/sports/i.svg" alt=""/></span>*/}
-          {/*    <img src="/sports/arrowUpBlue.svg" alt=""/>*/}
-          {/*  </div>*/}
-          {/*  <div className={styles.odds}>*/}
-          {/*    {[0, 1, 2, 3].map(item => (<div key={item} className={styles.odd}>*/}
-          {/*      Over <span>1.69</span>*/}
-          {/*    </div>))}*/}
-          {/*  </div>*/}
-          {/*</div>*/}
         </div>
       </div>
-      <Basket basket={basket} setBasket={setBasket}/>
+      <Basket basket={basket} setBasket={setBasket} setIsBasketOpen={setIsBasketOpen} isBasketOpen={isBasketOpen}/>
     </div>
   );
 };

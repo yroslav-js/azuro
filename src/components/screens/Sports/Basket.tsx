@@ -25,6 +25,7 @@ import {chains} from "@/components/layout/WagmiAppConfig";
 import {ethers} from "ethers";
 import Lottie from 'react-lottie';
 import * as animationData from './Gradient-background.json'
+import {Combo} from "next/dist/compiled/@next/font/dist/google";
 
 const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, setBasket}: {
   basket: IBasket[],
@@ -36,10 +37,11 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   const isFilterOpen = useAppSelector(state => state.azuroSlice.isFilterOpen)
   const dispatch = useAppDispatch()
   const [firstRender, setFirstRender] = useState(true)
-  const [isStopped, setIsStopped] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
   const [amount, setAmount] = useState(new Map())
+  const [comboAmount, setComboAmount] = useState('0')
   const [amountForEach, setAmountForEach] = useState('0')
+  const [betType, setBetType] = useState('Ordinar')
+  const [totalOdds, setTotalOdds] = useState(0)
   const {connect, connectors} = useConnect()
   const {switchNetwork} = useSwitchNetwork()
   const {chain} = useNetwork()
@@ -61,6 +63,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   // const oddsDecimals = 12
   // const rawMinOdds = parseUnits(minOdds.toFixed(oddsDecimals), oddsDecimals)
   const prematchCoreAddress = '0x8ea11e2aefab381e87b644e018ae1f78aa338851'
+  const betExpress = '0xc0a46fc9952e4b804960a91ece75f89952a2c205'
   const TOKEN_DECIMALS = 6
   const affiliate = '0x0000000000000000000000000000000000000000'
   const lp = '0xe47F16bc95f4cF421f008BC5C23c1D3d5F402935'
@@ -69,40 +72,11 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
 
   const sumOfMap = () => {
     let sum = 0
-    amount.forEach(v => {
-      sum += +v
+    basket.forEach(event => {
+      sum += +amount.get(event.id)
     })
-
     return sum
   }
-
-  const a = ethers.utils.defaultAbiCoder.encode(
-    [
-      "tuple(uint256 conditionId, uint64 outcomeId)[]",
-      "uint64"
-    ],
-    [
-      basket.map(({conditionId, outcomeId}) => {
-        return [
-          BigInt(conditionId),
-          BigInt(outcomeId),
-        ]
-      }),
-      '12000000000000'
-    ]
-  )
-
-  const data = encodeAbiParameters(
-    parseAbiParameters('(uint256, uint64)[]'),
-    [
-      basket.map(({conditionId, outcomeId}) => {
-        return [
-          BigInt(conditionId),
-          BigInt(outcomeId),
-        ]
-      }) as readonly (readonly [bigint, bigint])[],
-    ]
-  )
 
   const {write: approveWrite, data: approveData} = useContractWrite({
     address: USDT_ADDRESS,
@@ -110,8 +84,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
     functionName: 'approve',
     args: [
       CONTRACT_ADDRESS,
-      parseUnits(+amountForEach ? (+amountForEach * basket.length).toString() : sumOfMap().toString(), TOKEN_DECIMALS).toString()
-      // parseUnits('0.1', TOKEN_DECIMALS).toString()
+      parseUnits(betType === 'Combo' ? comboAmount : (+amountForEach ? (+amountForEach * basket.length).toString() : sumOfMap().toString()), TOKEN_DECIMALS).toString()
     ],
   })
 
@@ -119,7 +92,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
     hash: approveData?.hash,
   })
 
-  const {write} = useContractWrite({
+  const {write: placeBatch} = useContractWrite({
     address: CONTRACT_ADDRESS,
     abi: abi,
     functionName: 'bet',
@@ -128,7 +101,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
       basket.map(item => {
         return {
           core: prematchCoreAddress,
-          amount: parseUnits(+amountForEach ? amountForEach : amount.get(item.id) || '0', TOKEN_DECIMALS).toString(),
+          amount: parseUnits(Number(amountForEach) ? amountForEach : amount.get(item.id) || '0', TOKEN_DECIMALS).toString(),
           expiresAt: BigInt(Math.floor(Date.now() / 1000) + 20000),
           extraData: {
             affiliate,
@@ -144,28 +117,41 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
     ],
   })
 
-  // const {write} = useContractWrite({
-  //   address: CONTRACT_ADDRESS,
-  //   abi: abi,
-  //   functionName: 'bet',
-  //   args: [
-  //     lp,
-  //     [{
-  //       core: prematchCoreAddress,
-  //       amount: parseUnits('0.1' || '0', TOKEN_DECIMALS).toString(),
-  //       expiresAt: BigInt(Math.floor(Date.now() / 1000) + 2000),
-  //       extraData: {
-  //         affiliate,
-  //         minOdds: 0,
-  //         data: a,
-  //       }
-  //     }],
-  //     referrer
-  //   ],
-  // })
+  const {write: placeCombo} = useContractWrite({
+    address: CONTRACT_ADDRESS,
+    abi: abi,
+    functionName: 'bet',
+    args: [
+      lp,
+      [{
+        core: betExpress,
+        amount: parseUnits(comboAmount, TOKEN_DECIMALS).toString(),
+        expiresAt: BigInt(Math.floor(Date.now() / 1000) + 2000),
+        extraData: {
+          affiliate,
+          minOdds: 0,
+          data: encodeAbiParameters(
+            parseAbiParameters('(uint256, uint64)[]'),
+            [
+              basket.map(({conditionId, outcomeId}) => {
+                return [
+                  BigInt(conditionId),
+                  BigInt(outcomeId),
+                ]
+              }) as readonly (readonly [bigint, bigint])[],
+            ]
+          ),
+        }
+      }],
+      referrer
+    ],
+  })
 
   useEffect(() => {
-    isApproveSuccess && write()
+    if (isApproveSuccess) {
+      if (betType === 'Combo') placeCombo()
+      else placeBatch()
+    }
   }, [isApproveSuccess])
 
   useEffect(() => {
@@ -176,7 +162,18 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
       localStorage && localStorage.setItem('basket', JSON.stringify(basket))
       localStorage && dispatch(setBasketEvents([...basket]))
     }
+
+    if (basket.length < 2) setBetType('Ordinar')
   }, [basket])
+
+  useEffect(() => {
+    if (betType === 'Combo') {
+      setTotalOdds(basket.reduce((a, n) => +a * +n.currentOdds, 1))
+    } else {
+      if (+amountForEach) setTotalOdds(basket.reduce((a, n) => +a + +n.currentOdds, 0) / basket.length)
+      else setTotalOdds(basket.reduce((a, n) => +a + +n.currentOdds * amount.get(n.id), 0) / sumOfMap() || 0)
+    }
+  }, [basket, betType, amountForEach, amount]);
 
   useEffect(() => {
     if (setBasket && localStorage) {
@@ -201,8 +198,8 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
             }}
             height={54}
             width={300}
-            isStopped={isStopped}
-            isPaused={isPaused}/>
+            isStopped={false}
+            isPaused={false}/>
           <img src="/sports/basketMobile.png" alt=""/> Place bet, you have <span>{basket.length}</span> bets in betslip
         </div>
       }
@@ -212,8 +209,12 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
         <div className={styles.basketHeading}>
           <div className={styles.betSlip}>Bet slip</div>
           <div className={styles.betType}>
-            <div>Combo</div>
-            <div className={styles.betTypeActive}>Ordinar</div>
+            {['Combo', 'Ordinar'].map(type => (
+              <div className={clsx(type === betType && styles.betTypeActive)} onClick={() => {
+                if (type === 'Combo' && basket.length >= 2) setBetType(type)
+                else setBetType('Ordinar')
+              }}>{type}</div>
+            ))}
           </div>
           <div className={styles.clearAll} onClick={() => setBasket([])}>
             <img src="/sports/basketClearAll.svg" alt=""/> Clear all
@@ -225,21 +226,23 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
           <button>How to play</button>
         </div>}
         {!!basket.length && <div className={styles.basketContent}>
-          <div className={styles.selectionText}>Amount for each selection</div>
-          <div className={styles.selection}>
-            <div className={styles.selectionSelect}>
-              <input type="number" placeholder='Amount' value={amountForEach}
-                     onChange={e => setAmountForEach(Math.abs(+e.target.value).toString())}/>
-              <div className={clsx(styles.activeSelection, styles.selectionLong)}>Distribute</div>
-            </div>
-            {['10', '25', '50', '100'].map(item => (
-              <div key={item} onClick={() => setAmountForEach(amountForEach === item ? '0' : item)}
-                   className={clsx(styles.selectionAmount, amountForEach === item && styles.activeSelectionAmount)}>
-                {item}$
+          {betType === 'Ordinar' && <>
+            <div className={styles.selectionText}>Amount for each selection</div>
+            <div className={styles.selection}>
+              <div className={styles.selectionSelect}>
+                <input type="number" placeholder='Amount' value={amountForEach}
+                       onChange={e => setAmountForEach(Math.abs(+e.target.value).toString())}/>
+                <div className={clsx(styles.activeSelection, styles.selectionLong)}>Distribute</div>
               </div>
-            ))}
-          </div>
-          {!!basket?.length && basketEvents.map(item => (<div key={item.id} className={styles.event}>
+              {['10', '25', '50', '100'].map(item => (
+                <div key={item} onClick={() => setAmountForEach(amountForEach === item ? '0' : item)}
+                     className={clsx(styles.selectionAmount, amountForEach === item && styles.activeSelectionAmount)}>
+                  {item}$
+                </div>
+              ))}
+            </div>
+          </>}
+          {!!basketEvents?.length && basketEvents.map(item => (<div key={item.id} className={styles.event}>
             <div className={styles.eventHead}>
               <img className={styles.flag} src="/sports/flag.png" alt=""/>
               {item.title}
@@ -286,40 +289,56 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
                 </div>
               </div>))}
             </div>
-            <div className={styles.amount}>
-              <input type="number" value={+amountForEach || amount.get(item.id)} onChange={(e) => {
-                setAmount(map => new Map(map.set(item.id, Math.abs(+e.target.value).toString())))
-              }}/>
-              {['200', '50'].map(value => (
-                <div onClick={() => {
-                  if (amount.get(item.id) === value) {
-                    return setAmount(map => new Map(map.set(item.id, 0)))
-                  }
-                  setAmount(map => new Map(map.set(item.id, value)))
-                }} key={value}
-                     className={amount.get(item.id) === value && !+amountForEach ? styles.activeAmount : ''}>{value}$</div>
-              ))}
-              <div
-                className={balance?.formatted && amount.get(item.id) === Number(balance?.formatted || 0) / 10 + '' && !+amountForEach ? styles.activeAmount : ''}
-                onClick={() => {
-                  if (amount.get(item.id) === Number(balance?.formatted || 0) / 10 + '') {
-                    return setAmount(map => new Map(map.set(item.id, 0)))
-                  }
-                  setAmount(map => new Map(map.set(item.id, Number(balance?.formatted || 0) / 10 + '')))
-                }}>10%
+            {betType === 'Ordinar' &&
+              <div className={styles.amount}>
+                <input type="number" value={+amountForEach || amount.get(item.id)} onChange={(e) => {
+                  setAmount(map => new Map(map.set(item.id, Math.abs(+e.target.value).toString())))
+                }}/>
+                {['200', '50'].map(value => (
+                  <div onClick={() => {
+                    if (amount.get(item.id) === value) {
+                      return setAmount(map => new Map(map.set(item.id, 0)))
+                    }
+                    setAmount(map => new Map(map.set(item.id, value)))
+                  }} key={value}
+                       className={amount.get(item.id) === value && !+amountForEach ? styles.activeAmount : ''}>{value}$</div>
+                ))}
+                <div
+                  className={balance?.formatted && amount.get(item.id) === Number(balance?.formatted || 0) / 10 + '' && !+amountForEach ? styles.activeAmount : ''}
+                  onClick={() => {
+                    if (amount.get(item.id) === Number(balance?.formatted || 0) / 10 + '') {
+                      return setAmount(map => new Map(map.set(item.id, 0)))
+                    }
+                    setAmount(map => new Map(map.set(item.id, Number(balance?.formatted || 0) / 10 + '')))
+                  }}>10%
+                </div>
               </div>
-            </div>
+            }
           </div>))}
+          {betType === 'Combo' &&
+            <div className={styles.comboInput}>
+              <input type="number" value={comboAmount}
+                     onChange={e => setComboAmount(Math.abs(+e.target.value).toString())}/>
+              <div className={styles.comboSelection}>
+                {['10$', '25$', '50$', 'Max bet'].map(item => (
+                  <div className={comboAmount + '$' === item ? styles.activeCombo : ''}
+                       key={item} onClick={() => {
+                    if (item.length === 3) setComboAmount(item.replace('$', ''))
+                  }}>{item}</div>
+                ))}
+              </div>
+            </div>}
           <div className={styles.total}>
             <div className={styles.totalOddsText}>
               <span>Total odds</span>
               <span>
-              {basket.reduce((a, n) => +a * +n.currentOdds, 1).toFixed(2)}
+              {totalOdds.toFixed(2)}
             </span>
             </div>
             <div className={styles.totalReturnText}><span>Total potential return</span>
-              <span
-                className={styles.blue}>$ {((+amountForEach * basket.length || sumOfMap()) * basket.reduce((a, n) => +a * +n.currentOdds, 1)).toFixed(2)}</span>
+              <span className={styles.blue}>$
+                {(betType === 'Combo' ? +comboAmount * totalOdds : (+amountForEach * basket.length || sumOfMap()) * totalOdds).toFixed(2)}
+              </span>
             </div>
             {/*{[0, 1, 2, 3].map(item => (<div className={styles.totalEvents} key={item}>*/}
             {/*  <img src="/sports/garbageGray.svg" alt=""/>*/}
@@ -344,15 +363,16 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
                 }}
                 height={48}
                 width={342}
-                isStopped={isStopped}
-                isPaused={isPaused}/>
+                isStopped={false}
+                isPaused={false}/>
             </div>
             <button className={styles.placeBet} onClick={() => {
               if (isConnected && chain?.id === chains[0].id) {
-                approveWrite()
+                if (betType === 'Combo' ? !+comboAmount : !+amountForEach && !!basket.find(item => !amount.get(item.id))) return
+                else approveWrite()
               } else connect({connector: connectors[0]})
             }}>Place bet
-              $ {+amountForEach ? +amountForEach * basket.length : sumOfMap()}
+              $ {betType === 'Combo' ? comboAmount : +amountForEach ? +amountForEach * basket.length : sumOfMap()}
             </button>
             <span onClick={() => setIsBasketOpen(false)}></span>
           </div>

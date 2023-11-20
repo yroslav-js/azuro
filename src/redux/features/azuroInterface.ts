@@ -1,3 +1,5 @@
+import {sortTime} from "@/redux/subgraph/callFunctions";
+
 export interface IConditions {
   conditionId: string
   outcomes: {
@@ -58,6 +60,24 @@ export interface ISearch {
     slug: string
     name: string
   }
+  sport: {
+    slug: string
+  },
+  conditions: {
+    outcomes: {
+      outcomeId: string
+    }[]
+  }[]
+}
+
+export interface IRecentlyEvent {
+  id: string
+  title: string
+  league: {
+    slug: string
+    name: string
+  }
+  condition: string
   sport: {
     slug: string
   }

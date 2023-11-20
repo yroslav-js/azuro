@@ -19,7 +19,7 @@
     z-index: 20;
 }
 
-.search:focus {
+.focus {
     border: 1px solid var(--text-accent-2);
     background-color: var(--transperent-accent-2);
 }
@@ -80,7 +80,7 @@
     box-shadow: 0 12px 12px 0 rgba(0, 0, 0, 0.2);
     min-height: 54px;
     border-radius: 26px;
-    z-index: 10;
+    z-index: 15;
     padding-top: 59px;
 }
 

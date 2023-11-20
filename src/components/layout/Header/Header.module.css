@@ -36,6 +36,10 @@
     font-weight: 700;
 }
 
+.portfolioWrap > img {
+    cursor: pointer;
+}
+
 .portfolio div {
     color: var(--text-low-priority);
     font-size: 11px;

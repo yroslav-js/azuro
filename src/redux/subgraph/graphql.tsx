@@ -64,6 +64,11 @@ query Navigation($gameFilter: Game_filter) {
     sport {
       slug
     }
+    conditions(first: 1) {
+      outcomes(first: 1) {
+        outcomeId
+      }
+    }
   }
 }
 `

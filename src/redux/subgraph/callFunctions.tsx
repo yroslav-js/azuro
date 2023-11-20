@@ -20,14 +20,18 @@ interface ISportFilter {
 
 const getToday = () => {
   const now = new Date()
-  return ((24 - now.getHours()) * 60 - now.getMinutes() - 1) * 60
+  const year = now.getFullYear()
+  const month = now.getMonth()
+  const date = now.getDate() + 1
+  const tomorrow = new Date(year, month, date)
+  return (Number(tomorrow) - 1000 * 60 * 2) / 1000
 }
 
 export enum sortTime {
   '1h' = 3600,
   '3h' = 3600 * 3,
   '6h' = 3600 * 6,
-  'Today' = getToday(),
+  'Today' = 'Today',
   'Tomorrow' = 'Tomorrow',
   'All' = 0
 }
@@ -49,9 +53,13 @@ export const fetchSportsGames = createAsyncThunk(
       if (league) gameFilter.league_ = {slug_in: league}
 
       if (sortTime === 'Tomorrow') {
-        gameFilter.startsAt_gt = Math.floor(getToday() + 60 + Date.now() / 1000)
-        gameFilter.startsAt_lt = Math.floor(getToday() + 60 + 24 * 3600 + Date.now() / 1000)
-      } else if (sortTime) gameFilter.startsAt_lt = Math.floor(Date.now() / 1000) + sortTime
+        gameFilter.startsAt_gt = Math.floor(getToday() + 60 * 2)
+        gameFilter.startsAt_lt = Math.floor(getToday() + (24 * 3600))
+      } else if (sortTime === 'Today') {
+        gameFilter.startsAt_lt = getToday()
+      } else if (sortTime) {
+        gameFilter.startsAt_lt = Math.floor(Date.now() / 1000) + +sortTime.toFixed(0)
+      }
 
       const res = await apolloClient.query({
         query: filter ? getSportsGames(500) : getSportsGames(4),

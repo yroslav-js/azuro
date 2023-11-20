@@ -15,26 +15,13 @@ import {usePathname, useRouter} from "next/navigation";
 import {IBasket, ISortItem} from "@/redux/features/azuroInterface";
 import {iconsIndex, sportsIcon} from "@/utils/sports-icon";
 import {filterAmount, topEventAmount} from "@/utils/amount";
+import {getUKOdds} from "@/utils/getUKOdds";
 
 var odds = require('odds-converter')
 
 const sortItems: ISortItem[] = ['All', 'Today', 'Tomorrow', '1h', '3h', '6h']
 
-const gcd = (a: number, b: number): number => {
-  if (b < 0.0000001) return a;
-  return gcd(b, Math.floor(a % b));
-};
-
-const getUKOdds = (fraction: number) => {
-  const len = fraction.toFixed(2).length - 2;
-  let denominator = Math.pow(10, len);
-  let numerator = fraction * denominator;
-  const divisor = gcd(numerator, denominator);
-  numerator /= divisor;
-  denominator /= divisor;
-
-  return Math.floor(numerator) + '/' + Math.floor(denominator)
-}
+// all logic with basket or basketEvents
 
 const Sports = () => {
   const sports = useAppSelector(state => state.azuroSlice.sports)
@@ -162,7 +149,8 @@ const Sports = () => {
               <div className={styles.teamsWrapper}>
                 <div className={styles.teamsHeading}>
                   <div>{game.league.name}</div>
-                  <p>{formatDate(+game.startsAt)}</p>
+                  <p
+                    className={formatDate(+game.startsAt).includes('Today') ? styles.green : styles.blue}>{formatDate(+game.startsAt)}</p>
                   <span><img src="/share.svg" alt=""/></span>
                   <span><img src="/bookmark.svg" alt=""/></span>
                 </div>

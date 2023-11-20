@@ -7,13 +7,20 @@ import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {clearSearch} from "@/redux/features/azuroSlice";
 import {fetchSearch} from "@/redux/subgraph/callFunctions";
+import {usePathname} from "next/navigation";
+import {IRecentlyEvent} from "@/redux/features/azuroInterface";
+import {getMarketName} from "@azuro-org/dictionaries";
 
 const Search = () => {
   const [value, setValue] = useState('')
+  const [focus, setFocus] = useState(false)
+  const [isShown, setIsShown] = useState(false)
   const search = useAppSelector(state => state.azuroSlice.search)
   const [searchType, setSearchType] = useState('ALL')
   const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc')
   const dispatch = useAppDispatch()
+  const pathname = usePathname()
+  const [recently, setRecently] = useState<IRecentlyEvent[]>([])
 
   useEffect(() => {
     dispatch(clearSearch())
@@ -34,10 +41,15 @@ const Search = () => {
     }
   }, [value, searchType, orderDirection]);
 
+  useEffect(() => {
+    setRecently(JSON.parse(localStorage.getItem('recently') || '[]'))
+  }, [pathname]);
+
   return (
     <div className={clsx(styles.input, "searchInput")}>
-      <input type="text" value={value} onChange={e => setValue(e.target.value)} className={styles.search}
-             placeholder='Search' onBlur={() => console.log('11111')} onFocus={() => console.log('sdflkjsdfdksf')}/>
+      <input type="text" value={value} onChange={e => setValue(e.target.value)} placeholder='Search'
+             onBlur={() => setFocus(false)}
+             className={clsx(styles.search, (focus || isShown) && styles.focus)} onFocus={() => setFocus(true)}/>
       {!!value && <>
         <svg className={styles.clear} onClick={() => setValue('')} width="16" height="18" viewBox="0 0 16 18"
              fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -68,7 +80,8 @@ const Search = () => {
                 {sportsIcon[iconsIndex[event.sport.slug as keyof typeof iconsIndex] || 0]}
                 <div className={styles.resultText}>
                   <div className={styles.searchTitle}>{event.title}</div>
-                  <div className={styles.searchOdd}>Full time result</div>
+                  <div
+                    className={styles.searchOdd}>{getMarketName({outcomeId: event.conditions[0].outcomes[0].outcomeId})}</div>
                   <div className={styles.searchLeague}>{event.league.name}</div>
                 </div>
               </Link>
@@ -83,6 +96,24 @@ const Search = () => {
         </div>
       </>
       }
+      {!value && !!recently.length && (focus || isShown) &&
+        <div className={styles.resultsWrapper} onMouseEnter={() => setIsShown(true)}
+             onMouseLeave={() => setIsShown(false)}>
+          <div className={styles.results}>
+            {recently.map((event, index) => (
+              <Link style={index % 2 ? {backgroundColor: 'rgba(225, 225, 229, 1)'} : {}}
+                    href={`/sports/${event.sport.slug}/${event.league.slug}/${event.id}`} key={event.id}
+                    className={styles.result} onClick={() => setIsShown(false)}>
+                {sportsIcon[iconsIndex[event.sport.slug as keyof typeof iconsIndex] || 0]}
+                <div className={styles.resultText}>
+                  <div className={styles.searchTitle}>{event.title}</div>
+                  <div className={styles.searchOdd}>{getMarketName({outcomeId: event.condition})}</div>
+                  <div className={styles.searchLeague}>{event.league.name}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>}
     </div>
   );
 };
