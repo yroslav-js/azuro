@@ -21,7 +21,7 @@ const Balance = () => {
 
   return isConnected ? <div className={styles.portfolio}>
     <div>balance</div>
-    <p><img src="/tether.svg" alt=""/> {formatUnits(data as bigint, 6)}</p>
+    <p><img src="/tether.svg" alt=""/> {formatUnits(data as bigint || BigInt(0), 6)}</p>
   </div> : null
 };
 

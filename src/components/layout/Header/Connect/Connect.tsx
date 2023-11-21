@@ -2,7 +2,7 @@
 
 import styles from './Connect.module.css'
 import Image from "next/image";
-import {useConnect, useNetwork, useSwitchNetwork} from "wagmi";
+import {useAccount, useConnect, useNetwork, useSwitchNetwork} from "wagmi";
 import {Dispatch, SetStateAction, useEffect} from "react";
 import clsx from "clsx";
 import {chains} from "@/components/layout/WagmiAppConfig";
@@ -18,9 +18,10 @@ const Connect = (
   const {connect, connectors} = useConnect()
   const {switchNetwork} = useSwitchNetwork()
   const {chain} = useNetwork()
+  const {isConnected} = useAccount()
 
   useEffect(() => {
-    if (chains[0].id !== chain?.id) {
+    if (isConnected && chains[0].id !== chain?.id) {
       switchNetwork?.(chains[0].id)
     }
   }, [chain])
