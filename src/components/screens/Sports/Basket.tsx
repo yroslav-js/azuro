@@ -67,6 +67,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   const TOKEN_DECIMALS = 6
   const affiliate = '0x0000000000000000000000000000000000000000'
   const lp = '0xe47F16bc95f4cF421f008BC5C23c1D3d5F402935'
+  //check referrer
   const referrer = '0x0000000000000000000000000000000000000000'
   // '0x99a5116128821826E88f9c06B4c0d6454bb2Ded3'
 

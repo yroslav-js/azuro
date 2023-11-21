@@ -2,9 +2,10 @@
 
 import styles from './Connect.module.css'
 import Image from "next/image";
-import {useConnect} from "wagmi";
-import {Dispatch, SetStateAction} from "react";
+import {useConnect, useNetwork, useSwitchNetwork} from "wagmi";
+import {Dispatch, SetStateAction, useEffect} from "react";
 import clsx from "clsx";
+import {chains} from "@/components/layout/WagmiAppConfig";
 
 const Connect = (
   {
@@ -15,6 +16,15 @@ const Connect = (
     setIsConnectOpen: Dispatch<SetStateAction<boolean>>
   }) => {
   const {connect, connectors} = useConnect()
+  const {switchNetwork} = useSwitchNetwork()
+  const {chain} = useNetwork()
+
+  useEffect(() => {
+    if (chains[0].id !== chain?.id) {
+      switchNetwork?.(chains[0].id)
+    }
+  }, [chain])
+
   return (
     <div className={clsx(styles.bg, isConnectOpen && styles.open)} onClick={() => setIsConnectOpen(false)}>
       <div className={styles.connect} onClick={e => e.stopPropagation()}>

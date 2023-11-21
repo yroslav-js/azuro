@@ -23,17 +23,11 @@ const Balance = dynamic(() => import('@/components/layout/Header/Balance'), {
 const Header = () => {
   const pathname = usePathname()
   const [isConnectOpen, setIsConnectOpen] = useState(false)
-  const {switchNetwork} = useSwitchNetwork()
-  const {chain} = useNetwork()
   const dispatch = useAppDispatch()
   const oddsFormat = useAppSelector(state => state.azuroSlice.oddsFormat)
   const {isConnected} = useAccount()
 
-  useEffect(() => {
-    if (chains[0].id !== chain?.id) {
-      switchNetwork?.(chains[0].id)
-    }
-  }, [])
+
 
   return (
     <header className={clsx(styles.header, pathname.includes('sports') && styles.sports, 'header')}>
