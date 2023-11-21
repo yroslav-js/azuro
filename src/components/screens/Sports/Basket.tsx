@@ -12,7 +12,6 @@ import {
   useConnect,
   useContractWrite,
   useNetwork,
-  useSwitchNetwork,
   useWaitForTransaction
 } from 'wagmi'
 import {encodeAbiParameters, parseAbiParameters, parseUnits} from "viem";
@@ -22,10 +21,8 @@ import abi from "@/contract/abi";
 import tokenAbi from "@/contract/tokenAbi";
 import Image from "next/image";
 import {chains} from "@/components/layout/WagmiAppConfig";
-import {ethers} from "ethers";
 import Lottie from 'react-lottie';
 import * as animationData from './Gradient-background.json'
-import {Combo} from "next/dist/compiled/@next/font/dist/google";
 
 const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, setBasket}: {
   basket: IBasket[],
@@ -43,19 +40,12 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   const [betType, setBetType] = useState('Ordinar')
   const [totalOdds, setTotalOdds] = useState(0)
   const {connect, connectors} = useConnect()
-  const {switchNetwork} = useSwitchNetwork()
   const {chain} = useNetwork()
   const {isConnected, address} = useAccount()
   const {data: balance} = useBalance({
     address,
     token: USDT_ADDRESS
   })
-
-  useEffect(() => {
-    if (chains[0].id !== chain?.id) {
-      switchNetwork?.(chains[0].id)
-    }
-  }, [])
 
   // const currentOdds = 1.5
   // const slippage = 5
@@ -211,7 +201,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
           <div className={styles.betSlip}>Bet slip</div>
           <div className={styles.betType}>
             {['Combo', 'Ordinar'].map(type => (
-              <div className={clsx(type === betType && styles.betTypeActive)} onClick={() => {
+              <div key={type} className={clsx(type === betType && styles.betTypeActive)} onClick={() => {
                 if (type === 'Combo' && basket.length >= 2) setBetType(type)
                 else setBetType('Ordinar')
               }}>{type}</div>

@@ -16,7 +16,7 @@ const Balance = () => {
       "stateMutability": "view", "type": "function"
     }],
     functionName: 'balanceOf',
-    args: [address]
+    args: [address || '0x0000000000000000000000000000000000000000']
   })
 
   return isConnected ? <div className={styles.portfolio}>
