@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {apolloClient} from "@/redux/subgraph/apollo";
-import {getSearch, getSports, getSportsGames} from "@/redux/subgraph/graphql";
+import {getMyBets, getSearch, getSports, getSportsGames} from "@/redux/subgraph/graphql";
 
 interface IGameFilter {
   startsAt_gt: number
@@ -120,6 +120,32 @@ export const fetchSearch = createAsyncThunk(
         }
       })
       return res?.data?.games || []
+    } catch (e) {
+      return []
+    }
+  }
+)
+
+export const fetchMyBets = createAsyncThunk(
+  'mybets',
+  async ({address = "0xC77B5689D8deDdeCF83CFe303869C4c09fd16Cc8", orderBy, orderDirection}: {
+    address: string,
+    orderBy: string,
+    orderDirection: string
+  }) => {
+    try {
+      const res = await apolloClient.query({
+        query: getMyBets,
+        variables: {
+          where: {
+            "actor_starts_with_nocase": address
+          },
+          orderBy,
+          orderDirection
+        }
+      })
+
+      return res?.data?.bets || []
     } catch (e) {
       return []
     }

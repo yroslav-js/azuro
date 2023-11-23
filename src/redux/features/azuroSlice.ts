@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {fetchSearch, fetchSports, fetchSportsGames} from "@/redux/subgraph/callFunctions";
+import {fetchMyBets, fetchSearch, fetchSports, fetchSportsGames} from "@/redux/subgraph/callFunctions";
 import {IFilter, IInitialState, IOddsFormat, ISearch, ISortItem, ISports} from "@/redux/features/azuroInterface";
+import {IMyBets} from "@/redux/features/mybetsInterface";
 
 const initialState: IInitialState = {
   sports: [],
@@ -9,7 +10,8 @@ const initialState: IInitialState = {
   search: [],
   isFilterOpen: false,
   sortItem: 'All',
-  oddsFormat: 'EU'
+  oddsFormat: 'EU',
+  myBets: []
 }
 
 const sortedSports = {
@@ -36,6 +38,9 @@ export const azuroSlice = createSlice({
     clearSearch: state => {
       state.search = []
     },
+    clearMyBets: state => {
+      state.myBets = []
+    },
     setIsFilterOpen: (state, action: PayloadAction<boolean>) => {
       state.isFilterOpen = action.payload
     },
@@ -48,15 +53,23 @@ export const azuroSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchSportsGames.fulfilled, (state, action: PayloadAction<ISports[]>) => {
+      const a = [...action.payload]
       // @ts-ignore
-      state.sports = action.payload.toSorted((a, b) => (sortedSports[a.slug] || 99) - (sortedSports[b.slug] || 99))
+      a.sort((a, b) => (sortedSports[a.slug] || 99) - (sortedSports[b.slug] || 99))
+      // @ts-ignore
+      state.sports = a
     }).addCase(fetchSportsGames.pending, state => {
       state.sports = []
     }).addCase(fetchSports.fulfilled, (state, action: PayloadAction<IFilter[]>) => {
+      const a = [...action.payload]
       // @ts-ignore
-      state.sportFilter = action.payload.toSorted((a, b) => (sortedSports[a.slug] || 99) - (sortedSports[b.slug] || 99))
+      a.sort((a, b) => (sortedSports[a.slug] || 99) - (sortedSports[b.slug] || 99))
+      // @ts-ignore
+      state.sportFilter = a
     }).addCase(fetchSearch.fulfilled, (state, action: PayloadAction<ISearch[]>) => {
       state.search = action.payload
+    }).addCase(fetchMyBets.fulfilled, (state, action: PayloadAction<IMyBets[]>) => {
+      state.myBets = action.payload
     })
   }
 })

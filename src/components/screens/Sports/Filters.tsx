@@ -28,7 +28,8 @@ const Filters = () => {
     }, 200)
   }, [isFilterOpen])
 
-  return (
+  if (!pathname.includes('/sports')) return null
+  else return (
     <>
       <div className={clsx(styles.pageBg, isFilterOpen && styles.showPageBg)}></div>
       <div

@@ -72,3 +72,58 @@ query Navigation($gameFilter: Game_filter) {
   }
 }
 `
+
+export const getMyBets = gql`
+query Bets($where: Bet_filter!, $orderBy: Bet_orderBy, $orderDirection: OrderDirection) {
+  bets(
+    first: 500
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    subgraphError: allow
+  ) {
+    id
+    type
+    amount
+    status
+    payout
+    potentialPayout
+    result
+    isRedeemable
+    isRedeemed
+    odds
+    settledOdds
+    createdAt: createdBlockTimestamp
+    txHash: createdTxHash
+    core {
+      address
+    }
+    selections {
+      odds
+      result
+      outcome {
+        outcomeId
+        condition {
+          conditionId
+          game {
+            sport {
+              name
+            }
+            league {
+              name
+              country {
+                name
+              }
+            }
+            participants {
+              name
+              image
+            }
+            startsAt
+          }
+        }
+      }
+    }
+  }
+}
+`

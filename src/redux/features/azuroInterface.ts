@@ -1,4 +1,5 @@
 import {sortTime} from "@/redux/subgraph/callFunctions";
+import {IMyBets} from "@/redux/features/mybetsInterface";
 
 export interface IConditions {
   conditionId: string
@@ -100,4 +101,5 @@ export interface IInitialState {
   isFilterOpen: boolean
   sortItem: ISortItem
   oddsFormat: IOddsFormat
+  myBets: IMyBets[]
 }

@@ -1,0 +1,180 @@
+.wrapper {
+    width: calc(100vw - 80px);
+    display: flex;
+    gap: 16px;
+}
+
+.filter {
+    width: 280px;
+    min-width: 280px;
+    border-radius: 12px;
+    background-color: var(--surface-mid-priority);
+    height: fit-content;
+}
+
+.filterHeading {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    border-radius: 12px 12px 0 0;
+    background-color: var(--surface-high-priority);
+    padding-left: 20px;
+}
+
+.filterContent {
+    padding: 12px;
+}
+
+.by + .by {
+    margin-top: 16px;
+}
+
+.byTitle {
+    padding: 3px 0;
+    margin-left: 19px;
+    margin-bottom: 6px;
+    position: relative;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-mid-priority);
+}
+
+.byTitle::before {
+    content: "";
+    width: 2px;
+    height: 16px;
+    top: 0;
+    left: -11px;
+    position: absolute;
+    background-color: var(--elements-orange);
+}
+
+.byItems {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex-wrap: wrap;
+}
+
+.filterItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    border-radius: 18px;
+    background-color: var(--surface-high-priority);
+    color: var(--text-accent-2);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0 12px;
+    cursor: pointer;
+}
+
+.filterItem.activeFilter {
+    background-color: var(--text-accent-2);
+    color: var(--text-ctas-buttons);
+}
+
+.content {
+
+}
+
+.contentHeading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.contentHeading > span {
+    margin-right: auto;
+}
+
+.betsSorting {
+    display: flex;
+    gap: 42px;
+    height: 32px;
+    align-items: center;
+    background-color: var(--surface-high-priority);
+    padding: 0 60px 0 42px;
+    border-radius: 6px;
+}
+
+.betsSorting > div {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-high-priority);
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 18px;
+    cursor: pointer;
+
+}
+
+.betsSorting > div::before, .betsSorting > div::after {
+    content: "";
+    position: absolute;
+    height: 1px;
+    background-color: var(--text-low-priority);
+    top: 50%;
+    transition: all .2s linear;
+}
+
+.betsSorting > div > span {
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    display: inline-block;
+    width: 8px;
+    height: 1px;
+    background-color: var(--text-low-priority);
+    transform: translateY(-1px);
+}
+
+.betsSorting > div::before {
+    width: 12px;
+    left: 0;
+    transform: translateY(-4px);
+}
+
+.betsSorting > div::after {
+    width: 4px;
+    left: 8px;
+    transform: translateY(2px);
+}
+
+.betsSorting > .sortDesc::before {
+    left: 8px;
+    width: 4px;
+}
+
+.betsSorting > .sortDesc::after {
+    width: 12px;
+    left: 0;
+}
+
+.bet {
+    margin-top: 10px;
+    border-radius: 8px;
+    background-color: var(--surface-mid-priority);
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 40px 0 11px;
+    cursor: pointer;
+    color: var(--text-mid-priority);
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.type {
+    display: flex;
+    gap: 11px;
+    align-items: center;
+}
+
+.potentialReturn {
+    font-weight: 500;
+}

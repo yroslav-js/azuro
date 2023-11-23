@@ -28,9 +28,9 @@ const Header = () => {
   const {isConnected} = useAccount()
 
 
-
   return (
-    <header className={clsx(styles.header, pathname.includes('sports') && styles.sports, 'header')}>
+    // <header className={clsx(styles.header, pathname.includes('sports') && styles.sports, 'header')}>
+    <header className={clsx(styles.header, styles.sports, 'header')}>
       <Connect isConnectOpen={isConnectOpen}
                setIsConnectOpen={setIsConnectOpen}/>
       <div className={clsx(styles.logo, 'flexCenter')}>
