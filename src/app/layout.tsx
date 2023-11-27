@@ -1,8 +1,7 @@
 import './globals.css'
+import 'react-day-picker/dist/style.css'
 import type {Metadata} from 'next'
 import localFont from "next/font/local";
-import Layout from "@/components/layout/Layout/Layout";
-import {Provider} from "react-redux";
 import {Providers} from "@/redux/provider";
 import {WagmiAppConfig} from "@/components/layout/WagmiAppConfig";
 

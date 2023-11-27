@@ -4,58 +4,6 @@
     gap: 16px;
 }
 
-.filter {
-    width: 280px;
-    min-width: 280px;
-    border-radius: 12px;
-    background-color: var(--surface-mid-priority);
-    height: fit-content;
-}
-
-.filterHeading {
-    display: flex;
-    align-items: center;
-    height: 36px;
-    border-radius: 12px 12px 0 0;
-    background-color: var(--surface-high-priority);
-    padding-left: 20px;
-}
-
-.filterContent {
-    padding: 12px;
-}
-
-.by + .by {
-    margin-top: 16px;
-}
-
-.byTitle {
-    padding: 3px 0;
-    margin-left: 19px;
-    margin-bottom: 6px;
-    position: relative;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-mid-priority);
-}
-
-.byTitle::before {
-    content: "";
-    width: 2px;
-    height: 16px;
-    top: 0;
-    left: -11px;
-    position: absolute;
-    background-color: var(--elements-orange);
-}
-
-.byItems {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    flex-wrap: wrap;
-}
-
 .filterItem {
     display: flex;
     align-items: center;
@@ -76,7 +24,7 @@
 }
 
 .content {
-
+    width: 100%;
 }
 
 .contentHeading {
@@ -92,11 +40,12 @@
 
 .betsSorting {
     display: flex;
-    gap: 42px;
+    gap: 8px;
     height: 32px;
     align-items: center;
+    justify-content: space-between;
     background-color: var(--surface-high-priority);
-    padding: 0 60px 0 42px;
+    padding: 0 40px 0 11px;
     border-radius: 6px;
 }
 
@@ -108,9 +57,9 @@
     height: 100%;
     display: flex;
     align-items: center;
-    padding: 18px;
+    padding-left: 18px;
     cursor: pointer;
-
+    white-space: nowrap;
 }
 
 .betsSorting > div::before, .betsSorting > div::after {
@@ -155,26 +104,115 @@
     left: 0;
 }
 
-.bet {
+.sort0 {
+    width: 90px;
+}
+
+.sort1 {
+    width: 115px;
+}
+
+.sort2 {
+    width: 88px;
+}
+
+.sort3 {
+    width: 110px;
+}
+
+.sort4 {
+    width: 81px;
+}
+
+.sort5 {
+    width: 70px;
+}
+
+.sort6 {
+    width: 70px;
+}
+
+.betWrapper {
     margin-top: 10px;
     border-radius: 8px;
+    overflow: hidden;
     background-color: var(--surface-mid-priority);
-    height: 40px;
-    display: flex;
-    align-items: center;
-    padding: 0 40px 0 11px;
+    padding: 0 8px 0 8px;
+    position: relative;
+}
+
+.bet {
     cursor: pointer;
     color: var(--text-mid-priority);
     font-size: 13px;
     font-weight: 400;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    align-items: center;
+    padding: 0 32px 0 3px;
 }
 
 .type {
     display: flex;
     gap: 11px;
     align-items: center;
+    justify-content: left;
+    width: 75px;
+}
+
+.date {
+    text-align: right;
+    width: 130px;
+}
+
+.amount {
+    width: 88px;
+    text-align: right;
 }
 
 .potentialReturn {
     font-weight: 500;
+    width: 110px;
+    text-align: right;
+}
+
+.odds {
+    text-align: center;
+    width: 81px;
+}
+
+.results {
+    width: 70px;
+    height: 24px;
+    background-color: var(--elements-transperent-black-40);
+    color: var(--text-ctas-buttons);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status {
+    width: 70px;
+    height: 24px;
+    border-radius: 12px;
+    background-color: var(--surface-background);
+    color: var(--text-low-priority);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.arrow {
+    position: absolute;
+    top: 16px;
+    right: 14px;
+    transform: rotate(180deg);
+    cursor: pointer;
+}
+
+:global(.openBet) .arrow {
+    transform: rotate(0deg);
 }

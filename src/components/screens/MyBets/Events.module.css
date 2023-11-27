@@ -1,0 +1,97 @@
+.events {
+    height: 0;
+    overflow: hidden;
+}
+
+:global(.openBet) .events {
+    height: fit-content;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 8px;
+}
+
+.event {
+    height: 46px;
+    background-color: var(--surface-high-priority);
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.championship {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.championship > svg {
+    width: 25px;
+    height: 25px;
+}
+
+.championship > svg > path {
+    fill: var(--text-accent-2);
+}
+
+.eventTitle {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-low-priority);
+    margin-bottom: 4px;
+}
+
+.eventValue {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-high-priority);
+}
+
+.teamName {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.teamsImg {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-right: 8px;
+}
+
+.teamsImg > span {
+    width: 30px;
+    height: 30px;
+    background-color: var(--surface-mid-priority);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+
+.teamsImg img {
+    display: inline-block;
+    width: 20px;
+    height: auto;
+}
+
+.eventDate {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--elements-green);
+    margin-bottom: 4px;
+}
+
+.taCenter {
+    text-align: center;
+}
+
+.taCenter > div {
+    text-align: center;
+}

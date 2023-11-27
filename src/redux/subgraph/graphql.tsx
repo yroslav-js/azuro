@@ -99,6 +99,7 @@ query Bets($where: Bet_filter!, $orderBy: Bet_orderBy, $orderDirection: OrderDir
       address
     }
     selections {
+      id
       odds
       result
       outcome {
@@ -107,7 +108,7 @@ query Bets($where: Bet_filter!, $orderBy: Bet_orderBy, $orderDirection: OrderDir
           conditionId
           game {
             sport {
-              name
+              slug
             }
             league {
               name

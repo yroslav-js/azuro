@@ -53,19 +53,17 @@ export const azuroSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchSportsGames.fulfilled, (state, action: PayloadAction<ISports[]>) => {
-      const a = [...action.payload]
+      const sorted = [...action.payload]
       // @ts-ignore
-      a.sort((a, b) => (sortedSports[a.slug] || 99) - (sortedSports[b.slug] || 99))
-      // @ts-ignore
-      state.sports = a
+      sorted.sort((a, b) => (sortedSports[a.slug] || 99) - (sortedSports[b.slug] || 99))
+      state.sports = sorted
     }).addCase(fetchSportsGames.pending, state => {
       state.sports = []
     }).addCase(fetchSports.fulfilled, (state, action: PayloadAction<IFilter[]>) => {
-      const a = [...action.payload]
+      const sorted = [...action.payload]
       // @ts-ignore
-      a.sort((a, b) => (sortedSports[a.slug] || 99) - (sortedSports[b.slug] || 99))
-      // @ts-ignore
-      state.sportFilter = a
+      sorted.sort((a, b) => (sortedSports[a.slug] || 99) - (sortedSports[b.slug] || 99))
+      state.sportFilter = sorted
     }).addCase(fetchSearch.fulfilled, (state, action: PayloadAction<ISearch[]>) => {
       state.search = action.payload
     }).addCase(fetchMyBets.fulfilled, (state, action: PayloadAction<IMyBets[]>) => {
@@ -80,6 +78,7 @@ export const {
   setIsFilterOpen,
   setSortItem,
   setOddsFormat,
+  clearMyBets
 } = azuroSlice.actions
 
 export default azuroSlice.reducer

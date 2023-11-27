@@ -16,6 +16,7 @@ export interface IMyBets {
     address: string
   }
   selections: {
+    id: string
     odds: string
     result: string | null
     outcome: {
@@ -24,7 +25,7 @@ export interface IMyBets {
         conditionId: string
         game: {
           sport: {
-            name: string
+            slug: string
           }
           league: {
             name: string
@@ -35,10 +36,10 @@ export interface IMyBets {
           participants: {
             name: string
             image: string
-          }
+          }[]
           startsAt: string
         }
       }
     }
-  }
+  }[]
 }

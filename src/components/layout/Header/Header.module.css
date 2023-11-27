@@ -55,7 +55,7 @@
 }
 
 .portfolio p {
-    color: var(--text-accent-1);
+    color: var(--text-high-priority);
     font-size: 15px;
     line-height: 20px;
     letter-spacing: -0.24px;
