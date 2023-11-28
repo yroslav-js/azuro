@@ -3,6 +3,7 @@
 import Main from "@/components/screens/Main/Main";
 import {useRouter} from "next/navigation";
 import {useEffect} from "react";
+import Sports from "@/components/screens/Sports/Sports";
 
 export default function Home() {
   const router = useRouter()
@@ -11,7 +12,9 @@ export default function Home() {
     router.push('/sports')
   }, [])
 
-  return (
-    <Main/>
-  )
+  return null
+
+  // return (
+  //   <Main/>
+  // )
 }

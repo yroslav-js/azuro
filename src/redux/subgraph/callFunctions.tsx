@@ -18,6 +18,15 @@ interface ISportFilter {
   sporthub_in: ["sports"]
 }
 
+export interface IBetsFilter {
+  type?: string
+  status?: string
+  result?: string | null
+  actor_starts_with_nocase?: string
+  isRedeemed?: boolean
+  isRedeemable?: boolean
+}
+
 const getToday = () => {
   const now = new Date()
   const year = now.getFullYear()
@@ -128,18 +137,16 @@ export const fetchSearch = createAsyncThunk(
 
 export const fetchMyBets = createAsyncThunk(
   'mybets',
-  async ({address = "0xC77B5689D8deDdeCF83CFe303869C4c09fd16Cc8", orderBy, orderDirection}: {
-    address: string,
+  async ({where, orderBy, orderDirection}: {
     orderBy: string,
-    orderDirection: string
+    orderDirection: string,
+    where: IBetsFilter
   }) => {
     try {
       const res = await apolloClient.query({
         query: getMyBets,
         variables: {
-          where: {
-            "actor_starts_with_nocase": address
-          },
+          where,
           orderBy,
           orderDirection
         }

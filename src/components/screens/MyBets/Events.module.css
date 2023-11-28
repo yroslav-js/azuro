@@ -16,22 +16,25 @@
 .event {
     height: 46px;
     background-color: var(--surface-high-priority);
-    padding: 0 15px;
+    padding: 0 30px 0 15px;
     display: flex;
+    gap: 8px;
     justify-content: space-between;
     align-items: center;
 }
 
 .championship {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 8px;
+    width: 150px;
 }
 
 .championship > svg {
     width: 25px;
     height: 25px;
+    min-width: 25px;
+    min-height: 25px;
 }
 
 .championship > svg > path {
@@ -53,13 +56,15 @@
 
 .teamName {
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     align-items: center;
+    width: 400px;
+    /*min-width: 30%;*/
+    margin-left: -20px;
 }
 
 .teamsImg {
     display: flex;
-    gap: 4px;
     align-items: center;
     margin-right: 8px;
 }
@@ -74,6 +79,9 @@
     border-radius: 50%;
 }
 
+.teamsImg > span + span {
+    margin-left: -4px;
+}
 
 .teamsImg img {
     display: inline-block;
@@ -93,5 +101,22 @@
 }
 
 .taCenter > div {
+    text-align: center;
+}
+
+.eventMarket {
+    width: 110px;
+}
+
+.eventOdds {
+    width: 81px;
+}
+
+.eventOutcome {
+    width: 70px;
+}
+
+.eventIsWin {
+    width: 80px;
     text-align: center;
 }

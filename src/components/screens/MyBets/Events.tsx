@@ -9,48 +9,42 @@ import clsx from "clsx";
 const Events = ({bet}: { bet: IMyBets }) => {
   return (
     <div className={styles.events}>
-      {bet.selections.map(event => (
-        <div key={event.id} className={styles.event}>
+      {bet.selections.map(event => {
+        const game = event.outcome.condition.game
+        return <div key={event.id} className={styles.event}>
           <div className={styles.championship}>
-            {sportsIcon[iconsIndex[event.outcome.condition.game.sport.slug as keyof typeof iconsIndex] || 0]}
+            {sportsIcon[iconsIndex[game.sport.slug as keyof typeof iconsIndex] || 0]}
             <div>
               <div className={styles.eventTitle}>Championship</div>
-              <div className={styles.eventValue}>{event.outcome.condition.game.league.name}</div>
+              <div className={styles.eventValue}>{game.league.name}</div>
             </div>
           </div>
           <div className={styles.teamName}>
             <div className={styles.teamsImg}>
               <span>
-              <img src={event.outcome.condition.game.participants[0].image} onError={({currentTarget}) => {
+              <img src={game.participants[0].image} onError={({currentTarget}) => {
                 currentTarget.onerror = null;
                 currentTarget.src = "/sports/team.svg";
               }} alt=""/>
               </span>
 
               <span>
-              <img src={event.outcome.condition.game.participants[1].image} onError={({currentTarget}) => {
+              <img src={game.participants[1].image} onError={({currentTarget}) => {
                 currentTarget.onerror = null;
                 currentTarget.src = "/sports/team.svg";
               }} alt=""/>
               </span>
             </div>
             <div className={styles.teams}>
-              <div className={styles.eventDate}>{formatDate(+event.outcome.condition.game.startsAt)}</div>
+              <div className={styles.eventDate}>{formatDate(+game.startsAt)}</div>
               <div className={styles.eventValue}>
-                {event.outcome.condition.game.participants[0].name + ' - ' + event.outcome.condition.game.participants[0].name}
+                {game.participants[0].name + ' - ' + game.participants[0].name}
               </div>
             </div>
           </div>
           <div className={clsx(styles.eventMarket, styles.taCenter)}>
             <div className={styles.eventTitle}>Market</div>
             <div className={styles.eventValue}>{getMarketName({outcomeId: event.outcome.outcomeId})}</div>
-          </div>
-          <div className={clsx(styles.eventOutcome, styles.taCenter)}>
-            <div className={styles.eventTitle}>Outcome</div>
-            <div className={styles.eventValue}>{getSelectionName({
-              outcomeId: event.outcome.outcomeId,
-              withPoint: true
-            })}</div>
           </div>
           <div className={clsx(styles.eventOdds, styles.taCenter)}>
             <div className={styles.eventTitle}>Odds</div>
@@ -67,12 +61,15 @@ const Events = ({bet}: { bet: IMyBets }) => {
               ) : null
             }
           </div>
-          <div className={clsx(styles.eventResults, styles.taCenter)}>
-            <div className={styles.eventTitle}>Match result</div>
-            <div className={styles.eventValue}>{}</div>
+          <div className={clsx(styles.eventOutcome, styles.taCenter)}>
+            <div className={styles.eventTitle}>Outcome</div>
+            <div className={styles.eventValue}>{getSelectionName({
+              outcomeId: event.outcome.outcomeId,
+              withPoint: true
+            })}</div>
           </div>
         </div>
-      ))}
+      })}
     </div>
   );
 };
