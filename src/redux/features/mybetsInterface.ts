@@ -1,5 +1,6 @@
 export interface IMyBets {
   id: string
+  betId: string
   type: string
   amount: string
   status: string

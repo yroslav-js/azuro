@@ -11,10 +11,12 @@ export const byStatus = ['All', 'Open', 'Claimed', 'Unclaimed', 'Pending', 'To c
 export const byResults = ['All', 'Won', 'Lost', 'Soon']
 export const byType = ['All', 'Combo', 'Ordinar']
 
-const Filter = ({filterStatus, setFilterStatus, betsSorting}: {
+const Filter = ({filterStatus, setFilterStatus, betsSorting, startsAt, startsTo}: {
   filterStatus: string,
   setFilterStatus: Dispatch<SetStateAction<string>>,
-  betsSorting: IBetSorting
+  betsSorting: IBetSorting,
+  startsAt?: Date | undefined,
+  startsTo?: Date | undefined
 }) => {
   const [filterType, setFilterType] = useState('All')
   const [filterResults, setFilterResults] = useState('All')
@@ -24,32 +26,38 @@ const Filter = ({filterStatus, setFilterStatus, betsSorting}: {
   useEffect(() => {
     let promise: any
     if (address) {
+      dispatch(clearMyBets())
       const filters: IBetsFilter = {actor_starts_with_nocase: address}
       let orderBy = 'createdBlockTimestamp'
       let orderDirection = 'desc'
+      if (startsAt) {
+        filters.createdBlockTimestamp_gt = (Number(startsAt) / 1000).toFixed(0)
+        filters.createdBlockTimestamp_lt = startsTo ?
+          (Number(startsTo) / 1000 + 24 * 3600).toFixed(0) :
+          (Number(startsAt) / 1000 + 24 * 3600).toFixed(0)
+      }
       if (filterType === 'Ordinar') filters.type = 'Ordinar'
-      if (filterType === 'Combo') filters.type = 'Express'
+      else if (filterType === 'Combo') filters.type = 'Express'
       if (filterResults === 'Won') filters.result = 'Won'
-      if (filterResults === 'Lost') filters.result = 'Lost'
-      if (filterResults === 'Soon') filters.result = null
+      else if (filterResults === 'Lost') filters.result = 'Lost'
+      else if (filterResults === 'Soon') filters.result = null
       if (filterStatus === 'Open') filters.status = 'Accepted'
-      if (filterStatus === 'Claimed') filters.isRedeemed = true
-      if (filterStatus === 'Unclaimed') filters.status = ''
-      if (filterStatus === 'Pending') filters.status = 'Accepted'
-      if (filterStatus === 'To claim') {
+      else if (filterStatus === 'Claimed') filters.isRedeemed = true
+      else if (filterStatus === 'Unclaimed') filters.status = ''
+      else if (filterStatus === 'Pending') filters.status = 'Accepted'
+      else if (filterStatus === 'To claim') {
         filters.isRedeemed = false
         filters.isRedeemable = true
       }
-      if (betsSorting["Bet date"].chosen) orderDirection = betsSorting["Bet date"].direction
-      if (betsSorting["Bet amount"].chosen) {
+      if (betsSorting["Bet date"].chosen) {
+        orderDirection = betsSorting["Bet date"].direction
+      } else if (betsSorting["Bet amount"].chosen) {
         orderBy = 'amount'
         orderDirection = betsSorting["Bet amount"].direction
-      }
-      if (betsSorting["Potential return"].chosen) {
+      } else if (betsSorting["Potential return"].chosen) {
         orderBy = 'potentialPayout'
         orderDirection = betsSorting["Potential return"].direction
-      }
-      if (betsSorting["Total odds"].chosen) {
+      } else if (betsSorting["Total odds"].chosen) {
         orderBy = 'odds'
         orderDirection = betsSorting["Total odds"].direction
       }
@@ -58,9 +66,8 @@ const Filter = ({filterStatus, setFilterStatus, betsSorting}: {
 
     return () => {
       promise?.abort()
-      dispatch(clearMyBets())
     }
-  }, [filterType, address, filterResults, filterStatus, betsSorting])
+  }, [filterType, address, filterResults, filterStatus, betsSorting, startsAt, startsTo])
 
   return (
     <div className={styles.filter}>

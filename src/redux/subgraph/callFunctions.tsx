@@ -25,6 +25,8 @@ export interface IBetsFilter {
   actor_starts_with_nocase?: string
   isRedeemed?: boolean
   isRedeemable?: boolean
+  createdBlockTimestamp_gt?: string
+  createdBlockTimestamp_lt?: string
 }
 
 const getToday = () => {

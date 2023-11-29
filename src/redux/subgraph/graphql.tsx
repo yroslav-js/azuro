@@ -83,6 +83,7 @@ query Bets($where: Bet_filter!, $orderBy: Bet_orderBy, $orderDirection: OrderDir
     subgraphError: allow
   ) {
     id
+    betId
     type
     amount
     status

@@ -2,6 +2,7 @@
     width: calc(100vw - 80px);
     display: flex;
     gap: 16px;
+    overflow: hidden;
 }
 
 .filterItem {
@@ -25,6 +26,9 @@
 
 .content {
     width: 100%;
+    overflow-y: auto;
+    height: calc(100vh - 96px);
+    padding-bottom: 24px;
 }
 
 .contentHeading {
@@ -204,7 +208,7 @@
 }
 
 .results {
-    width: 70px;
+    min-width: 70px;
     height: 24px;
     background-color: var(--elements-transperent-black-40);
     color: var(--text-ctas-buttons);
@@ -212,6 +216,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 11px;
 }
 
 .resultGreen {
@@ -225,14 +230,17 @@
 }
 
 .status {
+    min-width: 70px;
+}
+
+.status > button {
     width: 70px;
     height: 24px;
     border-radius: 12px;
-    background-color: var(--surface-background);
-    color: var(--text-low-priority);
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 11px;
 }
 
 .arrow {

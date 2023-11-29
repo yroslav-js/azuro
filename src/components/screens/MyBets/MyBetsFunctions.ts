@@ -39,5 +39,4 @@ export const returnBetsSorting = (sortItem: string, prevState: IBetSorting): IBe
   }
 }
 
-export const BetsSortingObject = '{"Type":{"chosen":false,"direction":"asc"},"Bet date":{"chosen":false,"direction":"asc"},"Bet amount":{"chosen":false,"direction":"asc"},"Potential return":{"chosen":false,"direction":"asc"},"Total odds":{"chosen":false,"direction":"asc"},"Results":{"chosen":false,"direction":"asc"},"Status":{"chosen":false,"direction":"asc"}}'
-
+export const BetsSortingObject = '{"Type":{"chosen":false,"direction":"desc"},"Bet date":{"chosen":false,"direction":"desc"},"Bet amount":{"chosen":false,"direction":"desc"},"Potential return":{"chosen":false,"direction":"desc"},"Total odds":{"chosen":false,"direction":"desc"},"Results":{"chosen":false,"direction":"desc"},"Status":{"chosen":false,"direction":"desc"}}'

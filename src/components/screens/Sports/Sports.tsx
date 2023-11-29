@@ -9,7 +9,7 @@ import clsx from "clsx";
 import Basket from "@/components/screens/Sports/Basket";
 import Link from "next/link";
 import Image from "next/image";
-import {setBasketEvents, setIsFilterOpen, setSortItem} from "@/redux/features/azuroSlice";
+import {clearSports, setBasketEvents, setIsFilterOpen, setSortItem} from "@/redux/features/azuroSlice";
 import {fetchSports, fetchSportsGames, sortTime} from "@/redux/subgraph/callFunctions";
 import {usePathname, useRouter} from "next/navigation";
 import {IBasket, ISortItem} from "@/redux/features/azuroInterface";
@@ -72,6 +72,10 @@ const Sports = () => {
   useEffect(() => {
     localStorage && setBasket([...JSON.parse(localStorage.getItem('basket') || '[]')])
     setFirstRender(false)
+
+    return () => {
+      dispatch(clearSports())
+    }
   }, []);
 
   useEffect(() => {

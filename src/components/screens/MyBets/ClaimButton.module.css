@@ -1,0 +1,26 @@
+.open {
+    color: var(--text-accent-2);
+    background-color: var(--transperent-accent-2);
+    cursor: initial;
+}
+
+.claim {
+    position: relative;
+    color: var(--text-ctas-buttons);
+}
+
+.claim > span {
+    position: relative;
+    z-index: 1;
+}
+
+.claim > div {
+    position: absolute;
+    border-radius: 12px;
+}
+
+.canceled, .claimed {
+    background-color: var(--surface-background);
+    color: var(--text-low-priority);
+    cursor: initial;
+}

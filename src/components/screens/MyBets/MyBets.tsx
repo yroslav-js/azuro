@@ -9,9 +9,26 @@ import {addDays} from "date-fns";
 import Events from "@/components/screens/MyBets/Events";
 import Filter, {byStatus} from "@/components/screens/MyBets/Filter";
 import {formatAMPM} from "@/utils/formatAMPM";
-import {BetsSortingObject, IBetSorting, returnBetsSorting} from "@/components/screens/MyBets/MyBetsFunctions";
+import {
+  BetsSortingObject,
+  IBetSorting,
+  returnBetsSorting
+} from "@/components/screens/MyBets/MyBetsFunctions";
+import ClaimButton from "@/components/screens/MyBets/ClaimButton";
 
 const pastMonth = new Date(Date.now());
+
+const sortRules = (a: string | null, b: string | null) => {
+  if (a === null) return -1
+  if (b === null) return 1
+  if (a > b) {
+    return 1;
+  }
+  if (a < b) {
+    return -1;
+  }
+  return 0;
+}
 
 const MyBets = () => {
   const [filterStatus, setFilterStatus] = useState('All')
@@ -21,12 +38,13 @@ const MyBets = () => {
     from: pastMonth,
     to: addDays(pastMonth, 0)
   };
-  const [range, setRange] = useState<DateRange | undefined>(defaultSelected);
+  const [range, setRange] = useState<DateRange | undefined>();
   const myBets = useAppSelector(state => state.azuroSlice.myBets)
 
   return (
     <div className={styles.wrapper}>
-      <Filter filterStatus={filterStatus} setFilterStatus={setFilterStatus} betsSorting={betsSorting}/>
+      <Filter startsAt={range?.from} startsTo={range?.to} filterStatus={filterStatus}
+              setFilterStatus={setFilterStatus} betsSorting={betsSorting}/>
       <div className={styles.content}>
         <div className={styles.contentHeading}>
           <span>My Bets</span>
@@ -52,6 +70,15 @@ const MyBets = () => {
                 return bet.selections.filter(event => +event.outcome.condition.game.startsAt <= Date.now() / 1000).length
               } else return true
             })
+            .sort((a, b) => {
+              if (betsSorting.Type.chosen) {
+                return betsSorting.Type.direction === 'desc' ? sortRules(a.type, b.type) : sortRules(b.type, a.type)
+              } else if (betsSorting.Results.chosen) {
+                return betsSorting.Results.direction === 'desc' ? sortRules(a.result, b.result) : sortRules(b.result, a.result)
+              } else if (betsSorting.Status.chosen) {
+                return betsSorting.Status.direction === 'desc' ? sortRules(a.status, b.status) : sortRules(b.status, a.status)
+              } else return 0
+            })
             .map(bet => (
               <div key={bet.id} className={clsx(styles.betWrapper, openedBet === bet.id && "openBet")}>
                 <div onClick={() => {
@@ -74,9 +101,12 @@ const MyBets = () => {
                   </div>
                   <div className={styles.odds}>{Number(bet.odds || 0).toFixed(2)}</div>
                   <div className={clsx(styles.results,
-                    bet.isRedeemable === true && styles.resultGreen,
+                    bet.result === 'Won' && styles.resultGreen,
                     bet.result === 'Lost' && styles.resultRed)}>{bet.result || 'Soon'}</div>
-                  <div className={styles.status}>{bet.status}</div>
+                  <div className={styles.status}>
+                    <ClaimButton betId={bet.betId} isRedeemable={bet.isRedeemable} isRedeemed={bet.isRedeemed}
+                                 status={bet.status}/>
+                  </div>
                   <svg className={styles.arrow} width="12" height="8" viewBox="0 0 12 8" fill="none"
                        xmlns="http://www.w3.org/2000/svg">
                     <path d="M1.41 7.41L6 2.83L10.59 7.41L12 6L6 0L0 6L1.41 7.41Z" fill="#878787"/>
