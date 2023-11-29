@@ -16,7 +16,7 @@ import {
 } from 'wagmi'
 import {encodeAbiParameters, parseAbiParameters, parseUnits} from "viem";
 import {IBasket} from "@/redux/features/azuroInterface";
-import {CONTRACT_ADDRESS, USDT_ADDRESS} from "@/contract/config";
+import {CONTRACT_ADDRESS, EXPRESS_BET_ADDRESS, ORDINAR_BET_ADDRESS, USDT_ADDRESS} from "@/contract/config";
 import abi from "@/contract/abi";
 import tokenAbi from "@/contract/tokenAbi";
 import Image from "next/image";
@@ -52,8 +52,6 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
   // const minOdds = 1 + (currentOdds - 1) * (100 - slippage) / 100
   // const oddsDecimals = 12
   // const rawMinOdds = parseUnits(minOdds.toFixed(oddsDecimals), oddsDecimals)
-  const prematchCoreAddress = '0x8ea11e2aefab381e87b644e018ae1f78aa338851'
-  const betExpress = '0xc0a46fc9952e4b804960a91ece75f89952a2c205'
   const TOKEN_DECIMALS = 6
   const affiliate = '0x0000000000000000000000000000000000000000'
   const lp = '0xe47F16bc95f4cF421f008BC5C23c1D3d5F402935'
@@ -91,7 +89,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
       lp,
       basket.map(item => {
         return {
-          core: prematchCoreAddress,
+          core: ORDINAR_BET_ADDRESS,
           amount: parseUnits(Number(amountForEach) ? amountForEach : amount.get(item.id) || '0', TOKEN_DECIMALS).toString(),
           expiresAt: BigInt(Math.floor(Date.now() / 1000) + 20000),
           extraData: {
@@ -115,7 +113,7 @@ const Basket = ({isBasketOpen = false, setIsBasketOpen = () => ({}), basket, set
     args: [
       lp,
       [{
-        core: betExpress,
+        core: EXPRESS_BET_ADDRESS,
         amount: parseUnits(comboAmount, TOKEN_DECIMALS).toString(),
         expiresAt: BigInt(Math.floor(Date.now() / 1000) + 2000),
         extraData: {

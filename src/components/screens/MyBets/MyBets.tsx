@@ -105,7 +105,7 @@ const MyBets = () => {
                     bet.result === 'Lost' && styles.resultRed)}>{bet.result || 'Soon'}</div>
                   <div className={styles.status}>
                     <ClaimButton betId={bet.betId} isRedeemable={bet.isRedeemable} isRedeemed={bet.isRedeemed}
-                                 status={bet.status}/>
+                                 status={bet.status} type={bet.type}/>
                   </div>
                   <svg className={styles.arrow} width="12" height="8" viewBox="0 0 12 8" fill="none"
                        xmlns="http://www.w3.org/2000/svg">

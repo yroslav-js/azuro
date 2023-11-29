@@ -2,24 +2,24 @@ import styles from './ClaimButton.module.css'
 import * as animationData from "@/components/screens/Sports/Gradient-background.json";
 import Lottie from "react-lottie";
 import {useContractWrite} from "wagmi";
-import {CONTRACT_ADDRESS} from "@/contract/config";
+import {CONTRACT_ADDRESS, EXPRESS_BET_ADDRESS, ORDINAR_BET_ADDRESS} from "@/contract/config";
 import abi from "@/contract/abi";
 
 const ClaimButton = (
-  {isRedeemable, isRedeemed, status, betId}: {
+  {isRedeemable, isRedeemed, status, betId, type}: {
     isRedeemable: boolean,
     isRedeemed: boolean,
     status: string,
-    betId: string
+    betId: string,
+    type: string
   }
 ) => {
-  const core = '0x8ea11e2aefab381e87b644e018ae1f78aa338851'
   const {write} = useContractWrite({
     address: CONTRACT_ADDRESS,
     abi: abi,
     functionName: 'withdrawPayouts',
     args: [
-      [{core, tokenId: betId, isNative: false}],
+      [{core: type === 'Express' ? EXPRESS_BET_ADDRESS : ORDINAR_BET_ADDRESS, tokenId: betId, isNative: false}],
       '0x0000000000000000000000000000000000000000'
     ]
   })
@@ -47,7 +47,7 @@ const ClaimButton = (
     </button>
   )
   if (status === 'Accepted') return <button className={styles.open}>Open</button>
-  if (status === 'Canceled') return <button className={styles.canceled}>Canceled</button>
+  // if (status === 'Canceled') return <button className={styles.canceled}>Canceled</button>
 };
 
 export default ClaimButton;
