@@ -5,12 +5,25 @@ import clsx from "clsx";
 import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
 import {usePathname, useRouter} from "next/navigation";
-import {IFilter, IFilterLeagues, ISortItem} from "@/redux/features/azuroInterface";
+import {ISortItem} from "@/redux/features/azuroInterface";
 import {iconsIndex, sportsIcon} from "@/utils/sports-icon";
 import {setIsFilterOpen, setSortItem} from "@/redux/features/azuroSlice";
 import {filterAmount, leagueAmount, topEventAmount} from "@/utils/amount";
 import Search from "@/components/ui/Search/Search";
+import {AppRouterInstance} from "next/dist/shared/lib/app-router-context.shared-runtime";
 
+const pathChange = (pathname: string, router: AppRouterInstance, leagueSlug: string, sportSlug: string) => {
+  let urlLeagues = pathname.split(`/sports/${sportSlug}`).pop()?.replace('/', '')
+  if (urlLeagues === undefined) return
+  const index = urlLeagues?.indexOf(leagueSlug)
+  if (index !== -1) {
+    if (index === 0) {
+      if (urlLeagues?.indexOf(leagueSlug + '%20') === -1) router.push(`/sports/${sportSlug}/${urlLeagues.replace(leagueSlug, '')}`)
+      else router.push(`/sports/${sportSlug}/${urlLeagues.replace(leagueSlug + '%20', '')}`)
+    } else router.push(`/sports/${sportSlug}/${urlLeagues.replace('%20' + leagueSlug, '')}`)
+  } else if (urlLeagues.length) router.push(`/sports/${sportSlug}/${urlLeagues}%20${leagueSlug}`)
+  else router.push(`/sports/${sportSlug}/${leagueSlug}`)
+}
 
 const Filters = () => {
   const [filterType, setFilterType] = useState<'classic' | 'tag'>('classic')
@@ -73,18 +86,7 @@ const Filters = () => {
               <div className={styles.tags}>
                 {sport.countries.map(({leagues}) => leagues.map(league => !league.games.length ? null : (
                   <div key={league.name}
-                       onClick={() => {
-                         let urlLeagues = pathname.split(`/sports/${sport.slug}`).pop()?.replace('/', '')
-                         if (urlLeagues === undefined) return
-                         const index = urlLeagues?.indexOf(league.slug)
-                         if (index !== -1) {
-                           if (index === 0) {
-                             if (urlLeagues?.indexOf(league.slug + '%20') === -1) router.push(`/sports/${sport.slug}/${urlLeagues.replace(league.slug, '')}`)
-                             else router.push(`/sports/${sport.slug}/${urlLeagues.replace(league.slug + '%20', '')}`)
-                           } else router.push(`/sports/${sport.slug}/${urlLeagues.replace('%20' + league.slug, '')}`)
-                         } else if (urlLeagues.length) router.push(`/sports/${sport.slug}/${urlLeagues}%20${league.slug}`)
-                         else router.push(`/sports/${sport.slug}/${league.slug}`)
-                       }}
+                       onClick={() => pathChange(pathname, router, league.slug, sport.slug)}
                        className={clsx(styles.tag,
                          pathname.split(`/sports/${sport.slug}/`).pop()?.split('%20').find(item => item === league.slug) && styles.tagActive)
                        }>
@@ -134,18 +136,7 @@ const Filters = () => {
                 <span/>
                 {sport.countries.map(({leagues}) => leagues.map(league => !league.games.length ? null : (
                   <div key={league.slug}
-                       onClick={() => {
-                         let urlLeagues = pathname.split(`/sports/${sport.slug}`).pop()?.replace('/', '')
-                         if (urlLeagues === undefined) return
-                         const index = urlLeagues?.indexOf(league.slug)
-                         if (index !== -1) {
-                           if (index === 0) {
-                             if (urlLeagues?.indexOf(league.slug + '%20') === -1) router.push(`/sports/${sport.slug}/${urlLeagues.replace(league.slug, '')}`)
-                             else router.push(`/sports/${sport.slug}/${urlLeagues.replace(league.slug + '%20', '')}`)
-                           } else router.push(`/sports/${sport.slug}/${urlLeagues.replace('%20' + league.slug, '')}`)
-                         } else if (urlLeagues.length) router.push(`/sports/${sport.slug}/${urlLeagues}%20${league.slug}`)
-                         else router.push(`/sports/${sport.slug}/${league.slug}`)
-                       }}
+                       onClick={() => pathChange(pathname, router, league.slug, sport.slug)}
                        className={clsx(styles.filter,
                          pathname.split(`/sports/${sport.slug}/`).pop()?.split('%20').find(item => item === league.slug) && styles.filterActive)}>
                     {league.name}

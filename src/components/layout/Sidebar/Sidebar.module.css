@@ -7,12 +7,13 @@
     height: 100%;
 }
 
-.sidebar div {
+.sidebar a {
+    display: block;
     padding: 2px 0;
     cursor: pointer;
 }
 
-.sidebar div + div {
+.sidebar a + a {
     margin-top: 20px;
 }
 
@@ -75,11 +76,11 @@
         display: flex;
     }
 
-    .sidebar div {
+    .sidebar a {
         text-align: center;
     }
 
-    .sidebar div + div {
+    .sidebar a + a {
         margin-top: 0;
     }
 

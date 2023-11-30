@@ -71,3 +71,25 @@
     background-color: var(--text-accent-2);
     color: var(--text-ctas-buttons);
 }
+
+@media (max-width: 1639px) {
+    .filter {
+        width: 290px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translateX(105%);
+        transition: transform .2s linear;
+        z-index: 10;
+    }
+
+    :global(.filterOpen) .filter {
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 1349px) {
+    .filter {
+        top: 44px;
+    }
+}

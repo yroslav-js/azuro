@@ -15,6 +15,7 @@ import {
   returnBetsSorting
 } from "@/components/screens/MyBets/MyBetsFunctions";
 import ClaimButton from "@/components/screens/MyBets/ClaimButton";
+import {setIsFilterOpen} from "@/redux/features/azuroSlice";
 
 const pastMonth = new Date(Date.now());
 
@@ -32,6 +33,7 @@ const sortRules = (a: string | null, b: string | null) => {
 
 const MyBets = () => {
   const [filterStatus, setFilterStatus] = useState('All')
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [openedBet, setOpenedBet] = useState('')
   const [betsSorting, setBetsSorting] = useState<IBetSorting>(JSON.parse(BetsSortingObject))
   const defaultSelected: DateRange = {
@@ -42,7 +44,7 @@ const MyBets = () => {
   const myBets = useAppSelector(state => state.azuroSlice.myBets)
 
   return (
-    <div className={styles.wrapper}>
+    <div className={clsx(styles.wrapper, isFilterOpen && 'filterOpen')}>
       <Filter startsAt={range?.from} startsTo={range?.to} filterStatus={filterStatus}
               setFilterStatus={setFilterStatus} betsSorting={betsSorting}/>
       <div className={styles.content}>
@@ -52,6 +54,11 @@ const MyBets = () => {
             <div key={item} onClick={() => setFilterStatus(item)}
                  className={clsx(styles.filterItem, item === filterStatus && styles.activeFilter)}>{item}</div>
           ))}
+          <div className={styles.openFilter} onClick={() => setIsFilterOpen(prevState => !prevState)}>
+            FILTER
+            <img src="/sports/openFilter.svg" alt=""/>
+            {/*<span>{1}</span>*/}
+          </div>
         </div>
         <div className={styles.betsSorting}>
           {Object.keys(betsSorting).map((sortItem, index) => (
@@ -117,14 +124,16 @@ const MyBets = () => {
             ))}
         </div>
       </div>
-      <DayPicker
-        // components={{}}
-        id="test"
-        mode="range"
-        defaultMonth={pastMonth}
-        selected={range}
-        onSelect={setRange}
-      />
+      <div className={styles.calendar}>
+        <DayPicker
+          // components={{}}
+          id="test"
+          mode="range"
+          defaultMonth={pastMonth}
+          selected={range}
+          onSelect={setRange}
+        />
+      </div>
     </div>
   );
 };

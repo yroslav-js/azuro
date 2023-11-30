@@ -4,6 +4,7 @@ import styles from './Sidebar.module.css'
 import {usePathname, useRouter} from "next/navigation";
 import clsx from "clsx";
 import {menu} from "@/components/layout/Sidebar/menu";
+import Link from "next/link";
 
 const Sidebar = () => {
   const path = usePathname()
@@ -13,23 +14,22 @@ const Sidebar = () => {
     <>
       <aside className={styles.sidebar}>
         {menu.map((item, id) => (
-          <div onClick={() => router.push(`/${item.path}`)} key={id}
-               className={item.path === path.split('/')[1] ? styles.active : ''}>
+          <Link href={`/${item.path}`} key={id}
+                className={item.path === path.split('/')[1] ? styles.active : ''}>
             {item.img}
             <p>{item.name}</p>
-          </div>
+          </Link>
         ))}
       </aside>
       <aside className={clsx(styles.sidebar, styles.mobileSidebar)}>
         {menu.map((item, id) => {
           if (id > 3) return null
           return (
-            // <div key={id} className={item.path === path ? styles.active : ''}>
-            <div onClick={() => router.push(`/${item.path}`)} key={id}
-                 className={item.path === path.split('/')[1] ? styles.active : ''}>
+            <Link href={`/${item.path}`} key={id}
+                  className={item.path === path.split('/')[1] ? styles.active : ''}>
               {item.img}
               <p>{item.name}</p>
-            </div>
+            </Link>
           )
         })}
         {/*<div style={{textAlign: 'right'}} onClick={() => {*/}

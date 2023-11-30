@@ -14,11 +14,11 @@
 }
 
 .event {
-    height: 46px;
+    min-height: 46px;
     background-color: var(--surface-high-priority);
-    padding: 0 30px 0 15px;
+    padding: 0 32px 0 15px;
     display: flex;
-    gap: 8px;
+    gap: 5%;
     justify-content: space-between;
     align-items: center;
 }
@@ -27,7 +27,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    width: 150px;
+    min-width: 160px;
+    max-width: 160px;
 }
 
 .championship > svg {
@@ -58,9 +59,9 @@
     display: flex;
     justify-content: left;
     align-items: center;
-    width: 400px;
-    /*min-width: 30%;*/
+    max-width: 400px;
     margin-left: -20px;
+    margin-right: auto;
 }
 
 .teamsImg {
@@ -105,18 +106,38 @@
 }
 
 .eventMarket {
-    width: 110px;
+    min-width: 110px;
+    max-width: 110px;
 }
 
 .eventOdds {
-    width: 81px;
+    min-width: 81px;
+    max-width: 81px;
 }
 
 .eventOutcome {
-    width: 70px;
+    min-width: 70px;
+    max-width: 70px;
 }
 
 .eventIsWin {
-    width: 80px;
+    min-width: 70px;
+    max-width: 70px;
     text-align: center;
 }
+
+@media (max-width: 1750px) {
+    .championship {
+        max-width: 140px;
+        min-width: 140px;
+    }
+
+    .championship > svg {
+        display: none;
+    }
+
+    .teamsImg {
+        display: none;
+    }
+}
+

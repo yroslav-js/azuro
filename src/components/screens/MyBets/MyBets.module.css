@@ -3,6 +3,7 @@
     display: flex;
     gap: 16px;
     overflow: hidden;
+    position: relative;
 }
 
 .filterItem {
@@ -123,23 +124,23 @@
 }
 
 .sort2 {
-    width: 88px;
+    min-width: 88px;
 }
 
 .sort3 {
-    width: 110px;
+    min-width: 110px;
 }
 
 .sort4 {
-    width: 81px;
+    min-width: 81px;
 }
 
 .sort5 {
-    width: 70px;
+    min-width: 70px;
 }
 
 .sort6 {
-    width: 70px;
+    min-width: 70px;
 }
 
 .betWrapper {
@@ -176,18 +177,19 @@
 .date {
     text-align: right;
     width: 130px;
+    min-width: 130px;
     margin: 0 auto;
 }
 
 .amount {
     width: 88px;
-    text-align: right;
+    text-align: center;
 }
 
 .potentialReturn {
     font-weight: 500;
-    width: 110px;
-    text-align: right;
+    min-width: 110px;
+    text-align: center;
 }
 
 .PRblue {
@@ -204,7 +206,7 @@
 
 .odds {
     text-align: center;
-    width: 81px;
+    min-width: 81px;
 }
 
 .results {
@@ -251,6 +253,70 @@
     cursor: pointer;
 }
 
+.calendar {
+    opacity: 1;
+    transition: opacity .2s linear;
+}
+
+:global(.filterOpen) .calendar {
+    opacity: 0;
+}
+
 :global(.openBet) .arrow {
     transform: rotate(0deg);
+}
+
+.openFilter {
+    display: none;
+    user-select: none;
+}
+
+@media (max-width: 1639px) {
+    .openFilter {
+        display: flex;
+        color: var(--text-accent-2);
+        background-color: var(--surface-mid-priority);
+        border-radius: 4px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 9px 0 10px;
+        height: 28px;
+        gap: 7px;
+        font-size: 13px;
+        font-weight: 700;
+        position: relative;
+        margin-right: 3px;
+        cursor: pointer;
+    }
+
+    .openFilter span {
+        position: absolute;
+        top: -2px;
+        right: -3px;
+        width: 14px;
+        height: 14px;
+        display: flex;
+        background-color: var(--elements-red);
+        justify-content: center;
+        align-items: center;
+        font-weight: 500;
+        font-size: 10px;
+        color: var(--text-ctas-buttons);
+        border-radius: 50%;
+    }
+}
+
+@media (max-width: 1349px) {
+    .calendar {
+        position: absolute;
+        top: 364px;
+        right: 0;
+        transform: translateX(105%);
+        transition: transform .2s linear;
+    }
+
+    :global(.filterOpen) .calendar {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
