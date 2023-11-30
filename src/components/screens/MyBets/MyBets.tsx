@@ -15,9 +15,7 @@ import {
   returnBetsSorting
 } from "@/components/screens/MyBets/MyBetsFunctions";
 import ClaimButton from "@/components/screens/MyBets/ClaimButton";
-import {setIsFilterOpen} from "@/redux/features/azuroSlice";
 
-const pastMonth = new Date(Date.now());
 
 const sortRules = (a: string | null, b: string | null) => {
   if (a === null) return -1
@@ -32,21 +30,18 @@ const sortRules = (a: string | null, b: string | null) => {
 }
 
 const MyBets = () => {
+  const pastMonth = new Date(Date.now());
   const [filterStatus, setFilterStatus] = useState('All')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [openedBet, setOpenedBet] = useState('')
   const [betsSorting, setBetsSorting] = useState<IBetSorting>(JSON.parse(BetsSortingObject))
-  const defaultSelected: DateRange = {
-    from: pastMonth,
-    to: addDays(pastMonth, 0)
-  };
   const [range, setRange] = useState<DateRange | undefined>();
   const myBets = useAppSelector(state => state.azuroSlice.myBets)
 
   return (
     <div className={clsx(styles.wrapper, isFilterOpen && 'filterOpen')}>
-      <Filter startsAt={range?.from} startsTo={range?.to} filterStatus={filterStatus}
-              setFilterStatus={setFilterStatus} betsSorting={betsSorting}/>
+      <Filter startsAt={range?.from} startsTo={range?.to} filterStatus={filterStatus} range={range}
+              setFilterStatus={setFilterStatus} betsSorting={betsSorting} setRange={setRange} pastMonth={pastMonth}/>
       <div className={styles.content}>
         <div className={styles.contentHeading}>
           <span>My Bets</span>
@@ -125,14 +120,17 @@ const MyBets = () => {
         </div>
       </div>
       <div className={styles.calendar}>
-        <DayPicker
-          // components={{}}
-          id="test"
-          mode="range"
-          defaultMonth={pastMonth}
-          selected={range}
-          onSelect={setRange}
-        />
+        {/*<DayPicker*/}
+        {/*  // components={{}}*/}
+        {/*  id="test"*/}
+        {/*  mode="range"*/}
+        {/*  defaultMonth={pastMonth}*/}
+        {/*  selected={range}*/}
+        {/*  onSelect={setRange}*/}
+        {/*/>*/}
+        {/*{!!range && <div className={styles.clearCalendar} onClick={() => setRange(undefined)}>*/}
+        {/*  Clear*/}
+        {/*</div>}*/}
       </div>
     </div>
   );

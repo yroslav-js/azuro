@@ -105,26 +105,29 @@
     text-align: center;
 }
 
-.eventMarket {
-    min-width: 110px;
-    max-width: 110px;
+@media (min-width: 860px) {
+    .eventMarket {
+        min-width: 110px;
+        max-width: 110px;
+    }
+
+    .eventOdds {
+        min-width: 81px;
+        max-width: 81px;
+    }
+
+    .eventOutcome {
+        min-width: 70px;
+        max-width: 70px;
+    }
+
+    .eventIsWin {
+        min-width: 70px;
+        max-width: 70px;
+        text-align: center;
+    }
 }
 
-.eventOdds {
-    min-width: 81px;
-    max-width: 81px;
-}
-
-.eventOutcome {
-    min-width: 70px;
-    max-width: 70px;
-}
-
-.eventIsWin {
-    min-width: 70px;
-    max-width: 70px;
-    text-align: center;
-}
 
 @media (max-width: 1750px) {
     .championship {
@@ -140,4 +143,65 @@
         display: none;
     }
 }
+
+@media (max-width: 1039px) {
+    .event {
+        gap: 8px;
+    }
+
+    .teamName {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 860px) {
+    .event {
+        position: relative;
+        flex-direction: column;
+        align-items: initial;
+        justify-content: center;
+        gap: 4px;
+        padding: 46px 12px 8px;
+    }
+
+    .event > div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .event > .teamName {
+        position: absolute;
+        top: 10px;
+        left: 8px;
+        justify-content: start;
+        width: 90%;
+    }
+
+    .teamsImg {
+        display: flex;
+    }
+
+    .event > .eventIsWin {
+        position: absolute;
+        top: 16px;
+        right: 10px;
+        width: 20px;
+    }
+
+    .event > .championship {
+        max-width: 100%;
+    }
+
+    .championship > div {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+
+
+
+
 

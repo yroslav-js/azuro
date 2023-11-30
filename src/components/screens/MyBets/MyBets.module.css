@@ -253,15 +253,6 @@
     cursor: pointer;
 }
 
-.calendar {
-    opacity: 1;
-    transition: opacity .2s linear;
-}
-
-:global(.filterOpen) .calendar {
-    opacity: 0;
-}
-
 :global(.openBet) .arrow {
     transform: rotate(0deg);
 }
@@ -269,6 +260,10 @@
 .openFilter {
     display: none;
     user-select: none;
+}
+
+.calendar {
+    min-width: 290px;
 }
 
 @media (max-width: 1639px) {
@@ -318,5 +313,146 @@
     :global(.filterOpen) .calendar {
         opacity: 1;
         transform: translateX(0);
+    }
+}
+
+@media (max-width: 1039px) {
+    .betsSorting {
+        gap: 8px;
+    }
+
+    .bet {
+        gap: 8px;
+    }
+}
+
+@media (max-width: 860px) {
+    .betsSorting > .sort1,
+    .betsSorting > .sort2,
+    .date, .amount {
+        display: none;
+    }
+
+    .type {
+        margin-right: auto;
+    }
+
+    .sort0 {
+        margin-right: auto;
+    }
+}
+
+
+@media (max-width: 500px) {
+    .wrapper {
+        width: 100%;
+    }
+
+    .contentHeading {
+        padding: 0 16px 8px 19px;
+    }
+
+    .contentHeading > div {
+        display: none;
+    }
+
+    .contentHeading > .openFilter {
+        display: flex;
+    }
+
+    .openFilter {
+        background-color: transparent;
+        font-size: 0;
+    }
+
+    .betsSorting {
+        border-radius: 0;
+        border-bottom: 1px solid var(--text-low-priority);
+        justify-content: space-between;
+    }
+
+    .betsSorting > div {
+        cursor: initial;
+        padding-left: 0;
+        justify-content: center;
+        white-space: initial;
+        text-align: center;
+    }
+
+    .betsSorting > .sort0 {
+        justify-content: start;
+        width: 46px;
+        margin-right: 0;
+    }
+
+    .sort3 {
+        min-width: 50px;
+        width: 50px;
+    }
+
+    .sort4 {
+        min-width: 62px;
+        width: 62px;
+    }
+
+    .sort5 {
+        min-width: 52px;
+        width: 52px;
+    }
+
+    .sort6 {
+        min-width: 66px;
+        width: 66px;
+    }
+
+    .betsSorting > div > span, .betsSorting > div::after, .betsSorting > div::before {
+        display: none;
+    }
+
+    .type > svg {
+        display: none;
+    }
+
+    .type {
+        width: 46px;
+        margin-right: 0;
+    }
+
+    .potentialReturn {
+        min-width: 50px;
+        max-width: 50px;
+    }
+
+    .odds {
+        min-width: 62px;
+        width: 62px;
+    }
+
+    .results {
+        min-width: 52px;
+        width: 52px;
+        height: 36px;
+        border-radius: 18px;
+    }
+
+    .status {
+        min-width: 66px;
+        width: 66px;
+    }
+
+    .status > button {
+        border-radius: 18px;
+        height: 36px;
+        width: 66px;
+    }
+
+    .betWrapper {
+        border-radius: 0;
+        margin-top: 0;
+    }
+
+    .bet {
+        height: 50px;
+        justify-content: space-between;
     }
 }

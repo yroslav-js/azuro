@@ -40,8 +40,6 @@ const ClaimButton = (
             preserveAspectRatio: 'xMidYMid slice'
           },
         }}
-        height={24}
-        width={70}
         isStopped={false}
         isPaused={false}/>
     </button>

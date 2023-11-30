@@ -6,17 +6,21 @@ import {fetchMyBets, IBetsFilter} from "@/redux/subgraph/callFunctions";
 import {useAccount} from "wagmi";
 import {clearMyBets} from "@/redux/features/azuroSlice";
 import {IBetSorting} from "@/components/screens/MyBets/MyBetsFunctions";
+import {DateRange, DayPicker} from "react-day-picker";
 
 export const byStatus = ['All', 'Open', 'Claimed', 'Unclaimed', 'Pending', 'To claim']
 export const byResults = ['All', 'Won', 'Lost', 'Soon']
 export const byType = ['All', 'Combo', 'Ordinar']
 
-const Filter = ({filterStatus, setFilterStatus, betsSorting, startsAt, startsTo}: {
-  filterStatus: string,
-  setFilterStatus: Dispatch<SetStateAction<string>>,
-  betsSorting: IBetSorting,
-  startsAt?: Date | undefined,
+const Filter = ({filterStatus, setFilterStatus, betsSorting, startsAt, startsTo, setRange, pastMonth, range}: {
+  filterStatus: string
+  setFilterStatus: Dispatch<SetStateAction<string>>
+  betsSorting: IBetSorting
+  startsAt?: Date | undefined
   startsTo?: Date | undefined
+  pastMonth: Date
+  setRange: Dispatch<SetStateAction<DateRange | undefined>>
+  range: DateRange | undefined
 }) => {
   const [filterType, setFilterType] = useState('All')
   const [filterResults, setFilterResults] = useState('All')
@@ -102,6 +106,27 @@ const Filter = ({filterStatus, setFilterStatus, betsSorting, startsAt, startsTo}
             ))}
           </div>
         </div>
+        {(filterResults !== 'All' || filterStatus !== 'All' || filterType !== 'All') &&
+          <div className={styles.clear} onClick={() => {
+            setFilterStatus('All')
+            setFilterType('All')
+            setFilterResults('All')
+          }}>Clear
+          </div>
+        }
+      </div>
+      <div className={styles.calendar}>
+        <DayPicker
+          // components={{}}
+          id="test"
+          mode="range"
+          defaultMonth={pastMonth}
+          selected={range}
+          onSelect={setRange}
+        />
+        {!!range && <div className={styles.clearCalendar} onClick={() => setRange(undefined)}>
+          Clear
+        </div>}
       </div>
     </div>
   );
