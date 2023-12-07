@@ -1,3 +1,5 @@
+"use client"
+
 import styles from './Main.module.css'
 import filtersStyles from "@/components/ui/Filters/Filters.module.css"
 import {useState} from "react";

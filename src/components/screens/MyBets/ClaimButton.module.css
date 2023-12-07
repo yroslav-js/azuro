@@ -21,13 +21,19 @@
     border-radius: 12px;
 }
 
-.canceled, .claimed {
+.claimed {
     background-color: var(--surface-background);
     color: var(--text-low-priority);
     cursor: initial;
 }
 
-@media (max-width: 500px) {
+.canceled {
+    background-color: var(--transperent-accent-4);
+    color: var(--text-accent-4);
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
     .claim > div {
         width: 66px;
         height: 36px;

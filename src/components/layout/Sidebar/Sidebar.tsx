@@ -8,14 +8,14 @@ import Link from "next/link";
 
 const Sidebar = () => {
   const path = usePathname()
-  const router = useRouter()
 
   return (
     <>
       <aside className={styles.sidebar}>
         {menu.map((item, id) => (
-          <Link href={`/${item.path}`} key={id}
-                className={item.path === path.split('/')[1] ? styles.active : ''}>
+          <Link href={`/${item.path}`} key={id} className={
+            item.path === path.split('/')[1] || (!item.path && path.split('/')[1] === 'main') ? styles.active : ''
+          }>
             {item.img}
             <p>{item.name}</p>
           </Link>

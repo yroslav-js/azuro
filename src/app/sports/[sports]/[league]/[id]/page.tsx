@@ -1,7 +1,7 @@
-import Event from "@/components/screens/Event/Event";
+import SportsEvent from "@/components/screens/SportsEvent/SportsEvent";
 
 const Page = ({params}: { params: { id: string, sports: string, league: string } }) => {
-  return <Event id={params.id} sports={params.sports} league={params.league}/>;
+  return <SportsEvent id={params.id} sports={params.sports} league={params.league}/>;
 };
 
 export default Page;

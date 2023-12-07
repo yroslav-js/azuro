@@ -1,6 +1,6 @@
 "use client"
 
-import styles from './Event.module.css'
+import styles from './SportsEvent.module.css'
 import Basket from "@/components/screens/Sports/Basket";
 import clsx from "clsx";
 import {useEffect, useState} from "react";
@@ -13,7 +13,7 @@ import {getUKOdds} from "@/utils/getUKOdds";
 
 var odds = require('odds-converter')
 
-const Event = ({id, league, sports}: { id: string, sports: string, league: string }) => {
+const SportsEvent = ({id, league, sports}: { id: string, sports: string, league: string }) => {
   const [basket, setBasket] = useState<IBasket[]>([])
   const game = useAppSelector(state => state.azuroSlice.sports.find(item => item.slug === sports)?.games.find(item => item.id === id))
   const dispatch = useAppDispatch()
@@ -142,4 +142,4 @@ const Event = ({id, league, sports}: { id: string, sports: string, league: strin
   );
 };
 
-export default Event;
+export default SportsEvent;

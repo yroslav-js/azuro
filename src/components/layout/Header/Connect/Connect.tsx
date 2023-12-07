@@ -24,7 +24,7 @@ const Connect = (
     if (isConnected && chains[0].id !== chain?.id) {
       switchNetwork?.(chains[0].id)
     }
-  }, [chain])
+  }, [isConnected])
 
   return (
     <div className={clsx(styles.bg, isConnectOpen && styles.open)} onClick={() => setIsConnectOpen(false)}>

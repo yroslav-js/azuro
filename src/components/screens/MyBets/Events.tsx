@@ -5,8 +5,14 @@ import {formatDate} from "@/utils/formatDate";
 import {getMarketName, getSelectionName} from "@azuro-org/dictionaries";
 import {IMyBets} from "@/redux/features/mybetsInterface";
 import clsx from "clsx";
+import {getUKOdds} from "@/utils/getUKOdds";
+import {useAppSelector} from "@/hooks/reduxHooks";
+// @ts-ignore
+import odds from "odds-converter";
 
 const Events = ({bet}: { bet: IMyBets }) => {
+  const oddsFormat = useAppSelector(state => state.azuroSlice.oddsFormat)
+
   return (
     <div className={styles.events}>
       {bet.selections.map(event => {
@@ -36,7 +42,8 @@ const Events = ({bet}: { bet: IMyBets }) => {
               </span>
             </div>
             <div className={styles.teams}>
-              <div className={styles.eventDate}>{formatDate(+game.startsAt)}</div>
+              <div className={formatDate(+game.startsAt).includes('Today') ? styles.blue : styles.green}>
+                {formatDate(+game.startsAt)}</div>
               <div className={styles.eventValue}>
                 {game.participants[0].name + ' - ' + game.participants[0].name}
               </div>
@@ -48,7 +55,11 @@ const Events = ({bet}: { bet: IMyBets }) => {
           </div>
           <div className={clsx(styles.eventOdds, styles.taCenter)}>
             <div className={styles.eventTitle}>Odds</div>
-            <div className={styles.eventValue}>{Number(event.odds).toFixed(2)}</div>
+            <div className={styles.eventValue}>{
+              oddsFormat === "EU" ? Number(event.odds || 0).toFixed(2) :
+                oddsFormat === "UK" ? getUKOdds(Number(event.odds || 0)) :
+                  Number(odds.decimal.toAmerican(Number(event.odds || 0))).toFixed(0)
+            }</div>
           </div>
           <div className={styles.eventIsWin}>
             {

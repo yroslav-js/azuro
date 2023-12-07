@@ -2,7 +2,6 @@
     width: calc(100vw - 80px);
     display: flex;
     gap: 16px;
-    overflow: hidden;
     position: relative;
 }
 
@@ -143,120 +142,6 @@
     min-width: 70px;
 }
 
-.betWrapper {
-    margin-top: 10px;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: var(--surface-mid-priority);
-    padding: 0 8px 0 8px;
-    position: relative;
-}
-
-.bet {
-    cursor: pointer;
-    color: var(--text-mid-priority);
-    font-size: 13px;
-    font-weight: 400;
-    height: 40px;
-    display: flex;
-    justify-content: right;
-    gap: 5%;
-    align-items: center;
-    padding: 0 32px 0 3px;
-}
-
-.type {
-    display: flex;
-    gap: 11px;
-    align-items: center;
-    justify-content: left;
-    width: 75px;
-    margin-right: 4%;
-}
-
-.date {
-    text-align: right;
-    width: 130px;
-    min-width: 130px;
-    margin: 0 auto;
-}
-
-.amount {
-    width: 88px;
-    text-align: center;
-}
-
-.potentialReturn {
-    font-weight: 500;
-    min-width: 110px;
-    text-align: center;
-}
-
-.PRblue {
-    color: var(--text-accent-2);
-}
-
-.PRgreen {
-    color: var(--text-accent-1);
-}
-
-.PRred {
-    color: var(--text-accent-3);
-}
-
-.odds {
-    text-align: center;
-    min-width: 81px;
-}
-
-.results {
-    min-width: 70px;
-    height: 24px;
-    background-color: var(--elements-transperent-black-40);
-    color: var(--text-ctas-buttons);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-}
-
-.resultGreen {
-    background-color: var(--transperent-accent-1);
-    color: var(--text-accent-1);
-}
-
-.resultRed {
-    background-color: var(--transperent-accent-3);
-    color: var(--text-accent-3);
-}
-
-.status {
-    min-width: 70px;
-}
-
-.status > button {
-    width: 70px;
-    height: 24px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-}
-
-.arrow {
-    position: absolute;
-    top: 16px;
-    right: 14px;
-    transform: rotate(180deg);
-    cursor: pointer;
-}
-
-:global(.openBet) .arrow {
-    transform: rotate(0deg);
-}
-
 .openFilter {
     display: none;
     user-select: none;
@@ -264,6 +149,10 @@
 
 .calendar {
     min-width: 290px;
+}
+
+.claimAll {
+
 }
 
 @media (max-width: 1639px) {
@@ -340,34 +229,44 @@
     .sort0 {
         margin-right: auto;
     }
-}
 
+    .contentHeading {
+        flex-wrap: wrap;
+    }
 
-@media (max-width: 500px) {
-    .wrapper {
+    .contentHeading > span {
         width: 100%;
     }
 
+    .openFilter {
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 660px) {
     .contentHeading {
-        padding: 0 16px 8px 19px;
-    }
-
-    .contentHeading > div {
-        display: none;
-    }
-
-    .contentHeading > .openFilter {
-        display: flex;
+        gap: 4px;
     }
 
     .openFilter {
+        gap: 0;
+    }
+
+    .filterItem {
+        padding: 0 8px;
+        height: 28px;
+    }
+}
+
+@media (max-width: 600px) {
+    .openFilter {
         background-color: transparent;
         font-size: 0;
+        padding: 0;
     }
 
     .betsSorting {
-        border-radius: 0;
-        border-bottom: 1px solid var(--text-low-priority);
+        border-radius: 6px 6px 0 0;
         justify-content: space-between;
     }
 
@@ -408,51 +307,41 @@
     .betsSorting > div > span, .betsSorting > div::after, .betsSorting > div::before {
         display: none;
     }
+}
 
-    .type > svg {
+@media (max-width: 500px) {
+    .wrapper {
+        width: 100%;
+    }
+
+    .content {
+        margin-top: -16px;
+        padding-top: 16px;
+        padding-bottom: 50px;
+    }
+
+    .contentHeading {
+        padding: 0 16px 8px 19px;
+    }
+
+    .contentHeading > div {
         display: none;
     }
 
-    .type {
-        width: 46px;
-        margin-right: 0;
+    .contentHeading > .openFilter {
+        display: flex;
     }
 
-    .potentialReturn {
-        min-width: 50px;
-        max-width: 50px;
-    }
-
-    .odds {
-        min-width: 62px;
-        width: 62px;
-    }
-
-    .results {
-        min-width: 52px;
-        width: 52px;
-        height: 36px;
-        border-radius: 18px;
-    }
-
-    .status {
-        min-width: 66px;
-        width: 66px;
-    }
-
-    .status > button {
-        border-radius: 18px;
-        height: 36px;
-        width: 66px;
-    }
-
-    .betWrapper {
+    .betsSorting {
         border-radius: 0;
-        margin-top: 0;
+        border-bottom: 1px solid var(--text-low-priority);
     }
 
-    .bet {
-        height: 50px;
-        justify-content: space-between;
+    .contentHeading {
+        flex-wrap: nowrap;
+    }
+
+    .contentHeading > span {
+        width: initial;
     }
 }

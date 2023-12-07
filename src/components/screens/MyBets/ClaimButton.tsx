@@ -5,15 +5,9 @@ import {useContractWrite} from "wagmi";
 import {CONTRACT_ADDRESS, EXPRESS_BET_ADDRESS, ORDINAR_BET_ADDRESS} from "@/contract/config";
 import abi from "@/contract/abi";
 
-const ClaimButton = (
-  {isRedeemable, isRedeemed, status, betId, type}: {
-    isRedeemable: boolean,
-    isRedeemed: boolean,
-    status: string,
-    betId: string,
-    type: string
-  }
-) => {
+const ClaimButton = ({isRedeemable, isRedeemed, status, betId, type}: {
+  isRedeemable: boolean, isRedeemed: boolean, status: string, betId: string, type: string
+}) => {
   const {write} = useContractWrite({
     address: CONTRACT_ADDRESS,
     abi: abi,
@@ -26,12 +20,12 @@ const ClaimButton = (
 
   if (isRedeemed) return <button className={styles.claimed}>Claimed</button>
   if (isRedeemable && !isRedeemed) return (
-    <button className={styles.claim} onClick={e => {
+    <button className={status === 'Canceled' ? styles.canceled : styles.claim} onClick={e => {
       e.stopPropagation()
       write()
     }}>
-      <span>To claim</span>
-      <Lottie
+      <span>{status === 'Canceled' ? 'Refund' : 'To claim'}</span>
+      {status !== 'Canceled' && <Lottie
         options={{
           loop: true,
           autoplay: true,
@@ -41,11 +35,10 @@ const ClaimButton = (
           },
         }}
         isStopped={false}
-        isPaused={false}/>
+        isPaused={false}/>}
     </button>
   )
   if (status === 'Accepted') return <button className={styles.open}>Open</button>
-  // if (status === 'Canceled') return <button className={styles.canceled}>Canceled</button>
 };
 
 export default ClaimButton;

@@ -1,26 +1,36 @@
-import styles from "@/components/screens/MyBets/FIlter.module.css";
+import styles from "@/components/screens/MyBets/Filter.module.css";
 import clsx from "clsx";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {useAppDispatch} from "@/hooks/reduxHooks";
 import {fetchMyBets, IBetsFilter} from "@/redux/subgraph/callFunctions";
 import {useAccount} from "wagmi";
 import {clearMyBets} from "@/redux/features/azuroSlice";
-import {IBetSorting} from "@/components/screens/MyBets/MyBetsFunctions";
 import {DateRange, DayPicker} from "react-day-picker";
 
 export const byStatus = ['All', 'Open', 'Claimed', 'Unclaimed', 'Pending', 'To claim']
 export const byResults = ['All', 'Won', 'Lost', 'Soon']
 export const byType = ['All', 'Combo', 'Ordinar']
 
-const Filter = ({filterStatus, setFilterStatus, betsSorting, startsAt, startsTo, setRange, pastMonth, range}: {
+const Filter = ({
+                  filterStatus,
+                  setFilterStatus,
+                  betsSorting,
+                  startsAt,
+                  startsTo,
+                  setRange,
+                  pastMonth,
+                  range,
+                  setIsFilterOpen
+                }: {
   filterStatus: string
   setFilterStatus: Dispatch<SetStateAction<string>>
-  betsSorting: IBetSorting
+  betsSorting: [string, string]
   startsAt?: Date | undefined
   startsTo?: Date | undefined
   pastMonth: Date
   setRange: Dispatch<SetStateAction<DateRange | undefined>>
   range: DateRange | undefined
+  setIsFilterOpen: Dispatch<SetStateAction<boolean>>
 }) => {
   const [filterType, setFilterType] = useState('All')
   const [filterResults, setFilterResults] = useState('All')
@@ -53,19 +63,21 @@ const Filter = ({filterStatus, setFilterStatus, betsSorting, startsAt, startsTo,
         filters.isRedeemed = false
         filters.isRedeemable = true
       }
-      if (betsSorting["Bet date"].chosen) {
-        orderDirection = betsSorting["Bet date"].direction
-      } else if (betsSorting["Bet amount"].chosen) {
+      if (betsSorting[0] === "Bet date") {
+        orderDirection = betsSorting[1]
+      } else if (betsSorting[0] === "Bet amount") {
         orderBy = 'amount'
-        orderDirection = betsSorting["Bet amount"].direction
-      } else if (betsSorting["Potential return"].chosen) {
+        orderDirection = betsSorting[1]
+      } else if (betsSorting[0] === "Potential return") {
         orderBy = 'potentialPayout'
-        orderDirection = betsSorting["Potential return"].direction
-      } else if (betsSorting["Total odds"].chosen) {
+        orderDirection = betsSorting[1]
+      } else if (betsSorting[0] === "Total odds") {
         orderBy = 'odds'
-        orderDirection = betsSorting["Total odds"].direction
+        orderDirection = betsSorting[1]
       }
-      promise = dispatch(fetchMyBets({where: filters, orderBy, orderDirection}))
+      setTimeout(() => {
+        promise = dispatch(fetchMyBets({where: filters, orderBy, orderDirection}))
+      }, 1)
     }
 
     return () => {
@@ -74,61 +86,64 @@ const Filter = ({filterStatus, setFilterStatus, betsSorting, startsAt, startsTo,
   }, [filterType, address, filterResults, filterStatus, betsSorting, startsAt, startsTo])
 
   return (
-    <div className={styles.filter}>
-      <div className={styles.filterHeading}>Filter</div>
-      <div className={styles.filterContent}>
-        <div className={styles.by}>
-          <div className={styles.byTitle}>BY TYPE</div>
-          <div className={styles.byItems}>
-            {byType.map(item => (
-              <div className={clsx(styles.filterItem, item === filterType && styles.activeFilter)}
-                   onClick={() => isConnected && setFilterType(item)} key={item}>{item}</div>
-            ))}
+    <>
+      <div className={clsx(styles.pageBg)} onClick={() => setIsFilterOpen(false)}></div>
+      <div className={styles.filter}>
+        <div className={styles.filterHeading}>Filter</div>
+        <div className={styles.filterContent}>
+          <div className={styles.by}>
+            <div className={styles.byTitle}>BY TYPE</div>
+            <div className={styles.byItems}>
+              {byType.map(item => (
+                <div className={clsx(styles.filterItem, item === filterType && styles.activeFilter)}
+                     onClick={() => isConnected && setFilterType(item)} key={item}>{item}</div>
+              ))}
+            </div>
           </div>
+          <div className={styles.by}>
+            <div className={styles.byTitle}>BY STATUS</div>
+            <div className={styles.byItems}>
+              {byStatus.map(item => (
+                <div onClick={() => isConnected && setFilterStatus(item)}
+                     className={clsx(styles.filterItem, item === filterStatus && styles.activeFilter)}
+                     key={item}>{item}</div>
+              ))}
+            </div>
+          </div>
+          <div className={styles.by}>
+            <div className={styles.byTitle}>BY RESULTS</div>
+            <div className={styles.byItems}>
+              {byResults.map(item => (
+                <div onClick={() => isConnected && setFilterResults(item)}
+                     className={clsx(styles.filterItem, item === filterResults && styles.activeFilter)}
+                     key={item}>{item}</div>
+              ))}
+            </div>
+          </div>
+          {(filterResults !== 'All' || filterStatus !== 'All' || filterType !== 'All') &&
+            <div className={styles.clear} onClick={() => {
+              setFilterStatus('All')
+              setFilterType('All')
+              setFilterResults('All')
+            }}>Clear
+            </div>
+          }
         </div>
-        <div className={styles.by}>
-          <div className={styles.byTitle}>BY STATUS</div>
-          <div className={styles.byItems}>
-            {byStatus.map(item => (
-              <div onClick={() => isConnected && setFilterStatus(item)}
-                   className={clsx(styles.filterItem, item === filterStatus && styles.activeFilter)}
-                   key={item}>{item}</div>
-            ))}
-          </div>
+        <div className={styles.calendar}>
+          <DayPicker
+            // components={{}}
+            id="test"
+            mode="range"
+            defaultMonth={pastMonth}
+            selected={range}
+            onSelect={setRange}
+          />
+          {!!range && <div className={styles.clearCalendar} onClick={() => setRange(undefined)}>
+            Clear
+          </div>}
         </div>
-        <div className={styles.by}>
-          <div className={styles.byTitle}>BY RESULTS</div>
-          <div className={styles.byItems}>
-            {byResults.map(item => (
-              <div onClick={() => isConnected && setFilterResults(item)}
-                   className={clsx(styles.filterItem, item === filterResults && styles.activeFilter)}
-                   key={item}>{item}</div>
-            ))}
-          </div>
-        </div>
-        {(filterResults !== 'All' || filterStatus !== 'All' || filterType !== 'All') &&
-          <div className={styles.clear} onClick={() => {
-            setFilterStatus('All')
-            setFilterType('All')
-            setFilterResults('All')
-          }}>Clear
-          </div>
-        }
       </div>
-      <div className={styles.calendar}>
-        <DayPicker
-          // components={{}}
-          id="test"
-          mode="range"
-          defaultMonth={pastMonth}
-          selected={range}
-          onSelect={setRange}
-        />
-        {!!range && <div className={styles.clearCalendar} onClick={() => setRange(undefined)}>
-          Clear
-        </div>}
-      </div>
-    </div>
+    </>
   );
 };
 
