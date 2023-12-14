@@ -1,9 +1,5 @@
-const Page = () => {
-  return (
-    <div>
+import CreatePublicEvent from "@/components/screens/CreatePublicEvent/CreatePublicEvent";
 
-    </div>
-  );
-};
+const Page = () => <CreatePublicEvent/>
 
 export default Page;

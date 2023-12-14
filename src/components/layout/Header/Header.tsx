@@ -38,8 +38,15 @@ const Header = () => {
       <div className={styles.headerContent}>
         <Link href='/sports' className={/[0-9]/.test(pathname) ? styles.back : styles.backnone}>BACK</Link>
         <div className={styles.portfolioWrap}>
-          <Image src='/metamask.png' alt='' width={40} height={40}
-                 onClick={() => !isConnected && setIsConnectOpen(true)}/>
+          <Link href="/account">
+            <Image src='/metamask.png' alt='' width={40} height={40}
+                   onClick={e => {
+                     if (!isConnected) {
+                       e.stopPropagation()
+                       setIsConnectOpen(true)
+                     }
+                   }}/>
+          </Link>
           <Balance/>
         </div>
         {page !== 'sports' && page !== 'my-bets' &&
@@ -66,8 +73,8 @@ const Header = () => {
               </svg>
               Create event
             </div>
-            <Link href={'/main/create/public'}>Public event</Link>
-            <Link href={'/main/create/private'}>Private event</Link>
+            <Link href={'/main/create-event/public'}>Public event</Link>
+            <Link href={'/main/create-event/private'}>Private event</Link>
           </div>
         </>
         }

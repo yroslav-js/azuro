@@ -1,0 +1,29 @@
+.accountBlock {
+    background-color: var(--surface-mid-priority);
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.accountSmallBlock {
+    background-color: var(--surface-background);
+    border-radius: 8px;
+    padding: 12px 16px;
+    align-items: center;
+    display: flex;
+    width: 100%;
+}
+
+.bigTitle {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-mid-priority);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.smallTitle {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-low-priority);
+    margin-bottom: 6px;
+}

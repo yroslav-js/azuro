@@ -1,0 +1,29 @@
+.page {
+    max-width: 1236px;
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 6px;
+    padding-bottom: 30px;
+}
+
+.page > p {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-high-priority);
+    margin-bottom: 10px;
+}
+
+.content {
+    width: 100%;
+    padding: 24px;
+    background-color: var(--surface-high-priority);
+    border-radius: 12px;
+}
+
+.user {
+    display: flex;
+    gap: 24px;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+

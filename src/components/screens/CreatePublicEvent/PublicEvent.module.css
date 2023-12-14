@@ -1,0 +1,340 @@
+.content {
+    margin: 0 auto 30px;
+    background-color: var(--surface-mid-priority);
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 592px;
+    width: 100%;
+    height: fit-content;
+}
+
+.heading {
+    height: 56px;
+    background-color: var(--surface-high-priority);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.heading > span {
+    position: absolute;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-accent-2);
+    display: inline-block;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.heading > div {
+    display: flex;
+    align-items: center;
+}
+
+.heading > div > span:first-child {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-high-priority);
+    transition: all .2s linear;
+}
+
+.heading > div > span:last-child {
+    display: inline-block;
+    width: 0;
+    max-width: 0;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--surface-background);
+    margin-left: 16px;
+    white-space: nowrap;
+    transition: all .2s linear;
+}
+
+.event {
+    padding: 16px;
+    color: var(--text-mid-priority);
+}
+
+.event p {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-top: 8px;
+}
+
+.event > span {
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-block;
+    transform: translateY(-6px);
+}
+
+.content input, .content textarea {
+    margin-bottom: 16px;
+    background-color: var(--surface-background);
+    border-radius: 10px;
+    color: var(--text-low-priority);
+    display: flex;
+    width: 100%;
+    height: 56px;
+    align-items: center;
+    padding: 16px;
+}
+
+.content textarea {
+    padding-top: 20px;
+    resize: vertical;
+}
+
+.group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.group > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tags {
+    max-width: 395px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background-color: var(--surface-high-priority);
+    border-radius: 18px;
+    height: 36px;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    color: var(--text-accent-2);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.outcomes {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.outcomes > input {
+    max-width: 128px;
+    border-radius: 6px;
+    height: 48px;
+}
+
+.plus {
+    width: 48px;
+    height: 48px;
+    background-color: var(--surface-high-priority);
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+}
+
+.plus > span {
+    width: 100%;
+    height: 100%;
+}
+
+.plus > span::after, .plus > span::before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 2px;
+    background-color: var(--text-mid-priority);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.plus > span::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.plus::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--text-mid-priority);
+}
+
+.timeAndLocation {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.timeAndLocation div {
+    width: 100%;
+}
+
+.isLiquidity .event {
+    display: none;
+}
+
+.liquidity {
+    display: none;
+}
+
+.isLiquidity .liquidity {
+    display: block;
+    padding: 16px;
+}
+
+.content button {
+    width: 100%;
+    background-color: var(--text-accent-2);
+    border-radius: 8px;
+    height: 48px;
+    box-shadow: 0 4px 10px 0 #00000026;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-ctas-buttons);
+}
+
+.name {
+    background: linear-gradient(91.8deg, #017BFF 0%, #022B58 88.37%);
+    height: 56px;
+    border-radius: 10px;
+    padding: 18px 16px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-ctas-buttons);
+    margin-bottom: 6px;
+}
+
+.subName {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 4px;
+}
+
+.subName > div {
+    padding: 0 8px;
+    font-size: 13px;
+    font-weight: 500;
+    height: 24px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--transperent-accent-4);
+    color: var(--text-accent-4);
+}
+
+.subName > .amount {
+    background-color: var(--elements-transperent-black-40);
+    color: var(--text-ctas-buttons);
+}
+
+.subName > .rules {
+    margin-left: auto;
+    height: 36px;
+    width: 75px;
+    padding: 0 10px 0 12px;
+    background-color: var(--transperent-accent-2);
+    color: var(--text-accent-2);
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+.hashtag {
+    color: var(--text-accent-2);
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+}
+
+.createdEvent {
+    /*height: 44px;*/
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.title {
+    height: 44px;
+    background-color: var(--surface-high-priority);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-high-priority);
+}
+
+.open {
+    background-color: var(--surface-background);
+    padding: 8px;
+    display: flex;
+    gap: 5px;
+}
+
+.open .plus {
+    background-color: var(--surface-mid-priority);
+}
+
+.open input {
+    height: 48px;
+    width: 95px;
+    background-color: var(--surface-mid-priority);
+}
+
+.checkbox {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-accent-2);
+    margin-bottom: 8px;
+}
+
+.checkbox > div {
+    height: 18px;
+}
+
+.checkbox input {
+    width: 18px;
+    height: 18px;
+    border-radius: 2px;
+    border: 2px solid var(--text-high-priority);
+}
+
+.isLiquidity .heading > div > span:first-child {
+    display: inline-block;
+    width: 0;
+    max-width: 0;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--surface-background);
+    transform: translateX(-112px);
+    white-space: nowrap;
+}
+
+.isLiquidity .heading > div > span:last-child {
+    width: 100%;
+    max-width: initial;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-high-priority);
+    margin-left: 0;
+}

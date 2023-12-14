@@ -1,0 +1,94 @@
+.walletData {
+    min-height: 438px;
+    width: 100%;
+}
+
+.walletData > div {
+    min-height: 65px;
+    margin-bottom: 8px;
+}
+
+.flex {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.net {
+    width: 50%;
+    margin-bottom: 8px;
+    min-height: 68px;
+}
+
+.address {
+    width: 50%;
+    margin-bottom: 8px;
+    min-height: 68px;
+}
+
+.address > p {
+    margin-right: auto;
+    display: block;
+    white-space: nowrap;
+}
+
+.address span, .value, .net {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-high-priority);
+}
+
+.balance {
+    height: 68px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.walletButton {
+    width: 124px;
+    height: 44px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px 0 #00000026;
+    position: relative;
+    overflow: hidden;
+}
+
+.walletButton > span {
+    position: relative;
+    z-index: 1;
+    color: var(--text-ctas-buttons);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.walletButton > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 124px;
+    height: 44px;
+    z-index: 0;
+}
+
+.bets .value {
+    color: var(--text-accent-4);
+}
+
+.payout .value {
+    color: var(--text-accent-2);
+}
+
+.stake {
+    justify-content: space-between;
+}
+
+.disconnect {
+    height: 44px;
+    min-height: 44px;
+    border-radius: 10px;
+    justify-content: center;
+    margin-top: 16px;
+    color: var(--text-low-priority);
+    font-size: 16px;
+    font-weight: 500;
+}
