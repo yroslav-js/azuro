@@ -27,3 +27,8 @@
     margin-bottom: 24px;
 }
 
+@media (max-width: 900px) {
+    .user {
+        flex-direction: column;
+    }
+}

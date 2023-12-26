@@ -10,9 +10,27 @@
     width: 227px;
     height: 227px;
     margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.avatar > button {
+.avatar > svg {
+    display: inline-block;
+    position: absolute;
+    top: 11px;
+    right: 12px;
+    opacity: .8;
+    cursor: pointer;
+}
+
+.avatar > img {
+    object-fit: cover;
+    width: 227px;
+    height: 227px;
+}
+
+.avatar label {
     position: absolute;
     width: 122px;
     height: 28px;
@@ -27,6 +45,13 @@
     transform: translateX(-50%);
     font-weight: 500;
     font-size: 13px;
+    cursor: pointer;
+}
+
+.avatar input {
+    width: 0;
+    height: 0;
+    opacity: 0;
 }
 
 .instead {
@@ -45,6 +70,7 @@
     display: flex;
     flex-direction: column;
     align-items: start;
+    position: relative;
 }
 
 .nickname > input {
@@ -52,9 +78,20 @@
     height: 22px;
     font-size: 16px;
     font-weight: 700;
-    color: var(--text-high-priority);
     display: flex;
     align-items: center;
+    color: var(--text-high-priority);
+}
+
+.nickname > img {
+    position: absolute;
+    bottom: 13px;
+    right: 17px;
+    cursor: pointer;
+}
+
+.nickname > input::placeholder {
+    color: var(--text-high-priority);
 }
 
 .link {
@@ -62,4 +99,27 @@
     color: var(--text-mid-priority);
     font-size: 13px;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.link > img:first-child {
+    width: 24px;
+    height: 24px;
+}
+
+.link > img:last-child {
+    margin-left: auto;
+}
+
+@media (max-width: 900px) {
+    .userData {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .avatar {
+        margin: 0 auto 32px;
+    }
 }

@@ -17,14 +17,17 @@ const WalletData = () => {
       <p className="bigTitle">deposit credential</p>
       <div className={styles.flex}>
         <div className={clsx(styles.net, "accountSmallBlock")}>
-          <img src="" alt=""/>
+          <img src="/polygon.svg" alt=""/>
           Polygon mainnet
         </div>
         <div className={clsx(styles.address, "accountSmallBlock")}>
           <div>
             <p className="smallTitle">Replenishment address</p>
-            <span>{address || ZeroAddress}
-              {/*<img src="" alt=""/>*/}
+            <span>
+              0xbc2820e236e5468a232Cb7cF2D9E2961859...
+              {/*{address || ZeroAddress}*/}
+              <img src="/copy.svg" alt=""
+                   onClick={() => navigator.clipboard.writeText('0xbc2820e236e5468a232Cb7cF2D9E2961859c1D79')}/>
           </span>
           </div>
         </div>
@@ -33,7 +36,7 @@ const WalletData = () => {
       <div className={clsx(styles.balance, "accountSmallBlock")}>
         <div>
           <p className="smallTitle">Balance</p>
-          <span className={styles.value}>{Number(data?.formatted || 0).toFixed(2)} USDT</span>
+          <span className={styles.value}><img src="/tether.svg" alt=""/> {Number(data?.formatted || 0).toFixed(2)} USDT</span>
         </div>
         <button className={styles.walletButton}><span>Deposit</span>
           <Lottie
@@ -53,14 +56,15 @@ const WalletData = () => {
         <div className={clsx(styles.bets, "accountSmallBlock")}>
           <div>
             <p className="smallTitle">In Bets</p>
-            <span className={styles.value}>20 USDT</span>
+            <span className={styles.value}><img src="/tether.svg" alt=""/> 20 USDT</span>
           </div>
         </div>
         <div className={clsx(styles.payout, "accountSmallBlock")}>
           <div>
             <p className="smallTitle">To Payout</p>
-            <span className={styles.value}>120 USDT</span>
+            <span className={styles.value}><img src="/tether.svg" alt=""/> 120 USDT</span>
           </div>
+          <img src="/sports/arrowRightGray.svg" alt=""/>
         </div>
       </div>
       <div className={clsx(styles.stake, "accountSmallBlock")}>

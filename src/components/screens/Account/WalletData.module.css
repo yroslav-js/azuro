@@ -20,6 +20,12 @@
     min-height: 68px;
 }
 
+.net {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .address {
     width: 50%;
     margin-bottom: 8px;
@@ -32,10 +38,26 @@
     white-space: nowrap;
 }
 
+.address > div {
+    width: 100%;
+}
+
 .address span, .value, .net {
     font-size: 16px;
     font-weight: 700;
     color: var(--text-high-priority);
+}
+
+.value {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.address span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .balance {
@@ -78,6 +100,20 @@
     color: var(--text-accent-2);
 }
 
+.payout {
+    position: relative;
+}
+
+.payout > img {
+    cursor: pointer;
+    height: 12px;
+    width: 8px;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .stake {
     justify-content: space-between;
 }
@@ -91,4 +127,14 @@
     color: var(--text-low-priority);
     font-size: 16px;
     font-weight: 500;
+}
+
+@media (max-width: 1320px) {
+    .flex {
+        flex-direction: column;
+    }
+
+    .flex > div {
+        width: 100%;
+    }
 }

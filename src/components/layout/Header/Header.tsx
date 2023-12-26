@@ -4,14 +4,16 @@ import styles from './Header.module.css'
 import Image from "next/image";
 import clsx from "clsx";
 import {useAppDispatch, useAppSelector} from "@/hooks/reduxHooks";
-import {useState} from "react";
-import {usePathname} from "next/navigation";
+import {useEffect, useState} from "react";
+import {usePathname, useRouter} from "next/navigation";
 import Link from "next/link";
-import {useAccount} from "wagmi";
+import {useAccount, useSignMessage} from "wagmi";
 import {setOddsFormat} from "@/redux/features/azuroSlice";
 import Search from "@/components/ui/Search/Search";
 import dynamic from "next/dynamic";
 import Connect from "@/components/layout/Header/Connect/Connect";
+import axios from "axios";
+import {DAY} from "@/utils/constants";
 
 const Balance = dynamic(() => import('@/components/layout/Header/Balance'), {
   ssr: false
@@ -25,7 +27,42 @@ const Header = () => {
   const {isConnected} = useAccount()
   const [event, setEvent] = useState('All')
   const [createEvent, setCreateEvent] = useState(false)
-  const page = pathname.split('/')[1];
+  const page = pathname.split('/')[1]
+  const router = useRouter()
+  // const [message, setMessage] = useState('')
+  // const {address} = useAccount()
+  // const {signMessage} = useSignMessage({
+  //   onSuccess(data) {
+  //     console.log(message, data)
+  //     axios.get(`http://localhost:3001/api/auth/wallet/${message}/${data}`).then(res => {
+  //       localStorage.setItem('jwt', res.data.data.jwt)
+  //       localStorage.setItem('expires', `${DAY * 1000 + Date.now()}`)
+  //     }).catch(() => {
+  //       localStorage.setItem('jwt', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1N2Y2MDljODQ5NGRiMjUwMzRiZWFiZSIsImlhdCI6MTcwMjg0NjYyMCwiZXhwIjoxNzAyOTMzMDIwfQ.jCdC19GsEiQd2gEwdURe8HWasFCxJKUghrqfGXBsFn0')
+  //       localStorage.setItem('expires', `${DAY * 1000 + Date.now()}`)
+  //     })
+  //   },
+  //   onError(error) {
+  //     if (error?.message === 'Connector not found' && address) {
+  //       setTimeout(() => {
+  //         signMessage({message})
+  //       }, 1000)
+  //     }
+  //   }
+  // })
+  //
+  // useEffect(() => {
+  //   if (address && (!localStorage.getItem('jwt') || Number(localStorage.getItem('expires') || 0) < Date.now())) {
+  //     axios.get(`http://localhost:3001/api/auth/wallet/${address}`).then(res => {
+  //       const formData = new FormData()
+  //       formData.append('message', `For login to the site, I sign this random data: ${res.data.data}`)
+  //       const message: string = formData.get('message') as string
+  //       signMessage({message: message})
+  //       setMessage(message)
+  //     }).catch(() => {
+  //     })
+  //   }
+  // }, [address])
 
   return (
     <header
@@ -38,15 +75,12 @@ const Header = () => {
       <div className={styles.headerContent}>
         <Link href='/sports' className={/[0-9]/.test(pathname) ? styles.back : styles.backnone}>BACK</Link>
         <div className={styles.portfolioWrap}>
-          <Link href="/account">
-            <Image src='/metamask.png' alt='' width={40} height={40}
-                   onClick={e => {
-                     if (!isConnected) {
-                       e.stopPropagation()
-                       setIsConnectOpen(true)
-                     }
-                   }}/>
-          </Link>
+          <Image src='/metamask.png' alt='' width={40} height={40}
+                 onClick={() => {
+                   if (isConnected) router.push('/account')
+                   else setIsConnectOpen(true)
+                   // router.push('/account')
+                 }}/>
           <Balance/>
         </div>
         {page !== 'sports' && page !== 'my-bets' &&
